@@ -69,6 +69,38 @@ else
     echo "✅ Nuclei est déjà installé."
 fi
 
+# Créer les dossiers nécessaires
+mkdir -p results credentials forensics rapport sauvegarde
+echo "✅ Dossiers créés : results/, credentials/, forensics/, rapport/, sauvegarde/"
+
+# Générer la clé de chiffrement si absente
+if [ ! -f "secret.key" ]; then
+    echo "🔐 Clé secrète absente. Génération..."
+    python3 -c "from cryptography.fernet import Fernet; open('secret.key', 'wb').write(Fernet.generate_key())"
+    echo "✅ Clé secrète générée dans secret.key"
+else
+    echo "🔐 Clé secrète déjà présente."
+fi
+
+# === Pare-feu (UFW) ===
+read -p "🔐 Souhaitez-vous configurer un firewall UFW (linux) ? (y/n) " answer
+if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
+    if ! command -v ufw &> /dev/null; then
+        echo "🔧 UFW non trouvé. Installation..."
+        sudo apt install -y ufw
+    fi
+
+    echo "🛡 Application des règles UFW..."
+
+    sudo ufw default deny incoming
+    sudo ufw default allow outgoing
+    sudo ufw allow from 192.168.0.0/16 to any port 5000
+    sudo ufw allow 22  # SSH
+    sudo ufw allow 443
+    sudo ufw --force enable
+
+    echo "✅ UFW configuré : seul le réseau local peut accéder à Flask (port 5000)"
+fi
 
 # Installer les dépendances Python
 echo "📜 Installation des paquets Python..."
