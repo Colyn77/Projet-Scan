@@ -40,34 +40,12 @@ sudo setcap cap_net_raw,cap_net_admin=eip $(which python3)
 echo "📦 Installation d'Hydra pour brute-force..."
 sudo apt install -y hydra
 
-# Installation Nuclei
+# Installation Metasploit 
 
-echo "🔍 Vérification de la présence de Nuclei..."
-
-if ! command -v nuclei &> /dev/null
-then
-    echo "💡 Nuclei non trouvé, installation en cours..."
-    
-    sudo apt install -y unzip wget
-    
-    # Téléchargement du binaire
-    wget https://github.com/projectdiscovery/nuclei/releases/download/v3.4.2/nuclei_3.4.2_linux_amd64.zip -O nuclei.zip
-    
-    # Décompression
-    unzip nuclei.zip
-    
-    # Déplacement vers /usr/local/bin
-    sudo mv nuclei /usr/local/bin/
-    sudo chmod +x /usr/local/bin/nuclei
-    
-    # Nettoyage
-    rm nuclei.zip
-    rm LICENSE.md README_CN.md README_ID.md README_KR.md README.md README_JP.md README_ES.md README_PT-BR.md
-    
-    echo "✅ Nuclei installé avec succès."
-else
-    echo "✅ Nuclei est déjà installé."
-fi
+echo "📦 Installation de Metasploit Framework"
+curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb > msfinstall && \
+chmod 755 msfinstall && \
+./msfinstall
 
 # Créer les dossiers nécessaires
 mkdir -p results credentials forensics rapport sauvegarde

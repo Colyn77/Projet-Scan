@@ -2,6 +2,10 @@ import os
 import datetime
 import json
 from jinja2 import Environment, FileSystemLoader
+from utils.logger import get_logger
+
+# Configuration du logger
+logger = get_logger('reporting_generator')
 
 # Configuration des chemins
 TEMPLATES_DIR = "templates"
@@ -10,7 +14,7 @@ REPORTS_DIR = "generated_reports"
 # Préparer le dossier si pas existant
 os.makedirs(REPORTS_DIR, exist_ok=True)
 
-def generate_report(module_name, scan_results, template_name="report_template.html"):
+def generate_report(module_name, scan_results, template_name="report_template.html", for_download=True):
     """
     Génère un rapport HTML basé sur un template Jinja2.
     
@@ -18,40 +22,58 @@ def generate_report(module_name, scan_results, template_name="report_template.ht
         module_name (str): Nom du module (ex: "vuln_scan", "network_discovery")
         scan_results (dict or list): Résultats du scan
         template_name (str): Nom du template à utiliser
+        for_download (bool): Si True, génère une version téléchargeable, sinon une version web
     
     Returns:
         str: Chemin vers le rapport généré
     """
-    env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
+    logger.info(f"Génération d'un rapport pour le module {module_name}")
     
-    # Choisir le bon template en fonction du module
-    if module_name == "vuln_scan":
-        template_name = "vuln_report_template.html"
-    elif module_name == "sniffer":
-        template_name = "sniffer_report_template.html"
-    
-    template = env.get_template(template_name)
-    
-    now = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    
-    # Préparation des données pour le template
-    data = {
-        "module_name": module_name,
-        "generated_on": now,
-        "results": scan_results,
-        "module_title": get_module_title(module_name),
-        "stats": get_scan_stats(scan_results)
-    }
-    
-    rendered = template.render(**data)
-    
-    filename = f"report_{module_name}_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.html"
-    filepath = os.path.join(REPORTS_DIR, filename)
-    
-    with open(filepath, "w", encoding="utf-8") as f:
-        f.write(rendered)
-    
-    return filepath
+    try:
+        env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
+        
+        # Choisir le bon template en fonction du module
+        if module_name == "vuln_scan":
+            if for_download:
+                template_name = "vuln_report_template.html"
+            else:
+                template_name = "vuln_results.html"
+        elif module_name == "sniffer":
+            template_name = "sniffer_report_template.html"
+        
+        template = env.get_template(template_name)
+        
+        now = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+        
+        # Préparation des données pour le template
+        data = {
+            "module_name": module_name,
+            "generated_on": now,
+            "results": scan_results,  # Pour compatibilité avec anciens templates
+            "module_title": get_module_title(module_name),
+            "stats": get_scan_stats(scan_results)
+        }
+        
+        # Ajouter toutes les clés du scan_results au contexte
+        if isinstance(scan_results, dict):
+            for key, value in scan_results.items():
+                data[key] = value
+        
+        rendered = template.render(**data)
+        
+        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"report_{module_name}_{timestamp}.html"
+        filepath = os.path.join(REPORTS_DIR, filename)
+        
+        with open(filepath, "w", encoding="utf-8") as f:
+            f.write(rendered)
+        
+        logger.info(f"Rapport généré avec succès: {filepath}")
+        return filepath
+        
+    except Exception as e:
+        logger.error(f"Erreur lors de la génération du rapport: {e}", exc_info=True)
+        raise
 
 def get_module_title(module_name):
     """Retourne un titre lisible pour chaque module"""
@@ -108,13 +130,19 @@ def count_vulnerabilities_by_severity(vulnerabilities):
     
     return severity_count
     
-def generate_vuln_report(scan_results):
+def generate_vuln_report(scan_results, for_download=True):
     """Fonction spécifique pour générer un rapport de vulnérabilités"""
     # Assurez-vous que le dossier existe
     os.makedirs(REPORTS_DIR, exist_ok=True)
     
+    # Déterminer la sévérité de chaque vulnérabilité
+    if "vulnerabilities" in scan_results:
+        for vuln in scan_results["vulnerabilities"]:
+            if "severity" not in vuln:
+                vuln["severity"] = determine_vulnerability_severity(vuln)
+    
     # Générer le rapport
-    return generate_report("vuln_scan", scan_results)
+    return generate_report("vuln_scan", scan_results, for_download=for_download)
 
 def generate_sniffer_report(scan_results):
     """Fonction spécifique pour générer un rapport de capture réseau"""
@@ -123,3 +151,32 @@ def generate_sniffer_report(scan_results):
     
     # Générer le rapport
     return generate_report("sniffer", scan_results)
+
+def determine_vulnerability_severity(vuln):
+    """Détermine la sévérité d'une vulnérabilité en fonction de son nom et de ses détails"""
+    vuln_name = vuln.get("vulnerability", "").lower()
+    vuln_details = str(vuln.get("details", "")).lower()
+    
+    # Vulnérabilités critiques
+    critical_keywords = ["critical", "remote code execution", "rce", "command injection", "sql injection", "authentication bypass"]
+    
+    # Vulnérabilités élevées
+    high_keywords = ["high", "xss", "cross site scripting", "arbitrary file", "directory traversal", "buffer overflow", "overflow"]
+    
+    # Vulnérabilités moyennes
+    medium_keywords = ["medium", "information disclosure", "sensitive data", "csrf", "cross site request forgery"]
+    
+    # Vulnérabilités faibles
+    low_keywords = ["low", "insecure", "deprecated"]
+    
+    # Vérifier les mots-clés pour déterminer la sévérité
+    if any(keyword in vuln_name or keyword in vuln_details for keyword in critical_keywords):
+        return "critical"
+    elif any(keyword in vuln_name or keyword in vuln_details for keyword in high_keywords):
+        return "high"
+    elif any(keyword in vuln_name or keyword in vuln_details for keyword in medium_keywords):
+        return "medium"
+    elif any(keyword in vuln_name or keyword in vuln_details for keyword in low_keywords):
+        return "low"
+    else:
+        return "info"

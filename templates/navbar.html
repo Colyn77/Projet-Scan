@@ -1,0 +1,51 @@
+<!-- templates/navbar.html -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">
+      <i class="bi bi-shield-lock"></i> Security Toolbox
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarMain">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Accueil</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="networkDropdown" role="button" data-bs-toggle="dropdown">
+            Réseau
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="networkDropdown">
+            <li><a class="dropdown-item" href="/network">Découverte Réseau</a></li>
+            <li><a class="dropdown-item" href="/portscan">Scan de Ports</a></li>
+            <li><a class="dropdown-item" href="/enumerate">Énumération de Services</a></li>
+            <li><a class="dropdown-item" href="/sniffer">Capture Réseau</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="securityDropdown" role="button" data-bs-toggle="dropdown">
+            Sécurité
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="securityDropdown">
+            <li><a class="dropdown-item" href="/vuln">Scan de Vulnérabilités</a></li>
+            <li><a class="dropdown-item" href="/hydra">Bruteforce</a></li>
+            <li><a class="dropdown-item" href="/exploits">Exploitation</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" role="button" data-bs-toggle="dropdown">
+            Rapports
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="reportsDropdown">
+            <li><a class="dropdown-item" href="/reports">Rapports Généraux</a></li>
+            <li><a class="dropdown-item" href="/api/exploit/reports">Rapports d'Exploitation</a></li>
+          </ul>
+        </li>
+      </ul>
+      <span class="navbar-text">
+        <i class="bi bi-tools"></i> Toolbox v1.0
+      </span>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,21 @@
+2025-05-08 17:38:59,865 - metasploit_auto - INFO - [metasploit_auto.py:289] - Metasploit est disponible sur le système
+2025-05-08 17:38:59,865 - metasploit_auto - INFO - [metasploit_auto.py:154] - Tentative d'exploitation automatique: ssl-ccs-injection sur 192.168.217.139:443
+2025-05-08 17:38:59,871 - metasploit_auto - INFO - [metasploit_auto.py:102] - Création du fichier RC pour le module auxiliary/scanner/ssl/openssl_ccs
+2025-05-08 17:38:59,871 - metasploit_auto - INFO - [metasploit_auto.py:216] - Exécution de msfconsole avec le fichier RC: scripts/exploit_20250508_173859.rc
+2025-05-08 17:41:59,969 - metasploit_auto - ERROR - [metasploit_auto.py:259] - Timeout lors de l'exécution de Metasploit pour ssl-ccs-injection sur 192.168.217.139:443
+2025-05-08 17:45:11,272 - metasploit_auto - INFO - [metasploit_auto.py:289] - Metasploit est disponible sur le système
+2025-05-08 17:45:11,273 - metasploit_auto - INFO - [metasploit_auto.py:154] - Tentative d'exploitation automatique: ssl-dh-params sur 192.168.217.139:443
+2025-05-08 17:45:11,274 - metasploit_auto - INFO - [metasploit_auto.py:102] - Création du fichier RC pour le module auxiliary/scanner/ssl/ssl_version
+2025-05-08 17:45:11,274 - metasploit_auto - INFO - [metasploit_auto.py:216] - Exécution de msfconsole avec le fichier RC: scripts/exploit_20250508_174511.rc
+2025-05-08 17:48:11,308 - metasploit_auto - ERROR - [metasploit_auto.py:259] - Timeout lors de l'exécution de Metasploit pour ssl-dh-params sur 192.168.217.139:443
+2025-05-09 10:47:13,907 - metasploit_auto - WARNING - [metasploit_auto.py:292] - Metasploit n'est pas disponible sur le système
+2025-05-09 10:47:22,903 - metasploit_auto - INFO - [metasploit_auto.py:289] - Metasploit est disponible sur le système
+2025-05-09 10:47:22,903 - metasploit_auto - INFO - [metasploit_auto.py:154] - Tentative d'exploitation automatique: http-slowloris-check sur 192.168.217.139:443
+2025-05-09 10:47:22,903 - metasploit_auto - INFO - [metasploit_auto.py:102] - Création du fichier RC pour le module auxiliary/dos/http/slowloris
+2025-05-09 10:47:22,904 - metasploit_auto - INFO - [metasploit_auto.py:216] - Exécution de msfconsole avec le fichier RC: scripts/exploit_20250509_104722.rc
+2025-05-09 10:50:23,021 - metasploit_auto - ERROR - [metasploit_auto.py:259] - Timeout lors de l'exécution de Metasploit pour http-slowloris-check sur 192.168.217.139:443
+2025-05-09 11:25:01,285 - metasploit_auto - INFO - [metasploit_auto.py:343] - Metasploit est disponible sur le système
+2025-05-09 11:25:01,286 - metasploit_auto - INFO - [metasploit_auto.py:160] - Tentative d'exploitation automatique: ssl-ccs-injection sur 192.168.217.139:443
+2025-05-09 11:25:01,286 - metasploit_auto - INFO - [metasploit_auto.py:102] - Création du fichier RC pour le module auxiliary/scanner/ssl/openssl_ccs
+2025-05-09 11:25:01,287 - metasploit_auto - INFO - [metasploit_auto.py:231] - Exécution de msfconsole avec le fichier RC: scripts/exploit_20250509_112501.rc (timeout: 180s)
+2025-05-09 11:28:01,417 - metasploit_auto - ERROR - [metasploit_auto.py:312] - Timeout lors de l'exécution de Metasploit pour ssl-ccs-injection sur 192.168.217.139:443

@@ -1,0 +1,18 @@
+2025-05-08 15:04:02,691 - reporting_generator - INFO - [reporting_generator.py:30] - Génération d'un rapport pour le module vuln_scan
+2025-05-08 15:04:02,699 - reporting_generator - INFO - [reporting_generator.py:71] - Rapport généré avec succès: generated_reports/report_vuln_scan_20250508_150402.html
+2025-05-08 15:11:36,528 - reporting_generator - INFO - [reporting_generator.py:30] - Génération d'un rapport pour le module vuln_scan
+2025-05-08 15:11:36,548 - reporting_generator - INFO - [reporting_generator.py:71] - Rapport généré avec succès: generated_reports/report_vuln_scan_20250508_151136.html
+2025-05-08 15:12:07,132 - reporting_generator - INFO - [reporting_generator.py:30] - Génération d'un rapport pour le module vuln_scan
+2025-05-08 15:12:07,140 - reporting_generator - INFO - [reporting_generator.py:71] - Rapport généré avec succès: generated_reports/report_vuln_scan_20250508_151207.html
+2025-05-08 15:15:12,593 - reporting_generator - INFO - [reporting_generator.py:30] - Génération d'un rapport pour le module vuln_scan
+2025-05-08 15:15:12,607 - reporting_generator - INFO - [reporting_generator.py:71] - Rapport généré avec succès: generated_reports/report_vuln_scan_20250508_151512.html
+2025-05-08 15:21:42,991 - reporting_generator - INFO - [reporting_generator.py:30] - Génération d'un rapport pour le module vuln_scan
+2025-05-08 15:21:42,997 - reporting_generator - INFO - [reporting_generator.py:71] - Rapport généré avec succès: generated_reports/report_vuln_scan_20250508_152142.html
+2025-05-08 17:07:24,722 - reporting_generator - INFO - [reporting_generator.py:30] - Génération d'un rapport pour le module vuln_scan
+2025-05-08 17:07:24,730 - reporting_generator - INFO - [reporting_generator.py:71] - Rapport généré avec succès: generated_reports/report_vuln_scan_20250508_170724.html
+2025-05-08 17:38:28,416 - reporting_generator - INFO - [reporting_generator.py:30] - Génération d'un rapport pour le module vuln_scan
+2025-05-08 17:38:28,441 - reporting_generator - INFO - [reporting_generator.py:71] - Rapport généré avec succès: generated_reports/report_vuln_scan_20250508_173828.html
+2025-05-09 10:38:24,112 - reporting_generator - INFO - [reporting_generator.py:30] - Génération d'un rapport pour le module vuln_scan
+2025-05-09 10:38:24,128 - reporting_generator - INFO - [reporting_generator.py:71] - Rapport généré avec succès: generated_reports/report_vuln_scan_20250509_103824.html
+2025-05-09 11:23:12,412 - reporting_generator - INFO - [reporting_generator.py:30] - Génération d'un rapport pour le module vuln_scan
+2025-05-09 11:23:12,431 - reporting_generator - INFO - [reporting_generator.py:71] - Rapport généré avec succès: generated_reports/report_vuln_scan_20250509_112312.html

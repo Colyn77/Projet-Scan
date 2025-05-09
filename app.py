@@ -7,6 +7,7 @@ import logging
 import bcrypt
 from dotenv import load_dotenv
 from config import Config
+from utils.logger import get_logger
 
 # Forensics
 from routes.forensics_routes import forensics_bp
@@ -25,6 +26,7 @@ from routes.enumeration_routes import enumeration_bp
 from routes.sniffer_routes import sniffer_bp
 from routes.hydra_routes import hydra_bp
 from routes.vuln_routes import vuln_bp
+from routes.exploit_routes import exploit_bp
 
 # 🌍 Initialisation
 load_dotenv()
@@ -33,10 +35,12 @@ logging.basicConfig(
     level=getattr(logging, log_level.upper(), logging.INFO),
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
-logger = logging.getLogger("app")
+# Configuration du logger
+logger = get_logger('app')
 
 
 def create_app():
+    logger.info("Création de l'application Flask")
     app = Flask(__name__)
     app.config.from_object(Config)
     app.secret_key = os.getenv("SECRET_KEY", "changeme123")
@@ -48,7 +52,7 @@ def create_app():
 
 
     # 🔐 IP autorisées (pare-feu applicatif)
-    ALLOWED_IPS = os.getenv("ALLOWED_IPS", "127.0.0.1,192.168.44.128").split(",")
+    ALLOWED_IPS = os.getenv("ALLOWED_IPS", "127.0.0.1,192.168.44.128,192.168.217.1").split(",")
 
     @app.before_request
     def check_ip():
@@ -70,6 +74,9 @@ def create_app():
     app.register_blueprint(hydra_bp, url_prefix="/api/hydra")
     app.register_blueprint(vuln_bp, url_prefix="/api/vuln")
     app.register_blueprint(auth_bp)
+    app.register_blueprint(exploit_bp, url_prefix='/api/exploit')
+    
+    logger.debug("Blueprints enregistrés")
 
     # === Authentification manuelle (en option si tu n’utilises pas `auth_bp`)
     @app.route("/login", methods=["GET", "POST"])
@@ -136,6 +143,54 @@ def create_app():
     @login_required
     def vuln_page():
         return render_template("vuln.html")
+
+        logger.debug("Accès à la page de scan de vulnérabilités")
+        return render_template("vuln.html")
+
+    @app.route("/exploit")
+    def exploit_page():
+        """Affiche la page d'exploitation avec les paramètres fournis"""
+        logger.info("Accès à la page d'exploitation")
+        
+        # Récupérer les paramètres de la requête
+        vuln_id = request.args.get("vuln_id")
+        ip = request.args.get("ip")
+        port = request.args.get("port")
+        
+        # Vérifier si les paramètres sont présents
+        if not vuln_id or not ip or not port:
+            logger.warning("Paramètres manquants pour la page d'exploitation")
+            return redirect("/")
+        
+        # Trouver le module Metasploit correspondant
+        from services.metasploit_auto import EXPLOIT_MAP
+        module = "Unknown"
+        for key, value in EXPLOIT_MAP.items():
+            if key.lower() in vuln_id.lower() or vuln_id.lower() in key.lower():
+                module = value
+                break
+        
+        logger.info(f"Préparation de l'exploitation de {vuln_id} sur {ip}:{port}")
+        
+        # Rendre le template avec les informations
+        return render_template(
+            "exploit_form.html", 
+            vuln={
+                "id": vuln_id,
+                "target": ip,
+                "port": port
+            },
+            module=module
+        )
+    
+    @app.route("/exploits")
+    def exploits_list_page():
+        """Affiche la liste des rapports d'exploitation"""
+        logger.debug("Accès à la page des rapports d'exploitation")
+        
+        # Rediriger vers la route API correspondante
+        return redirect("/api/exploit/reports")
+        
 
     @app.route("/results")
     def results_page():
