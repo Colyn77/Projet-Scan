@@ -1065,3 +1065,44 @@ FileNotFoundError: [Errno 2] No such file or directory: 'forensics/memory_dump.e
 2025-05-09 11:24:21,478 - app - INFO - [app.py:173] - Préparation de l'exploitation de ssl-ccs-injection sur 192.168.217.139:443
 2025-05-09 11:34:49,842 - app - INFO - [app.py:43] - Création de l'application Flask
 2025-05-09 11:34:49,869 - app - INFO - [app.py:240] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-15 20:46:45,073 - app - INFO - [app.py:43] - Création de l'application Flask
+2025-05-15 20:46:45,098 - app - INFO - [app.py:240] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-15 21:18:34,624 - app - INFO - [app.py:43] - Création de l'application Flask
+2025-05-15 21:18:34,652 - app - INFO - [app.py:265] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-15 21:22:34,950 - app - INFO - [app.py:43] - Création de l'application Flask
+2025-05-15 21:22:34,963 - app - INFO - [app.py:265] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-15 21:32:30,321 - app - INFO - [app.py:153] - Accès à la page d'exploitation
+2025-05-15 21:32:30,328 - app - INFO - [app.py:173] - Préparation de l'exploitation de ftp-vsftpd-backdoor sur 192.168.217.140:21
+2025-05-15 21:42:47,903 - app - INFO - [app.py:43] - Création de l'application Flask
+2025-05-15 21:42:47,921 - app - INFO - [app.py:265] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-15 21:46:12,664 - app - INFO - [app.py:43] - Création de l'application Flask
+2025-05-15 21:46:12,686 - app - INFO - [app.py:265] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-15 21:49:43,358 - app - ERROR - [app.py:875] - Exception on /api/forensics/ [GET]
+Traceback (most recent call last):
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oebn/Projet-Scan/securite/auth.py", line 60, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/oebn/Projet-Scan/routes/forensics_routes.py", line 15, in analyser
+    shutil.copy("forensics/memory_dump.encrypted", "static/forensics/memory_dump.encrypted")
+  File "/usr/lib/python3.11/shutil.py", line 419, in copy
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+  File "/usr/lib/python3.11/shutil.py", line 256, in copyfile
+    with open(src, 'rb') as fsrc:
+         ^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'forensics/memory_dump.encrypted'
+2025-05-15 21:53:38,559 - app - INFO - [app.py:43] - Création de l'application Flask
+2025-05-15 21:53:38,597 - app - INFO - [app.py:265] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-15 21:58:12,882 - app - INFO - [app.py:43] - Création de l'application Flask
+2025-05-15 21:58:12,907 - app - INFO - [app.py:265] - 🚀 Application démarrée sur http://0.0.0.0:5000

@@ -37,3 +37,58 @@
 2025-05-09 10:44:53,541 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
 2025-05-09 11:16:51,068 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
 2025-05-09 11:34:49,819 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-15 20:46:45,038 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-15 21:18:33,580 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-15 21:22:34,377 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-15 21:23:00,105 - packet_sniffer - INFO - [packet_sniffer.py:15] - Récupération des interfaces réseau
+2025-05-15 21:23:00,169 - packet_sniffer - INFO - [packet_sniffer.py:41] - 5 interfaces trouvées
+2025-05-15 21:23:09,018 - packet_sniffer - INFO - [packet_sniffer.py:58] - Démarrage de la capture sur ens33 - 10 paquets
+2025-05-15 21:23:19,658 - packet_sniffer - INFO - [packet_sniffer.py:76] - Capture enregistrée : captures/capture_20250515_212309.pcap (10 paquets)
+2025-05-15 21:23:19,667 - packet_sniffer - INFO - [packet_sniffer.py:92] - Début de l'analyse du fichier pcap: captures/capture_20250515_212309.pcap
+2025-05-15 21:23:23,572 - packet_sniffer - INFO - [packet_sniffer.py:225] - Analyse terminée: 10 paquets analysés, 12 IPs uniques
+2025-05-15 21:23:23,576 - packet_sniffer - INFO - [packet_sniffer.py:92] - Début de l'analyse du fichier pcap: captures/capture_20250515_212309.pcap
+2025-05-15 21:23:24,424 - packet_sniffer - INFO - [packet_sniffer.py:225] - Analyse terminée: 10 paquets analysés, 12 IPs uniques
+2025-05-15 21:42:47,082 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-15 21:43:11,018 - packet_sniffer - INFO - [packet_sniffer.py:15] - Récupération des interfaces réseau
+2025-05-15 21:43:11,047 - packet_sniffer - INFO - [packet_sniffer.py:41] - 5 interfaces trouvées
+2025-05-15 21:43:17,346 - packet_sniffer - INFO - [packet_sniffer.py:58] - Démarrage de la capture sur lo - 10 paquets
+2025-05-15 21:43:27,947 - packet_sniffer - INFO - [packet_sniffer.py:15] - Récupération des interfaces réseau
+2025-05-15 21:43:27,952 - packet_sniffer - INFO - [packet_sniffer.py:41] - 5 interfaces trouvées
+2025-05-15 21:43:34,468 - packet_sniffer - INFO - [packet_sniffer.py:58] - Démarrage de la capture sur ens33 - 10 paquets
+2025-05-15 21:43:45,840 - packet_sniffer - INFO - [packet_sniffer.py:76] - Capture enregistrée : captures/capture_20250515_214334.pcap (10 paquets)
+2025-05-15 21:43:45,846 - packet_sniffer - INFO - [packet_sniffer.py:92] - Début de l'analyse du fichier pcap: captures/capture_20250515_214334.pcap
+2025-05-15 21:43:47,554 - packet_sniffer - INFO - [packet_sniffer.py:76] - Capture enregistrée : captures/capture_20250515_214317.pcap (10 paquets)
+2025-05-15 21:43:47,568 - packet_sniffer - INFO - [packet_sniffer.py:92] - Début de l'analyse du fichier pcap: captures/capture_20250515_214317.pcap
+2025-05-15 21:45:32,892 - packet_sniffer - INFO - [packet_sniffer.py:225] - Analyse terminée: 10 paquets analysés, 10 IPs uniques
+2025-05-15 21:45:32,896 - packet_sniffer - INFO - [packet_sniffer.py:225] - Analyse terminée: 10 paquets analysés, 13 IPs uniques
+2025-05-15 21:45:32,904 - packet_sniffer - INFO - [packet_sniffer.py:92] - Début de l'analyse du fichier pcap: captures/capture_20250515_214317.pcap
+2025-05-15 21:45:32,921 - packet_sniffer - INFO - [packet_sniffer.py:92] - Début de l'analyse du fichier pcap: captures/capture_20250515_214334.pcap
+2025-05-15 21:46:11,908 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-15 21:46:14,620 - packet_sniffer - INFO - [packet_sniffer.py:15] - Récupération des interfaces réseau
+2025-05-15 21:46:14,649 - packet_sniffer - INFO - [packet_sniffer.py:41] - 5 interfaces trouvées
+2025-05-15 21:46:18,500 - packet_sniffer - INFO - [packet_sniffer.py:58] - Démarrage de la capture sur ens33 - 10 paquets
+2025-05-15 21:46:33,347 - packet_sniffer - INFO - [packet_sniffer.py:76] - Capture enregistrée : captures/capture_20250515_214618.pcap (10 paquets)
+2025-05-15 21:46:33,347 - packet_sniffer - INFO - [packet_sniffer.py:92] - Début de l'analyse du fichier pcap: captures/capture_20250515_214618.pcap
+2025-05-15 21:46:34,767 - packet_sniffer - INFO - [packet_sniffer.py:225] - Analyse terminée: 10 paquets analysés, 12 IPs uniques
+2025-05-15 21:46:34,769 - packet_sniffer - INFO - [packet_sniffer.py:92] - Début de l'analyse du fichier pcap: captures/capture_20250515_214618.pcap
+2025-05-15 21:46:35,660 - packet_sniffer - INFO - [packet_sniffer.py:225] - Analyse terminée: 10 paquets analysés, 12 IPs uniques
+2025-05-15 21:53:37,785 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-15 21:53:51,441 - packet_sniffer - INFO - [packet_sniffer.py:15] - Récupération des interfaces réseau
+2025-05-15 21:53:51,471 - packet_sniffer - INFO - [packet_sniffer.py:41] - 5 interfaces trouvées
+2025-05-15 21:53:59,033 - packet_sniffer - INFO - [packet_sniffer.py:58] - Démarrage de la capture sur ens33 - 10 paquets
+2025-05-15 21:54:07,550 - packet_sniffer - INFO - [packet_sniffer.py:76] - Capture enregistrée : captures/capture_20250515_215359.pcap (10 paquets)
+2025-05-15 21:54:07,551 - packet_sniffer - INFO - [packet_sniffer.py:92] - Début de l'analyse du fichier pcap: captures/capture_20250515_215359.pcap
+2025-05-15 21:54:09,549 - packet_sniffer - INFO - [packet_sniffer.py:225] - Analyse terminée: 10 paquets analysés, 12 IPs uniques
+2025-05-15 21:54:09,578 - packet_sniffer - INFO - [packet_sniffer.py:92] - Début de l'analyse du fichier pcap: captures/capture_20250515_215359.pcap
+2025-05-15 21:54:11,703 - packet_sniffer - INFO - [packet_sniffer.py:225] - Analyse terminée: 10 paquets analysés, 12 IPs uniques
+2025-05-15 21:58:12,128 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-15 21:58:20,164 - packet_sniffer - INFO - [packet_sniffer.py:15] - Récupération des interfaces réseau
+2025-05-15 21:58:20,197 - packet_sniffer - INFO - [packet_sniffer.py:41] - 5 interfaces trouvées
+2025-05-15 21:58:24,156 - packet_sniffer - INFO - [packet_sniffer.py:58] - Démarrage de la capture sur ens33 - 10 paquets
+2025-05-15 21:58:28,054 - packet_sniffer - INFO - [packet_sniffer.py:76] - Capture enregistrée : captures/capture_20250515_215824.pcap (10 paquets)
+2025-05-15 21:58:28,055 - packet_sniffer - INFO - [packet_sniffer.py:92] - Début de l'analyse du fichier pcap: captures/capture_20250515_215824.pcap
+2025-05-15 21:58:29,719 - packet_sniffer - INFO - [packet_sniffer.py:225] - Analyse terminée: 10 paquets analysés, 12 IPs uniques
+2025-05-15 21:58:29,724 - packet_sniffer - INFO - [packet_sniffer.py:92] - Début de l'analyse du fichier pcap: captures/capture_20250515_215824.pcap
+2025-05-15 21:58:30,609 - packet_sniffer - INFO - [packet_sniffer.py:225] - Analyse terminée: 10 paquets analysés, 12 IPs uniques
+2025-05-15 21:59:38,385 - packet_sniffer - INFO - [packet_sniffer.py:15] - Récupération des interfaces réseau
+2025-05-15 21:59:38,414 - packet_sniffer - INFO - [packet_sniffer.py:41] - 5 interfaces trouvées

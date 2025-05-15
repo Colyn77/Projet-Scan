@@ -58,6 +58,11 @@
                     <i class="bi bi-download"></i> Télécharger le rapport HTML
                 </a>
                 {% endif %}
+                {% if pdf_report_path %}
+                <a href="/api/report/download/{{ pdf_report_path|basename }}" class="btn btn-danger">
+                    <i class="bi bi-file-pdf"></i> Télécharger le rapport PDF
+                </a>
+                {% endif %}
             </div>
         </div>
         

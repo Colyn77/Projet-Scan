@@ -77,6 +77,15 @@
             background-color: #45a049;
             border-color: #45a049;
         }
+        .btn-danger {
+            color: #fff;
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
         .back-link {
             display: inline-block;
             margin-top: 20px;
@@ -136,6 +145,19 @@
         </div>
         <div class="capture-summary-actions">
             {{ details.download_link }}
+            
+            <!-- Ajout des boutons de téléchargement HTML/PDF -->
+            {% if details.report_path %}
+            <a href="/api/report/download/{{ details.report_path|basename }}" class="btn btn-primary">
+                <i class="bi bi-file-code"></i> Rapport HTML
+            </a>
+            {% endif %}
+            
+            {% if details.pdf_report_path %}
+            <a href="/api/report/download/{{ details.pdf_report_path|basename }}" class="btn btn-danger">
+                <i class="bi bi-file-pdf"></i> Rapport PDF
+            </a>
+            {% endif %}
         </div>
     </div>
     
@@ -146,5 +168,10 @@
     </div>
     
     <a href="/" class="back-link">← Retour à l'accueil</a>
+    
+    <script>
+        // Stocke l'ID de la capture pour les actions futures
+        window.captureId = "{{ details.filename }}";
+    </script>
 </body>
 </html>

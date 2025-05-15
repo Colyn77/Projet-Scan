@@ -98,3 +98,12 @@
 2025-05-09 11:23:12,405 - nmap_vulnscan - INFO - [nmap_vulnscan.py:64] - Vulnérabilité trouvée sur port 443: ssl-dh-params
 2025-05-09 11:23:12,412 - nmap_vulnscan - INFO - [nmap_vulnscan.py:64] - Vulnérabilité trouvée sur port 443: ssl-poodle
 2025-05-09 11:23:12,412 - nmap_vulnscan - INFO - [nmap_vulnscan.py:66] - Scan terminé: 4 vulnérabilité(s) trouvée(s) sur 192.168.217.139
+2025-05-15 21:25:08,238 - nmap_vulnscan - INFO - [nmap_vulnscan.py:22] - Démarrage du scan de vulnérabilités sur 192.168.217.140
+2025-05-15 21:25:08,374 - nmap_vulnscan - INFO - [nmap_vulnscan.py:29] - Exécution de nmap avec arguments: --script vuln -p 21,22,23,25,80,110,139,143,443,445,3389
+2025-05-15 21:30:30,370 - nmap_vulnscan - INFO - [nmap_vulnscan.py:64] - Vulnérabilité trouvée sur port 21: ftp-vsftpd-backdoor
+2025-05-15 21:30:30,370 - nmap_vulnscan - INFO - [nmap_vulnscan.py:64] - Vulnérabilité trouvée sur port 25: ssl-poodle
+2025-05-15 21:30:30,380 - nmap_vulnscan - INFO - [nmap_vulnscan.py:64] - Vulnérabilité trouvée sur port 25: ssl-dh-params
+2025-05-15 21:30:30,380 - nmap_vulnscan - INFO - [nmap_vulnscan.py:64] - Vulnérabilité trouvée sur port 25: smtp-vuln-cve2010-4344
+2025-05-15 21:30:30,380 - nmap_vulnscan - INFO - [nmap_vulnscan.py:64] - Vulnérabilité trouvée sur port 80: http-slowloris-check
+2025-05-15 21:30:30,381 - nmap_vulnscan - INFO - [nmap_vulnscan.py:64] - Vulnérabilité trouvée sur port 80: http-vuln-cve2017-1001000
+2025-05-15 21:30:30,381 - nmap_vulnscan - INFO - [nmap_vulnscan.py:66] - Scan terminé: 6 vulnérabilité(s) trouvée(s) sur 192.168.217.140

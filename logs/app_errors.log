@@ -960,3 +960,28 @@ Traceback (most recent call last):
     with open(src, 'rb') as fsrc:
          ^^^^^^^^^^^^^^^
 FileNotFoundError: [Errno 2] No such file or directory: 'forensics/memory_dump.encrypted'
+2025-05-15 21:49:43,358 - app - ERROR - [app.py:875] - Exception on /api/forensics/ [GET]
+Traceback (most recent call last):
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oebn/Projet-Scan/securite/auth.py", line 60, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/oebn/Projet-Scan/routes/forensics_routes.py", line 15, in analyser
+    shutil.copy("forensics/memory_dump.encrypted", "static/forensics/memory_dump.encrypted")
+  File "/usr/lib/python3.11/shutil.py", line 419, in copy
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+  File "/usr/lib/python3.11/shutil.py", line 256, in copyfile
+    with open(src, 'rb') as fsrc:
+         ^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'forensics/memory_dump.encrypted'

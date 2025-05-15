@@ -12,8 +12,6 @@ logger = logging.getLogger("vuln_routes")
 
 vuln_bp = Blueprint("vuln", __name__)
 
-# Modification pour la route /api/vuln/nmap dans le fichier vuln_routes.py
-
 @vuln_bp.route("/nmap", methods=["POST"])
 def launch_vuln_scan():
     """Lance un scan de vulnérabilités Nmap"""
@@ -36,20 +34,26 @@ def launch_vuln_scan():
         logger.info(f"Exécution du scan sur {target} (ports: {ports})")
         results = vuln_scan(target, ports)
         
-        # Variable pour stocker le chemin du rapport
+        # Variables pour stocker les chemins des rapports
         html_report = None
+        pdf_report = None
         
-        # Générer le rapport si le scan a réussi
+        # Générer les rapports si le scan a réussi
         if "error" not in results:
             try:
-                # Générer un rapport téléchargeable
-                html_report = generate_vuln_report(results, for_download=True)
+                # Générer un rapport HTML téléchargeable
+                html_report = generate_vuln_report(results, for_download=True, format="html")
                 logger.info(f"Rapport HTML généré: {html_report}")
                 results["html_report"] = html_report
                 
+                # Générer un rapport PDF téléchargeable
+                pdf_report = generate_vuln_report(results, for_download=True, format="pdf")
+                logger.info(f"Rapport PDF généré: {pdf_report}")
+                results["pdf_report"] = pdf_report
+                
             except Exception as e:
-                logger.error(f"Erreur lors de la génération du rapport: {str(e)}", exc_info=True)
-                # Continuer même si la génération du rapport échoue
+                logger.error(f"Erreur lors de la génération des rapports: {str(e)}", exc_info=True)
+                # Continuer même si la génération des rapports échoue
         
         # Si c'est une requête API JSON
         if request.headers.get('Accept') == 'application/json' or request.is_json:
@@ -64,7 +68,8 @@ def launch_vuln_scan():
                                     module="vuln")
             
             # Utiliser le template dédié aux résultats de vulnérabilités
-            report_path = os.path.basename(html_report) if html_report else None
+            html_report_path = os.path.basename(html_report) if html_report else None
+            pdf_report_path = os.path.basename(pdf_report) if pdf_report else None
             
             return render_template(
                 "vuln_results.html", 
@@ -73,14 +78,45 @@ def launch_vuln_scan():
                 host_status=results["host_status"],
                 vulnerabilities=results["vulnerabilities"],
                 command_line=results["command_line"],
-                report_path=html_report
+                report_path=html_report,
+                html_report_path=html_report_path,
+                pdf_report_path=pdf_report_path
             )
             
     except Exception as e:
         logger.error(f"Erreur non gérée lors du scan: {str(e)}", exc_info=True)
         return jsonify({"error": f"Erreur: {str(e)}"}), 500
 
-@vuln_bp.route("/api/vuln/ports", methods=["GET"])
+@vuln_bp.route("/download_report", methods=["GET"])
+def download_vulnerability_report():
+    """Télécharge un rapport de vulnérabilités dans le format spécifié"""
+    
+    filename = request.args.get("filename")
+    format = request.args.get("format", "html").lower()
+    
+    if not filename:
+        return jsonify({"error": "Le nom du fichier est requis"}), 400
+    
+    # Construire le chemin du fichier
+    file_path = os.path.join("generated_reports", filename)
+    
+    # Vérifier si le fichier existe
+    if not os.path.exists(file_path):
+        logger.error(f"Fichier de rapport introuvable: {file_path}")
+        return jsonify({"error": "Rapport introuvable"}), 404
+    
+    # Déterminer le type MIME en fonction du format
+    mimetype = "application/pdf" if format == "pdf" else "text/html"
+    
+    # Retourner le fichier pour téléchargement
+    return send_file(
+        file_path,
+        mimetype=mimetype,
+        as_attachment=True,
+        download_name=f"rapport_vulnerabilites.{format}"
+    )
+
+@vuln_bp.route("/ports", methods=["GET"])
 def get_port_categories():
     """Retourne les catégories de ports disponibles"""
     return jsonify(get_common_ports_by_category())

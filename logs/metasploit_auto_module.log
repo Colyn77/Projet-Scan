@@ -19,3 +19,9 @@
 2025-05-09 11:25:01,286 - metasploit_auto - INFO - [metasploit_auto.py:102] - Création du fichier RC pour le module auxiliary/scanner/ssl/openssl_ccs
 2025-05-09 11:25:01,287 - metasploit_auto - INFO - [metasploit_auto.py:231] - Exécution de msfconsole avec le fichier RC: scripts/exploit_20250509_112501.rc (timeout: 180s)
 2025-05-09 11:28:01,417 - metasploit_auto - ERROR - [metasploit_auto.py:312] - Timeout lors de l'exécution de Metasploit pour ssl-ccs-injection sur 192.168.217.139:443
+2025-05-15 21:32:38,264 - metasploit_auto - WARNING - [metasploit_auto.py:346] - Metasploit n'est pas disponible sur le système
+2025-05-15 21:32:51,854 - metasploit_auto - INFO - [metasploit_auto.py:343] - Metasploit est disponible sur le système
+2025-05-15 21:32:51,856 - metasploit_auto - INFO - [metasploit_auto.py:160] - Tentative d'exploitation automatique: ftp-vsftpd-backdoor sur 192.168.217.140:21
+2025-05-15 21:32:51,856 - metasploit_auto - INFO - [metasploit_auto.py:102] - Création du fichier RC pour le module exploit/unix/ftp/vsftpd_234_backdoor
+2025-05-15 21:32:51,857 - metasploit_auto - INFO - [metasploit_auto.py:231] - Exécution de msfconsole avec le fichier RC: scripts/exploit_20250515_213251.rc (timeout: 180s)
+2025-05-15 21:35:51,985 - metasploit_auto - ERROR - [metasploit_auto.py:312] - Timeout lors de l'exécution de Metasploit pour ftp-vsftpd-backdoor sur 192.168.217.140:21
