@@ -92,3 +92,18 @@
 2025-05-15 21:58:30,609 - packet_sniffer - INFO - [packet_sniffer.py:225] - Analyse terminée: 10 paquets analysés, 12 IPs uniques
 2025-05-15 21:59:38,385 - packet_sniffer - INFO - [packet_sniffer.py:15] - Récupération des interfaces réseau
 2025-05-15 21:59:38,414 - packet_sniffer - INFO - [packet_sniffer.py:41] - 5 interfaces trouvées
+2025-05-17 17:46:26,472 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-17 17:50:31,920 - packet_sniffer - INFO - [packet_sniffer.py:15] - Récupération des interfaces réseau
+2025-05-17 17:50:31,990 - packet_sniffer - INFO - [packet_sniffer.py:41] - 5 interfaces trouvées
+2025-05-17 18:03:57,275 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-17 18:16:16,557 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-17 18:29:29,809 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-17 18:34:19,652 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-17 18:36:56,240 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-17 18:44:27,741 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-17 18:47:13,738 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-17 18:54:15,532 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-17 18:59:17,761 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-17 19:57:34,940 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-17 20:25:29,218 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-17 21:00:18,274 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture

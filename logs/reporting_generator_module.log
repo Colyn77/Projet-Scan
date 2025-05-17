@@ -61,3 +61,86 @@ jinja2.exceptions.UndefinedError: 'list object' has no attribute 'items'
 2025-05-15 21:58:30,632 - reporting_generator - INFO - [reporting_generator.py:259] - Génération d'un rapport pdf pour capture réseau avec données préparées
 2025-05-15 21:58:30,635 - reporting_generator - INFO - [reporting_generator.py:32] - Génération d'un rapport PDF pour le module sniffer
 2025-05-15 21:58:32,807 - reporting_generator - INFO - [reporting_generator.py:74] - Rapport PDF généré avec succès: generated_reports/report_sniffer_20250515_215830.pdf
+2025-05-17 17:59:31,771 - reporting_generator - INFO - [reporting_generator.py:32] - Génération d'un rapport HTML pour le module vuln_scan
+2025-05-17 17:59:31,777 - reporting_generator - INFO - [reporting_generator.py:81] - Rapport HTML généré avec succès: generated_reports/report_vuln_scan_20250517_175931.html
+2025-05-17 17:59:31,778 - reporting_generator - INFO - [reporting_generator.py:32] - Génération d'un rapport PDF pour le module vuln_scan
+2025-05-17 17:59:32,252 - reporting_generator - INFO - [reporting_generator.py:74] - Rapport PDF généré avec succès: generated_reports/report_vuln_scan_20250517_175931.pdf
+2025-05-17 18:47:25,015 - reporting_generator - INFO - [reporting_generator.py:32] - Génération d'un rapport PDF pour le module exploit
+2025-05-17 18:47:25,047 - reporting_generator - ERROR - [reporting_generator.py:86] - Erreur lors de la génération du rapport pdf: 'url_for' is undefined
+Traceback (most recent call last):
+  File "/home/oebn/Projet-Scan/services/reporting_generator.py", line 64, in generate_report
+    rendered = template.render(**data)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/exploit_report.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 66, in top-level template code
+    {% block content %}
+  File "templates/exploit_report.html", line 154, in block 'content'
+    <a href="{{ url_for('exploit.list_reports') }}" class="btn btn-secondary">
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/jinja2/utils.py", line 92, in from_obj
+    if hasattr(obj, "jinja_pass_arg"):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'url_for' is undefined
+2025-05-17 18:54:27,758 - reporting_generator - INFO - [reporting_generator.py:32] - Génération d'un rapport PDF pour le module exploit
+2025-05-17 18:54:27,778 - reporting_generator - ERROR - [reporting_generator.py:86] - Erreur lors de la génération du rapport pdf: 'url_for' is undefined
+Traceback (most recent call last):
+  File "/home/oebn/Projet-Scan/services/reporting_generator.py", line 64, in generate_report
+    rendered = template.render(**data)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/exploit_report.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 66, in top-level template code
+    {% block content %}
+  File "templates/exploit_report.html", line 154, in block 'content'
+    <a href="{{ url_for('exploit.list_reports') }}" class="btn btn-secondary">
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/jinja2/utils.py", line 92, in from_obj
+    if hasattr(obj, "jinja_pass_arg"):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'url_for' is undefined
+2025-05-17 18:54:44,986 - reporting_generator - INFO - [reporting_generator.py:32] - Génération d'un rapport PDF pour le module exploit
+2025-05-17 18:54:45,012 - reporting_generator - ERROR - [reporting_generator.py:86] - Erreur lors de la génération du rapport pdf: 'url_for' is undefined
+Traceback (most recent call last):
+  File "/home/oebn/Projet-Scan/services/reporting_generator.py", line 64, in generate_report
+    rendered = template.render(**data)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/exploit_report.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 66, in top-level template code
+    {% block content %}
+  File "templates/exploit_report.html", line 154, in block 'content'
+    <a href="{{ url_for('exploit.list_reports') }}" class="btn btn-secondary">
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/jinja2/utils.py", line 92, in from_obj
+    if hasattr(obj, "jinja_pass_arg"):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'url_for' is undefined
+2025-05-17 18:59:28,172 - reporting_generator - INFO - [reporting_generator.py:327] - Génération d'un PDF à partir du contenu HTML
+2025-05-17 18:59:28,889 - reporting_generator - INFO - [reporting_generator.py:339] - PDF généré avec succès: generated_reports/exploit_report_exploit_report_20250517_181850.json.pdf
+2025-05-17 19:01:17,229 - reporting_generator - INFO - [reporting_generator.py:32] - Génération d'un rapport HTML pour le module vuln_scan
+2025-05-17 19:01:17,260 - reporting_generator - INFO - [reporting_generator.py:81] - Rapport HTML généré avec succès: generated_reports/report_vuln_scan_20250517_190117.html
+2025-05-17 19:01:17,261 - reporting_generator - INFO - [reporting_generator.py:32] - Génération d'un rapport PDF pour le module vuln_scan
+2025-05-17 19:01:17,566 - reporting_generator - INFO - [reporting_generator.py:74] - Rapport PDF généré avec succès: generated_reports/report_vuln_scan_20250517_190117.pdf
+2025-05-17 19:02:16,690 - reporting_generator - INFO - [reporting_generator.py:327] - Génération d'un PDF à partir du contenu HTML
+2025-05-17 19:02:17,227 - reporting_generator - INFO - [reporting_generator.py:339] - PDF généré avec succès: generated_reports/exploit_report_exploit_report_20250517_190204.json.pdf
+2025-05-17 20:04:21,719 - reporting_generator - INFO - [reporting_generator.py:32] - Génération d'un rapport HTML pour le module vuln_scan
+2025-05-17 20:04:21,735 - reporting_generator - INFO - [reporting_generator.py:81] - Rapport HTML généré avec succès: generated_reports/report_vuln_scan_20250517_200421.html
+2025-05-17 20:04:21,735 - reporting_generator - INFO - [reporting_generator.py:32] - Génération d'un rapport PDF pour le module vuln_scan
+2025-05-17 20:04:22,237 - reporting_generator - INFO - [reporting_generator.py:74] - Rapport PDF généré avec succès: generated_reports/report_vuln_scan_20250517_200421.pdf
+2025-05-17 20:33:26,480 - reporting_generator - INFO - [reporting_generator.py:32] - Génération d'un rapport HTML pour le module vuln_scan
+2025-05-17 20:33:26,507 - reporting_generator - INFO - [reporting_generator.py:81] - Rapport HTML généré avec succès: generated_reports/report_vuln_scan_20250517_203326.html
+2025-05-17 20:33:26,508 - reporting_generator - INFO - [reporting_generator.py:32] - Génération d'un rapport PDF pour le module vuln_scan
+2025-05-17 20:33:27,080 - reporting_generator - INFO - [reporting_generator.py:74] - Rapport PDF généré avec succès: generated_reports/report_vuln_scan_20250517_203326.pdf

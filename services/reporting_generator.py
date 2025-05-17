@@ -313,6 +313,36 @@ def generate_pdf_report(module_name, scan_results):
     else:
         return generate_report(module_name, scan_results, format="pdf")
 
+def generate_pdf_from_content(html_content, output_filename):
+    """
+    Génère un PDF directement à partir du contenu HTML
+    
+    Args:
+        html_content (str): Contenu HTML à convertir
+        output_filename (str): Nom du fichier PDF à générer
+        
+    Returns:
+        str: Chemin vers le fichier PDF généré
+    """
+    logger.info(f"Génération d'un PDF à partir du contenu HTML")
+    
+    try:
+        # Assurez-vous que le dossier de sortie existe
+        os.makedirs(REPORTS_DIR, exist_ok=True)
+        
+        # Déterminer le chemin de sortie
+        output_path = os.path.join(REPORTS_DIR, output_filename)
+        
+        # Convertir HTML en PDF
+        HTML(string=html_content).write_pdf(output_path)
+        
+        logger.info(f"PDF généré avec succès: {output_path}")
+        return output_path
+        
+    except Exception as e:
+        logger.error(f"Erreur lors de la génération du PDF: {e}", exc_info=True)
+        raise
+
 def convert_html_to_pdf(html_path):
     """
     Convertit un rapport HTML existant en PDF

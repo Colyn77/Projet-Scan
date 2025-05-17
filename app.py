@@ -27,6 +27,7 @@ from routes.sniffer_routes import sniffer_bp
 from routes.hydra_routes import hydra_bp
 from routes.vuln_routes import vuln_bp
 from routes.exploit_routes import exploit_bp
+from routes.post_exploit_routes import post_exploit_bp
 
 # 🌍 Initialisation
 load_dotenv()
@@ -75,6 +76,7 @@ def create_app():
     app.register_blueprint(vuln_bp, url_prefix="/api/vuln")
     app.register_blueprint(auth_bp)
     app.register_blueprint(exploit_bp, url_prefix='/api/exploit')
+    app.register_blueprint(post_exploit_bp, url_prefix="/api/post_exploit")
     
     logger.debug("Blueprints enregistrés")
 
@@ -190,7 +192,24 @@ def create_app():
         
         # Rediriger vers la route API correspondante
         return redirect("/api/exploit/reports")
-        
+
+    @app.route("/post_exploit")
+    @login_required
+    def post_exploit_page():
+        """Affiche la page de post-exploitation"""
+        logger.debug("Accès à la page de post-exploitation")
+        target_ip = request.args.get("target_ip")
+        return render_template("post_exploit.html", target_ip=target_ip)
+
+    @app.template_filter('dirname')
+    def dirname_filter(path):
+        """Retourne le répertoire parent d'un chemin"""
+        # Si le chemin se termine par /, le supprimer d'abord
+        if path.endswith('/') and len(path) > 1:
+            path = path[:-1]
+        parent = os.path.dirname(path)
+        # S'assurer qu'on ne renvoie jamais une chaîne vide
+        return parent if parent else '/'    
 
     @app.route("/results")
     def results_page():

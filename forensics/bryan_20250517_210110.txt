@@ -1,0 +1,22 @@
+🧠 Analyse mémoire lancée par : bryan
+📅 Date : 2025-05-17 21:01:10.636104
+
+[⚠️] Process suspect : postgres (PID 2828) avec connexions actives.
+[⚠️] Process suspect : postgres (PID 2830) avec connexions actives.
+[⚠️] Process suspect : postgres (PID 2831) avec connexions actives.
+[⚠️] Process suspect : postgres (PID 2832) avec connexions actives.
+[⚠️] Process suspect : postgres (PID 2833) avec connexions actives.
+[⚠️] Process suspect : postgres (PID 2834) avec connexions actives.
+[⚠️] Process suspect : postgres (PID 2835) avec connexions actives.
+[⚠️] Process suspect : code (PID 8588) avec connexions actives.
+[⚠️] Process suspect : python3 (PID 8940) avec connexions actives.
+
+=== État mémoire (RAM) ===
+Total       : 1932.39 MB
+Utilisé     : 1423.13 MB
+Disponible  : 270.16 MB
+Pourcentage : 86.0%
+
+=== Mémoire SWAP ===
+Total   : 0.00 MB
+Utilisé : 0.00 MB

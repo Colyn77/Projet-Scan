@@ -3,3 +3,5 @@
 2025-05-09 10:50:23,021 - metasploit_auto - ERROR - [metasploit_auto.py:259] - Timeout lors de l'exécution de Metasploit pour http-slowloris-check sur 192.168.217.139:443
 2025-05-09 11:28:01,417 - metasploit_auto - ERROR - [metasploit_auto.py:312] - Timeout lors de l'exécution de Metasploit pour ssl-ccs-injection sur 192.168.217.139:443
 2025-05-15 21:35:51,985 - metasploit_auto - ERROR - [metasploit_auto.py:312] - Timeout lors de l'exécution de Metasploit pour ftp-vsftpd-backdoor sur 192.168.217.140:21
+2025-05-17 18:07:01,221 - metasploit_auto - ERROR - [metasploit_auto.py:312] - Timeout lors de l'exécution de Metasploit pour ftp-vsftpd-backdoor sur 192.168.217.140:21
+2025-05-17 20:46:41,948 - metasploit_auto - ERROR - [metasploit_auto.py:255] - Échec après 2 tentatives

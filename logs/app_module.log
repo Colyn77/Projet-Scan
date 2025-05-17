@@ -1106,3 +1106,66 @@ FileNotFoundError: [Errno 2] No such file or directory: 'forensics/memory_dump.e
 2025-05-15 21:53:38,597 - app - INFO - [app.py:265] - 🚀 Application démarrée sur http://0.0.0.0:5000
 2025-05-15 21:58:12,882 - app - INFO - [app.py:43] - Création de l'application Flask
 2025-05-15 21:58:12,907 - app - INFO - [app.py:265] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-17 17:46:28,799 - app - INFO - [app.py:43] - Création de l'application Flask
+2025-05-17 17:46:28,816 - app - INFO - [app.py:265] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-17 18:02:46,963 - app - INFO - [app.py:153] - Accès à la page d'exploitation
+2025-05-17 18:02:46,963 - app - INFO - [app.py:173] - Préparation de l'exploitation de ftp-vsftpd-backdoor sur 192.168.217.140:21
+2025-05-17 18:03:57,833 - app - INFO - [app.py:43] - Création de l'application Flask
+2025-05-17 18:03:57,846 - app - INFO - [app.py:265] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-17 18:16:17,131 - app - INFO - [app.py:43] - Création de l'application Flask
+2025-05-17 18:16:17,146 - app - INFO - [app.py:265] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-17 18:18:08,889 - app - INFO - [app.py:153] - Accès à la page d'exploitation
+2025-05-17 18:18:08,890 - app - INFO - [app.py:173] - Préparation de l'exploitation de ftp-vsftpd-backdoor sur 192.168.217.140:21
+2025-05-17 18:29:30,437 - app - INFO - [app.py:43] - Création de l'application Flask
+2025-05-17 18:29:30,451 - app - INFO - [app.py:265] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-17 18:34:20,208 - app - INFO - [app.py:43] - Création de l'application Flask
+2025-05-17 18:34:20,242 - app - INFO - [app.py:265] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-17 18:36:56,760 - app - INFO - [app.py:43] - Création de l'application Flask
+2025-05-17 18:36:56,773 - app - INFO - [app.py:265] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-17 18:44:28,271 - app - INFO - [app.py:43] - Création de l'application Flask
+2025-05-17 18:44:28,284 - app - INFO - [app.py:265] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-17 18:47:14,269 - app - INFO - [app.py:43] - Création de l'application Flask
+2025-05-17 18:47:14,282 - app - INFO - [app.py:265] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-17 18:54:16,063 - app - INFO - [app.py:43] - Création de l'application Flask
+2025-05-17 18:54:16,076 - app - INFO - [app.py:265] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-17 18:59:18,303 - app - INFO - [app.py:43] - Création de l'application Flask
+2025-05-17 18:59:18,317 - app - INFO - [app.py:265] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-17 19:01:21,731 - app - INFO - [app.py:153] - Accès à la page d'exploitation
+2025-05-17 19:01:21,733 - app - INFO - [app.py:173] - Préparation de l'exploitation de ftp-vsftpd-backdoor sur 192.168.217.140:21
+2025-05-17 19:57:35,643 - app - INFO - [app.py:44] - Création de l'application Flask
+2025-05-17 19:57:35,676 - app - INFO - [app.py:275] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-17 20:06:34,905 - app - INFO - [app.py:155] - Accès à la page d'exploitation
+2025-05-17 20:06:34,906 - app - INFO - [app.py:175] - Préparation de l'exploitation de ftp-vsftpd-backdoor sur 192.168.217.140:21
+2025-05-17 20:25:29,900 - app - INFO - [app.py:44] - Création de l'application Flask
+2025-05-17 20:25:29,933 - app - INFO - [app.py:284] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-17 20:37:43,905 - app - INFO - [app.py:155] - Accès à la page d'exploitation
+2025-05-17 20:37:43,906 - app - INFO - [app.py:175] - Préparation de l'exploitation de ssl-poodle sur 192.168.217.140:25
+2025-05-17 20:46:34,713 - app - INFO - [app.py:155] - Accès à la page d'exploitation
+2025-05-17 20:46:34,715 - app - INFO - [app.py:175] - Préparation de l'exploitation de ftp-vsftpd-backdoor sur 192.168.217.140:21
+2025-05-17 21:00:18,920 - app - INFO - [app.py:44] - Création de l'application Flask
+2025-05-17 21:00:18,958 - app - INFO - [app.py:284] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-17 21:01:01,851 - app - ERROR - [app.py:875] - Exception on /api/forensics/ [GET]
+Traceback (most recent call last):
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oebn/Projet-Scan/venv/lib/python3.11/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oebn/Projet-Scan/securite/auth.py", line 60, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/oebn/Projet-Scan/routes/forensics_routes.py", line 15, in analyser
+    shutil.copy("forensics/memory_dump.encrypted", "static/forensics/memory_dump.encrypted")
+  File "/usr/lib/python3.11/shutil.py", line 419, in copy
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+  File "/usr/lib/python3.11/shutil.py", line 256, in copyfile
+    with open(src, 'rb') as fsrc:
+         ^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'forensics/memory_dump.encrypted'

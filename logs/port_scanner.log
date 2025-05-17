@@ -5,3 +5,18 @@
 2025-04-26 18:30:57,422 - port_scanner - INFO - [port_scanner.py:48] - Port ouvert trouvé: 80/tcp - Service: http
 2025-04-26 18:30:57,423 - port_scanner - INFO - [port_scanner.py:48] - Port ouvert trouvé: 443/tcp - Service: https
 2025-04-26 18:30:57,423 - port_scanner - INFO - [port_scanner.py:52] - Scan terminé: 4 ports ouverts trouvés sur 4 ports scannés
+2025-05-17 17:49:51,033 - port_scanner - INFO - [port_scanner.py:16] - Démarrage du scan de ports sur 192.168.217.140
+2025-05-17 17:49:51,049 - port_scanner - INFO - [port_scanner.py:21] - Scan en cours sur 192.168.217.140, ports : 1-1024 (-sT)...
+2025-05-17 17:49:51,341 - port_scanner - INFO - [port_scanner.py:48] - Port ouvert trouvé: 21/tcp - Service: ftp
+2025-05-17 17:49:51,341 - port_scanner - INFO - [port_scanner.py:48] - Port ouvert trouvé: 22/tcp - Service: ssh
+2025-05-17 17:49:51,341 - port_scanner - INFO - [port_scanner.py:48] - Port ouvert trouvé: 23/tcp - Service: telnet
+2025-05-17 17:49:51,342 - port_scanner - INFO - [port_scanner.py:48] - Port ouvert trouvé: 25/tcp - Service: smtp
+2025-05-17 17:49:51,342 - port_scanner - INFO - [port_scanner.py:48] - Port ouvert trouvé: 53/tcp - Service: domain
+2025-05-17 17:49:51,342 - port_scanner - INFO - [port_scanner.py:48] - Port ouvert trouvé: 80/tcp - Service: http
+2025-05-17 17:49:51,342 - port_scanner - INFO - [port_scanner.py:48] - Port ouvert trouvé: 111/tcp - Service: rpcbind
+2025-05-17 17:49:51,342 - port_scanner - INFO - [port_scanner.py:48] - Port ouvert trouvé: 139/tcp - Service: netbios-ssn
+2025-05-17 17:49:51,342 - port_scanner - INFO - [port_scanner.py:48] - Port ouvert trouvé: 445/tcp - Service: microsoft-ds
+2025-05-17 17:49:51,343 - port_scanner - INFO - [port_scanner.py:48] - Port ouvert trouvé: 512/tcp - Service: exec
+2025-05-17 17:49:51,343 - port_scanner - INFO - [port_scanner.py:48] - Port ouvert trouvé: 513/tcp - Service: login
+2025-05-17 17:49:51,343 - port_scanner - INFO - [port_scanner.py:48] - Port ouvert trouvé: 514/tcp - Service: shell
+2025-05-17 17:49:51,343 - port_scanner - INFO - [port_scanner.py:52] - Scan terminé: 12 ports ouverts trouvés sur 12 ports scannés

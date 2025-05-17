@@ -30,7 +30,7 @@
           <ul class="dropdown-menu" aria-labelledby="securityDropdown">
             <li><a class="dropdown-item" href="/vuln">Scan de Vulnérabilités</a></li>
             <li><a class="dropdown-item" href="/hydra">Bruteforce</a></li>
-            <li><a class="dropdown-item" href="/exploits">Exploitation</a></li>
+            <li><a class="dropdown-item" href="/api/exploit/reports">Exploitation</a></li>
           </ul>
         </li>
         <li class="nav-item dropdown">
@@ -40,6 +40,16 @@
           <ul class="dropdown-menu" aria-labelledby="reportsDropdown">
             <li><a class="dropdown-item" href="/reports">Rapports Généraux</a></li>
             <li><a class="dropdown-item" href="/api/exploit/reports">Rapports d'Exploitation</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="advancedDropdown" role="button" data-bs-toggle="dropdown">
+            Avancé
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="advancedDropdown">
+            <li><a class="dropdown-item" href="/api/forensics">Analyse Forensique</a></li>
+            <li><a class="dropdown-item" href="/malware">Analyse de Fichiers</a></li>
+            <li><a class="dropdown-item" href="/timeline">Timeline</a></li>
           </ul>
         </li>
       </ul>
