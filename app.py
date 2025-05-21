@@ -28,6 +28,8 @@ from routes.hydra_routes import hydra_bp
 from routes.vuln_routes import vuln_bp
 from routes.exploit_routes import exploit_bp
 from routes.post_exploit_routes import post_exploit_bp
+from routes.plugin_routes import plugin_bp
+from services.plugin_manager import init_plugin_environment
 
 # 🌍 Initialisation
 load_dotenv()
@@ -36,6 +38,7 @@ logging.basicConfig(
     level=getattr(logging, log_level.upper(), logging.INFO),
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
+init_plugin_environment()
 # Configuration du logger
 logger = get_logger('app')
 
@@ -53,7 +56,7 @@ def create_app():
 
 
     # 🔐 IP autorisées (pare-feu applicatif)
-    ALLOWED_IPS = os.getenv("ALLOWED_IPS", "127.0.0.1,192.168.44.128,192.168.217.1").split(",")
+    ALLOWED_IPS = os.getenv("ALLOWED_IPS", "127.0.0.1,192.168.44.128,192.168.217.1,192.168.36.1").split(",")
 
     @app.before_request
     def check_ip():
@@ -77,6 +80,7 @@ def create_app():
     app.register_blueprint(auth_bp)
     app.register_blueprint(exploit_bp, url_prefix='/api/exploit')
     app.register_blueprint(post_exploit_bp, url_prefix="/api/post_exploit")
+    app.register_blueprint(plugin_bp)
     
     logger.debug("Blueprints enregistrés")
 

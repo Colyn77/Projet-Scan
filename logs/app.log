@@ -1169,3 +1169,243 @@ Traceback (most recent call last):
     with open(src, 'rb') as fsrc:
          ^^^^^^^^^^^^^^^
 FileNotFoundError: [Errno 2] No such file or directory: 'forensics/memory_dump.encrypted'
+2025-05-21 06:16:00,715 - app - INFO - [app.py:44] - Création de l'application Flask
+2025-05-21 06:16:00,749 - app - INFO - [app.py:284] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-21 06:44:45,813 - app - INFO - [app.py:47] - Création de l'application Flask
+2025-05-21 06:44:45,823 - app - INFO - [app.py:288] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-21 06:50:48,265 - app - INFO - [app.py:47] - Création de l'application Flask
+2025-05-21 06:50:48,276 - app - INFO - [app.py:288] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-21 06:55:16,860 - app - INFO - [app.py:47] - Création de l'application Flask
+2025-05-21 06:55:16,870 - app - INFO - [app.py:288] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-21 07:07:16,222 - app - INFO - [app.py:47] - Création de l'application Flask
+2025-05-21 07:07:16,232 - app - INFO - [app.py:288] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-21 07:07:53,661 - app - ERROR - [app.py:875] - Exception on /plugins/run/reverse_dns [GET]
+Traceback (most recent call last):
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/routes/plugin_routes.py", line 43, in run
+    return render_template(
+        "plugins/run.html",
+        plugin=plugins[plugin_name],
+        plugin_name=plugin_name
+    )
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/loaders.py", line 138, in load
+    code = environment.compile(source, name, filename)
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 771, in compile
+    self.handle_exception(source=source_hint)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/kali/Projet-Scan/templates/plugins/run.html", line 107, in template
+    {% endblock %}
+jinja2.exceptions.TemplateSyntaxError: Unexpected end of template. Jinja was looking for the following tags: 'endblock'. The innermost block that needs to be closed is 'block'.
+2025-05-21 07:07:56,961 - app - ERROR - [app.py:875] - Exception on /plugins/run/file_hasher [GET]
+Traceback (most recent call last):
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/routes/plugin_routes.py", line 43, in run
+    return render_template(
+        "plugins/run.html",
+        plugin=plugins[plugin_name],
+        plugin_name=plugin_name
+    )
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/loaders.py", line 138, in load
+    code = environment.compile(source, name, filename)
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 771, in compile
+    self.handle_exception(source=source_hint)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/kali/Projet-Scan/templates/plugins/run.html", line 107, in template
+    {% endblock %}
+jinja2.exceptions.TemplateSyntaxError: Unexpected end of template. Jinja was looking for the following tags: 'endblock'. The innermost block that needs to be closed is 'block'.
+2025-05-21 07:09:27,285 - app - INFO - [app.py:47] - Création de l'application Flask
+2025-05-21 07:09:27,295 - app - INFO - [app.py:288] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-21 07:09:37,616 - app - ERROR - [app.py:875] - Exception on /plugins/run/reverse_dns [GET]
+Traceback (most recent call last):
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/routes/plugin_routes.py", line 43, in run
+    return render_template(
+        "plugins/run.html",
+        plugin=plugins[plugin_name],
+        plugin_name=plugin_name
+    )
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/loaders.py", line 138, in load
+    code = environment.compile(source, name, filename)
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 771, in compile
+    self.handle_exception(source=source_hint)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/kali/Projet-Scan/templates/plugins/run.html", line 107, in template
+    {% endblock %}
+jinja2.exceptions.TemplateSyntaxError: Unexpected end of template. Jinja was looking for the following tags: 'endblock'. The innermost block that needs to be closed is 'block'.
+2025-05-21 07:10:05,160 - app - ERROR - [app.py:875] - Exception on /plugins/run/file_hasher [GET]
+Traceback (most recent call last):
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/routes/plugin_routes.py", line 43, in run
+    return render_template(
+        "plugins/run.html",
+        plugin=plugins[plugin_name],
+        plugin_name=plugin_name
+    )
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/loaders.py", line 138, in load
+    code = environment.compile(source, name, filename)
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 771, in compile
+    self.handle_exception(source=source_hint)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/kali/Projet-Scan/templates/plugins/run.html", line 107, in template
+    {% endblock %}
+jinja2.exceptions.TemplateSyntaxError: Unexpected end of template. Jinja was looking for the following tags: 'endblock'. The innermost block that needs to be closed is 'block'.
+2025-05-21 07:10:07,632 - app - ERROR - [app.py:875] - Exception on /plugins/run/password_generator [GET]
+Traceback (most recent call last):
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/routes/plugin_routes.py", line 43, in run
+    return render_template(
+        "plugins/run.html",
+        plugin=plugins[plugin_name],
+        plugin_name=plugin_name
+    )
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/loaders.py", line 138, in load
+    code = environment.compile(source, name, filename)
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 771, in compile
+    self.handle_exception(source=source_hint)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/kali/Projet-Scan/templates/plugins/run.html", line 107, in template
+    {% endblock %}
+jinja2.exceptions.TemplateSyntaxError: Unexpected end of template. Jinja was looking for the following tags: 'endblock'. The innermost block that needs to be closed is 'block'.
+2025-05-21 07:10:09,363 - app - ERROR - [app.py:875] - Exception on /plugins/run/hash_identifier [GET]
+Traceback (most recent call last):
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/routes/plugin_routes.py", line 43, in run
+    return render_template(
+        "plugins/run.html",
+        plugin=plugins[plugin_name],
+        plugin_name=plugin_name
+    )
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/loaders.py", line 138, in load
+    code = environment.compile(source, name, filename)
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 771, in compile
+    self.handle_exception(source=source_hint)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "/home/kali/Projet-Scan/templates/plugins/run.html", line 107, in template
+    {% endblock %}
+jinja2.exceptions.TemplateSyntaxError: Unexpected end of template. Jinja was looking for the following tags: 'endblock'. The innermost block that needs to be closed is 'block'.
+2025-05-21 07:10:55,030 - app - INFO - [app.py:47] - Création de l'application Flask
+2025-05-21 07:10:55,041 - app - INFO - [app.py:288] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-21 07:13:41,487 - app - INFO - [app.py:47] - Création de l'application Flask
+2025-05-21 07:13:41,499 - app - INFO - [app.py:288] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-21 08:34:52,768 - app - INFO - [app.py:47] - Création de l'application Flask
+2025-05-21 08:34:52,779 - app - INFO - [app.py:288] - 🚀 Application démarrée sur http://0.0.0.0:5000
