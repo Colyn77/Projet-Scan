@@ -108,7 +108,7 @@ def create_app():
         session.clear()
         return redirect("/login")
 
-    # === Pages Web sécurisées
+    #  Pages Web sécurisées
     @app.route("/")
     @login_required
     def home():
@@ -221,6 +221,34 @@ def create_app():
             return "Fichier non trouvé", 404
         return send_file(path, as_attachment=True)
 
+ HEAD
+
+    @app.route("/api/report/pdf/<path:filename>", methods=["GET"])
+    @login_required
+    def download_pdf_report(filename):
+        """
+        Route pour télécharger spécifiquement un rapport PDF
+        """
+        # Vérifier si le fichier a une extension PDF, sinon l'ajouter
+        if not filename.lower().endswith('.pdf'):
+            filename += '.pdf'
+    
+        path = os.path.join("generated_reports", filename)
+    
+        # Vérifier si le fichier existe
+        if not os.path.exists(path):
+            logger.error(f"Rapport PDF non trouvé: {path}")
+            return "Fichier non trouvé", 404
+    
+        # Renvoyer le fichier PDF
+        return send_file(
+            path, 
+            mimetype='application/pdf',
+            as_attachment=True,
+            download_name=filename
+        )
+
+ 43135da91ca33da8523da844705a9ae84902803e
     @app.route("/api/report/view/<path:filename>")
     @login_required
     def view_report(filename):

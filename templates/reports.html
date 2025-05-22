@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -39,3 +40,97 @@
     </footer>
 </body>
 </html>
+=======
+{% extends 'base.html' %}
+
+{% block title %}Rapports générés - Toolbox Cyber{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h3>Rapports générés</h3>
+        </div>
+        <div class="card-body">
+            {% if reports %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Nom</th>
+                                <th>Date</th>
+                                <th>Taille</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for report in reports %}
+                                <tr>
+                                    <td>{{ report.name }}</td>
+                                    <td>{{ report.date }}</td>
+                                    <td>{{ report.size }}</td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="{{ url_for('download_report', filename=report.name) }}" 
+                                               class="btn btn-sm btn-primary">
+                                                <i class="bi bi-download"></i> Télécharger
+                                            </a>
+                                            
+                                            <!-- Si c'est un rapport HTML, proposer de le voir -->
+                                            {% if report.name.endswith('.html') %}
+                                                <a href="{{ url_for('view_report', filename=report.name) }}" 
+                                                   class="btn btn-sm btn-info" target="_blank">
+                                                    <i class="bi bi-eye"></i> Voir
+                                                </a>
+                                                
+                                                <!-- Chercher la version PDF correspondante -->
+                                                {% set pdf_name = report.name.replace('.html', '.pdf') %}
+                                                {% for pdf_report in reports %}
+                                                    {% if pdf_report.name == pdf_name %}
+                                                        <a href="{{ url_for('download_report', filename=pdf_name) }}" 
+                                                           class="btn btn-sm btn-danger">
+                                                            <i class="bi bi-file-pdf"></i> PDF
+                                                        </a>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+                                            
+                                            <!-- Si c'est un rapport PDF, proposer la version HTML -->
+                                            {% if report.name.endswith('.pdf') %}
+                                                <!-- Chercher la version HTML correspondante -->
+                                                {% set html_name = report.name.replace('.pdf', '.html') %}
+                                                {% for html_report in reports %}
+                                                    {% if html_report.name == html_name %}
+                                                        <a href="{{ url_for('view_report', filename=html_name) }}" 
+                                                           class="btn btn-sm btn-info" target="_blank">
+                                                            <i class="bi bi-file-code"></i> HTML
+                                                        </a>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    Aucun rapport n'a été généré pour le moment.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // JavaScript pour formater les dates si nécessaire
+    document.addEventListener('DOMContentLoaded', function() {
+        // Code pour le formatage des dates si besoin
+    });
+</script>
+{% endblock %}
+>>>>>>> 43135da91ca33da8523da844705a9ae84902803e
