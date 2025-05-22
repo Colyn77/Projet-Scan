@@ -1,0 +1,4 @@
+reverse_dns
+password_generator
+hash_identifier
+file_hasher

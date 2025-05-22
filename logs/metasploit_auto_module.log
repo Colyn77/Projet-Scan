@@ -25,3 +25,14 @@
 2025-05-15 21:32:51,856 - metasploit_auto - INFO - [metasploit_auto.py:102] - Création du fichier RC pour le module exploit/unix/ftp/vsftpd_234_backdoor
 2025-05-15 21:32:51,857 - metasploit_auto - INFO - [metasploit_auto.py:231] - Exécution de msfconsole avec le fichier RC: scripts/exploit_20250515_213251.rc (timeout: 180s)
 2025-05-15 21:35:51,985 - metasploit_auto - ERROR - [metasploit_auto.py:312] - Timeout lors de l'exécution de Metasploit pour ftp-vsftpd-backdoor sur 192.168.217.140:21
+2025-05-23 00:01:47,250 - metasploit_auto - WARNING - [metasploit_auto.py:417] - Metasploit n'est pas disponible sur le système
+2025-05-23 00:01:56,377 - metasploit_auto - WARNING - [metasploit_auto.py:417] - Metasploit n'est pas disponible sur le système
+2025-05-23 00:02:43,943 - metasploit_auto - WARNING - [metasploit_auto.py:417] - Metasploit n'est pas disponible sur le système
+2025-05-23 00:10:53,828 - metasploit_auto - INFO - [metasploit_auto.py:414] - Metasploit est disponible sur le système
+2025-05-23 00:10:53,830 - metasploit_auto - INFO - [metasploit_auto.py:285] - Tentative d'exploitation automatique: ftp-vsftpd-backdoor sur 192.168.217.140:21
+2025-05-23 00:10:53,830 - metasploit_auto - INFO - [metasploit_auto.py:113] - Création du fichier RC pour le module exploit/unix/ftp/vsftpd_234_backdoor
+2025-05-23 00:10:53,846 - metasploit_auto - INFO - [metasploit_auto.py:352] - Utilisation d'un timeout de 300s pour le module exploit/unix/ftp/vsftpd_234_backdoor
+2025-05-23 00:10:53,846 - metasploit_auto - INFO - [metasploit_auto.py:179] - Tentative 1/2 d'exécution de msfconsole avec scripts/exploit_20250523_001053.rc
+2025-05-23 00:11:42,670 - metasploit_auto - INFO - [metasploit_auto.py:211] - Session établie avec succès!
+2025-05-23 00:11:47,672 - metasploit_auto - WARNING - [metasploit_auto.py:221] - Timeout atteint après 300s, terminaison du processus
+2025-05-23 00:11:47,897 - metasploit_auto - INFO - [metasploit_auto.py:379] - Exploitation Réussi: ftp-vsftpd-backdoor sur 192.168.217.140:21

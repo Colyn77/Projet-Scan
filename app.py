@@ -27,6 +27,9 @@ from routes.sniffer_routes import sniffer_bp
 from routes.hydra_routes import hydra_bp
 from routes.vuln_routes import vuln_bp
 from routes.exploit_routes import exploit_bp
+from routes.post_exploit_routes import post_exploit_bp
+from routes.plugin_routes import plugin_bp
+from services.plugin_manager import init_plugin_environment
 
 # 🌍 Initialisation
 load_dotenv()
@@ -35,6 +38,7 @@ logging.basicConfig(
     level=getattr(logging, log_level.upper(), logging.INFO),
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
+init_plugin_environment()
 # Configuration du logger
 logger = get_logger('app')
 
@@ -52,7 +56,7 @@ def create_app():
 
 
     # 🔐 IP autorisées (pare-feu applicatif)
-    ALLOWED_IPS = os.getenv("ALLOWED_IPS", "127.0.0.1,192.168.44.128,192.168.217.1").split(",")
+    ALLOWED_IPS = os.getenv("ALLOWED_IPS", "127.0.0.1,192.168.44.128,192.168.217.1,192.168.36.1").split(",")
 
     @app.before_request
     def check_ip():
@@ -75,6 +79,8 @@ def create_app():
     app.register_blueprint(vuln_bp, url_prefix="/api/vuln")
     app.register_blueprint(auth_bp)
     app.register_blueprint(exploit_bp, url_prefix='/api/exploit')
+    app.register_blueprint(post_exploit_bp, url_prefix="/api/post_exploit")
+    app.register_blueprint(plugin_bp)
     
     logger.debug("Blueprints enregistrés")
 
@@ -108,7 +114,7 @@ def create_app():
         session.clear()
         return redirect("/login")
 
-    #  Pages Web sécurisées
+    # === Pages Web sécurisées
     @app.route("/")
     @login_required
     def home():
@@ -190,7 +196,24 @@ def create_app():
         
         # Rediriger vers la route API correspondante
         return redirect("/api/exploit/reports")
-        
+
+    @app.route("/post_exploit")
+    @login_required
+    def post_exploit_page():
+        """Affiche la page de post-exploitation"""
+        logger.debug("Accès à la page de post-exploitation")
+        target_ip = request.args.get("target_ip")
+        return render_template("post_exploit.html", target_ip=target_ip)
+
+    @app.template_filter('dirname')
+    def dirname_filter(path):
+        """Retourne le répertoire parent d'un chemin"""
+        # Si le chemin se termine par /, le supprimer d'abord
+        if path.endswith('/') and len(path) > 1:
+            path = path[:-1]
+        parent = os.path.dirname(path)
+        # S'assurer qu'on ne renvoie jamais une chaîne vide
+        return parent if parent else '/'    
 
     @app.route("/results")
     def results_page():
@@ -221,8 +244,6 @@ def create_app():
             return "Fichier non trouvé", 404
         return send_file(path, as_attachment=True)
 
- HEAD
-
     @app.route("/api/report/pdf/<path:filename>", methods=["GET"])
     @login_required
     def download_pdf_report(filename):
@@ -248,7 +269,6 @@ def create_app():
             download_name=filename
         )
 
- 43135da91ca33da8523da844705a9ae84902803e
     @app.route("/api/report/view/<path:filename>")
     @login_required
     def view_report(filename):

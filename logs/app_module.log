@@ -1106,3 +1106,15 @@ FileNotFoundError: [Errno 2] No such file or directory: 'forensics/memory_dump.e
 2025-05-15 21:53:38,597 - app - INFO - [app.py:265] - 🚀 Application démarrée sur http://0.0.0.0:5000
 2025-05-15 21:58:12,882 - app - INFO - [app.py:43] - Création de l'application Flask
 2025-05-15 21:58:12,907 - app - INFO - [app.py:265] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-22 23:48:14,196 - app - INFO - [app.py:47] - Création de l'application Flask
+2025-05-22 23:48:14,231 - app - INFO - [app.py:288] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-22 23:51:58,536 - app - INFO - [app.py:47] - Création de l'application Flask
+2025-05-22 23:51:58,578 - app - INFO - [app.py:288] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-23 00:01:35,673 - app - INFO - [app.py:159] - Accès à la page d'exploitation
+2025-05-23 00:01:35,674 - app - INFO - [app.py:179] - Préparation de l'exploitation de ftp-vsftpd-backdoor sur 192.168.217.140:21
+2025-05-23 00:02:36,130 - app - INFO - [app.py:47] - Création de l'application Flask
+2025-05-23 00:02:36,149 - app - INFO - [app.py:288] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-23 00:10:49,942 - app - INFO - [app.py:47] - Création de l'application Flask
+2025-05-23 00:10:49,967 - app - INFO - [app.py:288] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-23 00:13:55,619 - app - INFO - [app.py:47] - Création de l'application Flask
+2025-05-23 00:13:55,639 - app - INFO - [app.py:288] - 🚀 Application démarrée sur http://0.0.0.0:5000
