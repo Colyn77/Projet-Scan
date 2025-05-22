@@ -1,0 +1,16 @@
+from flask import Flask
+from routes.hydra import hydra_bp  # Import du blueprint
+
+app = Flask(__name__)
+app.secret_key = "une_clé_ultra_secrète"  # Pour les sessions / flash messages
+
+# Enregistrement du blueprint Hydra
+app.register_blueprint(hydra_bp, url_prefix="/hydra")
+
+# Route d'accueil simple pour test
+@app.route("/")
+def index():
+    return "Bienvenue sur l'API Flask de la toolbox !"
+
+if __name__ == "__main__":
+    app.run(debug=True)

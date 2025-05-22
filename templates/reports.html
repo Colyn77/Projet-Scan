@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toolbox Cyber - Rapports</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/" class="home-link">Toolbox Cyber</a>
+            <div class="nav-links">
+                <a href="/network">Découverte</a>
+                <a href="/portscan">Scan</a>
+                <a href="/enumerate">Énumération</a>
+                <a href="/sniffer">Capture</a>
+                <a href="/hydra">Hydra</a>
+                <a href="/vuln">Vulnérabilités</a>
+            </div>
+        </nav>
+    </header>
+    
+    <h1>{{ title }}</h1>
+    
+    <div class="result-container">
+        {% for item in result %}
+            {{ item }}
+        {% endfor %}
+    </div>
+    
+    <div class="navigation-buttons" style="margin-top: 20px;">
+        <a href="javascript:history.back()" class="btn-secondary" style="text-decoration: none; display: inline-block; padding: 10px 15px;">Retour</a>
+        <a href="/" class="btn" style="text-decoration: none; display: inline-block; padding: 10px 15px; margin-left: 10px;">Accueil</a>
+    </div>
+    
+    <footer>
+        <p>Toolbox Cyber &copy; 2025 - Outil de formation et de test uniquement</p>
+    </footer>
+</body>
+</html>

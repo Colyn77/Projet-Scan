@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f6f9;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .results-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 15px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        .btn-primary {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #45a049;
+        }
+        .success-message {
+            color: #2ecc71;
+            font-weight: bold;
+        }
+        .error-message {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .report-actions {
+            margin-top: 20px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ title }}</h1>
+
+    <div class="results-container">
+        {% if result is string %}
+            <p class="success-message">{{ result }}</p>
+        {% elif result %}
+            <ul>
+                {% for item in result %}
+                    <li>{{ item|safe }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Aucun résultat disponible.</p>
+        {% endif %}
+    </div>
+
+    {% if file_link %}
+    <div class="report-actions">
+        <a href="{{ file_link }}" class="btn btn-primary" download>
+            Télécharger le fichier chiffré
+        </a>
+    </div>
+    {% endif %}
+
+    <a href="/" class="back-link">← Retour à l'accueil</a>
+</body>
+</html>

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Bienvenue sur la Toolbox CYBER</h1>
+  <p>Choisissez un module :</p>
+
+  <div class="module-grid">
+    <a href="/discover" class="card">🌐 Découverte réseau</a>
+    <a href="/nmap" class="card">🧠 Scan de ports</a>
+    <a href="/enumerate" class="card">🧩 Énumération</a>
+    <a href="/sniffer" class="card">🔍 Sniffer</a>
+    <a href="/hydra" class="card">🔐 Hydra</a>
+    <a href="/vuln" class="card">🛡 Vulnérabilités</a>
+    <a href="/reports" class="card">📊 Rapports</a> <!-- à activer si reports est bien un blueprint -->
+    <a href="/forensics" class="card">🔬 Analyse forensique</a>
+    <a href="/malware" class="card">🦠 Analyse de fichiers</a>
+    <a href="/timeline" class="card">📅 Timeline système</a>
+    <a href="/scan" class="card">🛰 Scan automatisé</a>
+    <a href="/exploit" class="card">💣 Exploitation</a>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<style>
+  .module-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+  }
+
+  .card {
+    background-color: #ffffff;
+    border: 2px solid #ddd;
+    padding: 25px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+    text-decoration: none;
+    color: #2c3e50;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+  }
+
+  .card:hover {
+    background-color: #f0f9f1;
+    border-color: #4CAF50;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+</style>
+{% endblock %}

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toolbox Cyber - Hydra</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/" class="home-link">Toolbox Cyber</a>
+            <div class="nav-links">
+                <a href="/network">Découverte</a>
+                <a href="/portscan">Scan</a>
+                <a href="/enumerate">Énumération</a>
+                <a href="/sniffer">Capture</a>
+                <a href="/hydra" class="active">Hydra</a>
+                <a href="/vuln">Vulnérabilités</a>
+            </div>
+        </nav>
+    </header>
+    
+    <h1>Attaque par force brute avec Hydra</h1>
+    <p>Utilisez cet outil pour tester la résistance de vos systèmes face aux attaques par force brute.</p>
+    
+    <form action="/api/hydra/attack" method="post" id="hydra-form">
+        <div class="form-group">
+            <label for="target">Cible (IP ou hôte):</label>
+            <input type="text" name="target" id="target" class="form-control" placeholder="192.168.1.1" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="service">Service:</label>
+            <select name="service" id="service" class="form-control" required>
+                <option value="">Chargement des services...</option>
+            </select>
+        </div>
+        
+        <!-- Options spécifiques aux formulaires HTTP (initialement cachées) -->
+        <div id="http-options" style="display: none; border: 1px solid #ccc; padding: 15px; margin: 10px 0; background-color: #f9f9f9;">
+            <h3>Options pour formulaire HTTP</h3>
+            
+            <div class="form-group">
+                <label for="form_path">Chemin:</label>
+                <input type="text" name="form_path" id="form_path" class="form-control" value="/" placeholder="/login.php">
+            </div>
+            
+            <div class="form-group">
+                <label for="form_data">Données du formulaire:</label>
+                <input type="text" name="form_data" id="form_data" class="form-control" value="username=^USER^&password=^PASS^" placeholder="username=^USER^&password=^PASS^">
+            </div>
+            
+            <div class="form-group">
+                <label for="form_success">Message d'erreur:</label>
+                <input type="text" name="form_success" id="form_success" class="form-control" value="F=incorrect" placeholder="F=Login failed">
+                <small>Préfixez avec F= pour un message d'échec ou S= pour un message de succès</small>
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-column">
+                <div class="form-group">
+                    <label for="userlist">Liste d'utilisateurs:</label>
+                    <select name="userlist" id="userlist" class="form-control">
+                        <option value="">Chargement des listes...</option>
+                    </select>
+                </div>
+                
+                <div class="wordlist-actions">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="toggle-custom-userlist"> Saisir une liste
+                        </label>
+                    </div>
+                    
+                    <button type="button" id="upload-userlist-btn" class="btn-secondary">Importer un fichier</button>
+                </div>
+                
+                <div id="custom-userlist-container" style="display: none;">
+                    <div class="form-group">
+                        <label for="custom_userlist">Liste personnalisée (un nom par ligne):</label>
+                        <textarea name="custom_userlist" id="custom_userlist" class="form-control" rows="5"></textarea>
+                    </div>
+                </div>
+                
+                <div id="upload-userlist-container" style="display: none; margin-top: 10px;">
+                    <div class="upload-form">
+                        <input type="file" id="userlist-file" accept=".txt,.lst,.dict,.wordlist">
+                        <button type="button" id="submit-userlist-upload" class="btn-secondary">Télécharger</button>
+                    </div>
+                    <div id="userlist-upload-status"></div>
+                </div>
+            </div>
+            
+            <div class="form-column">
+                <div class="form-group">
+                    <label for="passlist">Liste de mots de passe:</label>
+                    <select name="passlist" id="passlist" class="form-control">
+                        <option value="">Chargement des listes...</option>
+                    </select>
+                </div>
+                
+                <div class="wordlist-actions">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="toggle-custom-passlist"> Saisir une liste
+                        </label>
+                    </div>
+                    
+                    <button type="button" id="upload-passlist-btn" class="btn-secondary">Importer un fichier</button>
+                </div>
+                
+                <div id="custom-passlist-container" style="display: none;">
+                    <div class="form-group">
+                        <label for="custom_passlist">Liste personnalisée (un mot de passe par ligne):</label>
+                        <textarea name="custom_passlist" id="custom_passlist" class="form-control" rows="5"></textarea>
+                    </div>
+                </div>
+                
+                <div id="upload-passlist-container" style="display: none; margin-top: 10px;">
+                    <div class="upload-form">
+                        <input type="file" id="passlist-file" accept=".txt,.lst,.dict,.wordlist">
+                        <button type="button" id="submit-passlist-upload" class="btn-secondary">Télécharger</button>
+                    </div>
+                    <div id="passlist-upload-status"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="tasks">Tâches parallèles:</label>
+            <input type="number" name="tasks" id="tasks" class="form-control" min="1" max="64" value="16">
+            <small>Nombre de connexions parallèles (1-64)</small>
+        </div>
+        
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" name="verbose" id="verbose"> Mode verbeux
+            </label>
+        </div>
+        
+        <button type="submit" id="start-hydra-btn" class="btn">Lancer l'attaque</button>
+    </form>
+    
+    <footer>
+        <p>Toolbox Cyber &copy; 2025 - Outil de formation et de test uniquement</p>
+    </footer>
+    
+    <script src="/static/js/hydra.js"></script>
+</body>
+</html>

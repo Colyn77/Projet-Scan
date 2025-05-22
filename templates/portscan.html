@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toolbox Cyber - Scan de ports</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/" class="home-link">Toolbox Cyber</a>
+            <div class="nav-links">
+                <a href="/network">Découverte</a>
+                <a href="/portscan" class="active">Scan</a>
+                <a href="/enumerate">Énumération</a>
+                <a href="/sniffer">Capture</a>
+                <a href="/hydra">Hydra</a>
+                <a href="/vuln">Vulnérabilités</a>
+            </div>
+        </nav>
+    </header>
+    
+    <h1>Scan de ports</h1>
+    <p>Utilisez cet outil pour détecter les ports ouverts sur une cible spécifique.</p>
+    
+    <form action="/api/scan/" method="post" id="portscan-form">
+        <div class="form-group">
+            <label for="target">Cible (IP ou nom d'hôte):</label>
+            <input type="text" id="target" name="target" class="form-control" placeholder="192.168.1.1" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="ports">Ports à scanner:</label>
+            <input type="text" id="ports" name="ports" class="form-control" placeholder="22,80,443,8080" required>
+            <small>Format: ports séparés par des virgules (ex: 22,80,443) ou plage (ex: 1-1000)</small>
+        </div>
+        
+        <button type="submit" id="start-portscan-btn" class="btn">Lancer le scan</button>
+    </form>
+    
+    <footer>
+        <p>Toolbox Cyber &copy; 2025 - Outil de formation et de test uniquement</p>
+    </footer>
+    
+    <script src="/static/js/portscan.js"></script>
+</body>
+</html>

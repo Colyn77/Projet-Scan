@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toolbox Cyber - Énumération des services</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/" class="home-link">Toolbox Cyber</a>
+            <div class="nav-links">
+                <a href="/network">Découverte</a>
+                <a href="/portscan">Scan</a>
+                <a href="/enumerate" class="active">Énumération</a>
+                <a href="/sniffer">Capture</a>
+                <a href="/hydra">Hydra</a>
+				<a href="/vuln">Vulnérabilités</a>
+            </div>
+        </nav>
+    </header>
+    
+    <h1>Énumération des services</h1>
+    <p>Utilisez cet outil pour identifier et analyser les services en cours d'exécution sur les ports ouverts d'un système.</p>
+    
+    <form action="/api/enumerate/" method="post" id="enumeration-form">
+        <div class="form-group">
+            <label for="target">Cible (IP ou nom d'hôte):</label>
+            <input type="text" id="target" name="target" class="form-control" placeholder="192.168.1.1" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="ports">Ports à analyser:</label>
+            <input type="text" id="ports" name="ports" class="form-control" placeholder="22,80,443,8080" required>
+            <small>Format: ports séparés par des virgules (ex: 22,80,443)</small>
+        </div>
+        
+        <button type="submit" id="start-enumeration-btn" class="btn">Lancer l'énumération</button>
+    </form>
+    
+    <footer>
+        <p>Toolbox Cyber &copy; 2025 - Outil de formation et de test uniquement</p>
+    </footer>
+    
+    <script src="/static/js/enumerate.js"></script>
+</body>
+</html>

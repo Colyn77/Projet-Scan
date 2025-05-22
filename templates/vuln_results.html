@@ -1,0 +1,126 @@
+<!-- templates/vuln_results.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résultats du scan de vulnérabilités - Toolbox</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <style>
+        .vulnerability-card {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .vulnerability-high {
+            border-left: 5px solid #dc3545;
+        }
+        .vulnerability-medium {
+            border-left: 5px solid #ffc107;
+        }
+        .vulnerability-low {
+            border-left: 5px solid #0dcaf0;
+        }
+        .vulnerability-info {
+            border-left: 5px solid #6c757d;
+        }
+        .details-content {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        .action-buttons {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    
+    <div class="container mt-4 mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1><i class="bi bi-shield-exclamation"></i> Résultats du scan de vulnérabilités</h1>
+            <div>
+                <a href="/vuln" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Retour
+                </a>
+                {% if report_path %}
+                <a href="/api/report/download/{{ report_path|basename }}" class="btn btn-primary">
+                    <i class="bi bi-download"></i> Télécharger le rapport HTML
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Informations générales -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h2 class="card-title h4 mb-0">Informations sur la cible</h2>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Cible:</strong> {{ target }}</p>
+                        <p><strong>Date du scan:</strong> {{ scan_time }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Statut de l'hôte:</strong> {{ host_status }}</p>
+                        <p><strong>Nombre de vulnérabilités:</strong> {{ vulnerabilities|length }}</p>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <p><strong>Commande exécutée:</strong></p>
+                    <div class="details-content">{{ command_line }}</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Vulnérabilités -->
+        <h2>Vulnérabilités détectées</h2>
+        
+        {% if vulnerabilities %}
+            {% for vuln in vulnerabilities %}
+                <div class="vulnerability-card vulnerability-{{ vuln.severity|default('info')|lower }}">
+                    <div class="d-flex justify-content-between align-items-top">
+                        <div>
+                            <h3 class="h5">{{ vuln.vulnerability }}</h3>
+                            <p>
+                                <span class="badge bg-secondary">Port {{ vuln.port }} ({{ vuln.protocol }})</span>
+                                <span class="badge bg-info">{{ vuln.service }}</span>
+                                <span class="badge bg-{{ vuln.severity|default('secondary') }}">{{ vuln.severity|default('Info')|capitalize }}</span>
+                            </p>
+                        </div>
+                        <div class="action-buttons">
+                            <a href="/exploit?vuln_id={{ vuln.vulnerability }}&ip={{ target }}&port={{ vuln.port }}" class="btn btn-danger">
+                                <i class="bi bi-lightning-charge"></i> Exploiter
+                            </a>
+                            <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ loop.index }}">
+                                <i class="bi bi-info-circle"></i> Détails
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="collapse" id="collapse{{ loop.index }}">
+                        <div class="details-content">{{ vuln.details }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle"></i> Aucune vulnérabilité n'a été détectée.
+            </div>
+        {% endif %}
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

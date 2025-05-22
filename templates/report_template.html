@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapport - {{ module_title }}</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 30px;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+        }
+        .timestamp {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+        .stats {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .stat-item {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3498db;
+        }
+        .stat-label {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        ul {
+            background: #fff;
+            padding: 20px 40px;
+            border-radius: 5px;
+            list-style: none;
+        }
+        li {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-left: 4px solid #3498db;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+        li:hover {
+            transform: translateX(5px);
+            background: #ecf0f1;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #95a5a6;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ module_title }}</h1>
+        <p class="timestamp">Généré le : {{ generated_on }}</p>
+        
+        {% if stats %}
+        <div class="stats">
+            <h3>Résumé</h3>
+            <div class="stats-grid">
+                {% if stats.target %}
+                <div class="stat-item">
+                    <div class="stat-value">{{ stats.target }}</div>
+                    <div class="stat-label">Cible</div>
+                </div>
+                {% endif %}
+                
+                {% if stats.total_vulnerabilities is defined %}
+                <div class="stat-item">
+                    <div class="stat-value">{{ stats.total_vulnerabilities }}</div>
+                    <div class="stat-label">Vulnérabilités totales</div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <h2>Résultats détaillés</h2>
+        {% if results %}
+            {% if results is mapping %}
+                <!-- Pour les dictionnaires -->
+                <ul>
+                    {% for key, value in results.items() %}
+                        <li><strong>{{ key }}</strong>: {{ value }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <!-- Pour les listes -->
+                <ul>
+                    {% for item in results %}
+                        <li>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% else %}
+            <p>Aucun résultat disponible.</p>
+        {% endif %}
+        
+        <div class="footer">
+            <p>Rapport généré automatiquement par Toolbox Cyber</p>
+        </div>
+    </div>
+</body>
+</html>

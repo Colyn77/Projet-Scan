@@ -1,0 +1,22 @@
+{
+    "vincent": {
+        "password": "$2b$12$4ZoT0FQlr/VA/SBfIWWBJODMLYWrbBA7JyKiqkVd0qSN/uIPZiR1e",
+        "role": "admin"
+    },
+    "colyn": {
+        "password": "$2b$12$knsnytnu6MELVlYIDda36evoMdg8fcJirg9LZiZ0ZpVs5jN/4WHkO",
+        "role": "admin"
+    },
+    "bryan": {
+        "password": "$2b$12$l4gbzvKJsgp2WjDryJp3Bu35kGAvEQyqim5brdJ5.f9RbAk5C14CW",
+        "role": "admin"
+    },
+    "toto": {
+        "password": "$2b$12$Fh16ELO7eWh8kc8n/4Limep1MubJfRsIVowsGpfZyS1fumffesJ5G",
+        "role": "read-only"
+    },
+    "tata": {
+        "password": "$2b$12$rzspVNZtABVOIx68DIFGleMqMYIX72W1BMpwB1WAjpGjISK1.Ge1S",
+        "role": "read-only"
+    }
+}

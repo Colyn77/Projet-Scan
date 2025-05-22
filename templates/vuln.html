@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toolbox Cyber - Scan de vulnérabilités</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/" class="home-link">Toolbox Cyber</a>
+            <div class="nav-links">
+                <a href="/network">Découverte</a>
+                <a href="/portscan">Scan</a>
+                <a href="/enumerate">Énumération</a>
+                <a href="/sniffer">Capture</a>
+                <a href="/hydra">Hydra</a>
+                <a href="/vuln" class="active">Vulnérabilités</a>
+            </div>
+        </nav>
+    </header>
+    
+    <h1>Scan de vulnérabilités avec Nmap</h1>
+    <p>Utilisez cet outil pour détecter les vulnérabilités potentielles sur un système cible en utilisant les scripts NSE de Nmap.</p>
+    
+    <form action="/api/vuln/nmap" method="post" id="vuln-form">
+        <div class="form-group">
+            <label for="target">Cible (IP ou hostname):</label>
+            <input type="text" name="target" id="target" class="form-control" placeholder="192.168.1.1" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="port-category">Catégorie de ports:</label>
+            <select id="port-category" class="form-control">
+                <option value="common">Ports communs</option>
+                <option value="web">Services Web</option>
+                <option value="database">Bases de données</option>
+                <option value="mail">Services Email</option>
+                <option value="file_transfer">Transfert de fichiers</option>
+                <option value="remote_access">Accès distant</option>
+                <option value="top100">Top 100 ports</option>
+                <option value="custom">Personnalisé</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="ports">Ports à scanner:</label>
+            <input type="text" name="ports" id="ports" class="form-control" value="21,22,23,25,80,110,139,143,443,445,3389">
+            <small>Format: ports séparés par des virgules (ex: 80,443) ou plage (ex: 1-1000)</small>
+        </div>
+        
+        <button type="submit" id="start-vuln-btn" class="btn">Lancer le scan</button>
+    </form>
+    
+    <footer>
+        <p>Toolbox Cyber &copy; 2025 - Outil de formation et de test uniquement</p>
+    </footer>
+    
+    <script src="/static/js/vuln.js"></script>
+</body>
+</html>

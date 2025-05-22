@@ -1,0 +1,23 @@
+{
+    "target": "192.168.36.129",
+    "scan_time": "2025-04-25 05:02:12",
+    "scan_stats": {
+        "timestr": "Fri Apr 25 05:02:12 2025",
+        "elapsed": "31.96",
+        "uphosts": "1",
+        "downhosts": "0",
+        "totalhosts": "1"
+    },
+    "command_line": "/usr/lib/nmap/nmap --privileged -oX - --script vuln -p 80,443,8080,8443,8000,8888 192.168.36.129",
+    "host_status": "up",
+    "vulnerabilities": [
+        {
+            "port": 80,
+            "protocol": "tcp",
+            "service": "http",
+            "state": "open",
+            "vulnerability": "http-vuln-cve2017-1001000",
+            "details": "ERROR: Script execution failed (use -d to debug)"
+        }
+    ]
+}
