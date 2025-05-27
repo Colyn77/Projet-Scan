@@ -266,7 +266,14 @@ code {
             </div>
         {% endif %}
     </div>
-    
+    {% if file_link %}
+        <div class="actions-section" style="margin-bottom:30px;">
+          <a href="{{ file_link }}" class="btn btn-success">
+            <i class="bi bi-download"></i>
+            Télécharger le dump forensic
+          </a>
+        </div>
+        {% endif %}
     <!-- Actions -->
     <div class="actions-section">
         <h4 style="color: #2c3e50; margin-bottom: 20px;">Actions disponibles</h4>
