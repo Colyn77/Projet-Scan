@@ -7,3 +7,12 @@
 2025-05-08 14:31:21,919 - network_discovery - INFO - [network_discovery.py:11] - Démarrage de la découverte du réseau: 192.168.217.0/24
 2025-05-08 14:31:24,960 - network_discovery - INFO - [network_discovery.py:21] - 4 hôtes trouvés
 2025-05-08 14:31:24,961 - network_discovery - INFO - [network_discovery.py:32] - Découverte terminée: 4 hôtes actifs trouvés
+2025-05-27 06:52:58,092 - network_discovery - INFO - [network_discovery.py:11] - Démarrage de la découverte du réseau: 192.168.36.0/24
+2025-05-27 06:53:00,270 - network_discovery - INFO - [network_discovery.py:21] - 6 hôtes trouvés
+2025-05-27 06:53:00,270 - network_discovery - INFO - [network_discovery.py:32] - Découverte terminée: 6 hôtes actifs trouvés
+2025-05-27 06:55:56,480 - network_discovery - INFO - [network_discovery.py:11] - Démarrage de la découverte du réseau: 192.168.36.0/24
+2025-05-27 06:55:58,518 - network_discovery - INFO - [network_discovery.py:21] - 6 hôtes trouvés
+2025-05-27 06:55:58,519 - network_discovery - INFO - [network_discovery.py:32] - Découverte terminée: 6 hôtes actifs trouvés
+2025-05-27 07:00:25,823 - network_discovery - INFO - [network_discovery.py:11] - Démarrage de la découverte du réseau: 192.168.36.0/24
+2025-05-27 07:00:27,825 - network_discovery - INFO - [network_discovery.py:21] - 6 hôtes trouvés
+2025-05-27 07:00:27,825 - network_discovery - INFO - [network_discovery.py:32] - Découverte terminée: 6 hôtes actifs trouvés

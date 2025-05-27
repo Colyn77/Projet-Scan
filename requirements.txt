@@ -13,6 +13,8 @@ python-nmap==0.7.1
 scapy
 psutil>=5.9.0
 tqdm
+dataclasses
+uuid
 
 # 🔐 Sécurité & Chiffrement
 cryptography>=41.0.0

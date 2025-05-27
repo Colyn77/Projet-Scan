@@ -1,60 +1,418 @@
-<!-- templates/results.html -->
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="/static/css/main.css">
-    <style>
-        .btn-action {
-            margin-right: 8px;
-            margin-bottom: 8px;
-        }
-        .result-card {
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .card-header {
-            background-color: #343a40;
-            color: white;
-        }
-        .results-container {
-            margin-bottom: 20px;
-        }
-    </style>
-</head>
-<body>
-    {% include 'navbar.html' %}
+{% extends "base.html" %}
 
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-12">
-                <div class="card result-card">
-                    <div class="card-header">
-                        <h1 class="h3 mb-0">{{ title }}</h1>
-                    </div>
-                    <div class="card-body">
-                        <div class="results-container">
-                            {% for item in result %}
-                                {{ item|safe }}
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <a href="javascript:history.back()" class="btn btn-secondary btn-action">
-                            <i class="bi bi-arrow-left"></i> Retour
-                        </a>
-                        <a href="/" class="btn btn-primary btn-action">
-                            <i class="bi bi-house"></i> Accueil
-                        </a>
-                    </div>
-                </div>
-            </div>
+{% block title %}{{ title }}{% endblock %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+<style>
+.results-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.results-header {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+    border-left: 5px solid #3498db;
+}
+
+.results-header h1 {
+    margin: 0;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.results-content {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.result-item {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    border-left: 4px solid #3498db;
+}
+
+.result-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    border-color: #3498db;
+}
+
+.result-item:last-child {
+    margin-bottom: 0;
+}
+
+/* Actions buttons */
+.actions-section {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    margin: 5px;
+    font-size: 1rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #2980b9, #3498db);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+    text-decoration: none;
+    color: white;
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+    color: white;
+    box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #7f8c8d, #95a5a6);
+    transform: translateY(-2px);
+    text-decoration: none;
+    color: white;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #27ae60, #229954);
+    color: white;
+    box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #229954, #27ae60);
+    transform: translateY(-2px);
+    text-decoration: none;
+    color: white;
+}
+
+/* Stats summary */
+.results-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.summary-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.summary-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.summary-card .summary-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #3498db;
+    margin-bottom: 5px;
+}
+
+.summary-card .summary-label {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .results-summary {
+        grid-template-columns: 1fr;
+    }
+    
+    .btn {
+        width: 100%;
+        max-width: 300px;
+        margin: 5px 0;
+    }
+    
+    .results-header h1 {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+}
+
+/* Animation pour l'affichage des résultats */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.result-item {
+    animation: slideInUp 0.5s ease-out;
+    animation-fill-mode: both;
+}
+
+.result-item:nth-child(1) { animation-delay: 0.1s; }
+.result-item:nth-child(2) { animation-delay: 0.2s; }
+.result-item:nth-child(3) { animation-delay: 0.3s; }
+.result-item:nth-child(4) { animation-delay: 0.4s; }
+.result-item:nth-child(5) { animation-delay: 0.5s; }
+
+/* Code highlighting */
+pre {
+    background: #2c3e50;
+    color: #ecf0f1;
+    padding: 15px;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 10px 0;
+}
+
+code {
+    background: #34495e;
+    color: #ecf0f1;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="results-container">
+    <!-- En-tête des résultats -->
+    <div class="results-header">
+        <h1>
+            <i class="bi bi-clipboard-data"></i>
+            {{ title }}
+        </h1>
+    </div>
+    
+    <!-- Résumé automatique -->
+    {% if result and result|length > 1 %}
+    <div class="results-summary">
+        <div class="summary-card">
+            <div class="summary-value">{{ result|length }}</div>
+            <div class="summary-label">Résultats trouvés</div>
+        </div>
+        
+        <div class="summary-card">
+            <div class="summary-value">{{ moment().strftime('%H:%M') if moment else 'N/A' }}</div>
+            <div class="summary-label">Heure du scan</div>
         </div>
     </div>
+    {% endif %}
+    
+    <!-- Contenu des résultats -->
+    <div class="results-content">
+        <h3 style="color: #2c3e50; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+            <i class="bi bi-list-ul"></i>
+            Détails des résultats
+        </h3>
+        
+        {% if result %}
+            {% for item in result %}
+            <div class="result-item">
+                {{ item|safe }}
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="result-item">
+                <p>Aucun résultat disponible.</p>
+            </div>
+        {% endif %}
+    </div>
+    
+    <!-- Actions -->
+    <div class="actions-section">
+        <h4 style="color: #2c3e50; margin-bottom: 20px;">Actions disponibles</h4>
+        
+        <a href="javascript:history.back()" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i>
+            Retour
+        </a>
+        
+        <a href="/" class="btn btn-primary">
+            <i class="bi bi-house"></i>
+            Accueil
+        </a>
+        
+        <button onclick="copyResults()" class="btn btn-success">
+            <i class="bi bi-clipboard"></i>
+            Copier les résultats
+        </button>
+        
+        {% if module == 'network' or 'discover' in title.lower() %}
+        <a href="/portscan" class="btn btn-primary">
+            <i class="bi bi-arrow-right"></i>
+            Scanner les ports
+        </a>
+        {% elif module == 'scan' or 'port' in title.lower() %}
+        <a href="/enumerate" class="btn btn-primary">
+            <i class="bi bi-arrow-right"></i>
+            Énumérer les services
+        </a>
+        {% elif module == 'enumerate' or 'service' in title.lower() %}
+        <a href="/vuln" class="btn btn-primary">
+            <i class="bi bi-arrow-right"></i>
+            Scanner les vulnérabilités
+        </a>
+        {% endif %}
+    </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+<script>
+// Fonction pour copier les résultats
+function copyResults() {
+    const results = document.querySelectorAll('.result-item');
+    let text = '{{ title }}\n' + '='.repeat(50) + '\n\n';
+    
+    results.forEach((result, index) => {
+        text += `${index + 1}. ${result.innerText}\n\n`;
+    });
+    
+    navigator.clipboard.writeText(text).then(() => {
+        // Créer une notification temporaire
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #27ae60;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            animation: slideInRight 0.3s ease-out;
+        `;
+        notification.innerHTML = '<i class="bi bi-check-circle"></i> Résultats copiés !';
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.style.animation = 'slideOutRight 0.3s ease-out';
+                setTimeout(() => notification.remove(), 300);
+            }
+        }, 3000);
+    }).catch(err => {
+        console.error('Erreur lors de la copie:', err);
+        alert('Impossible de copier dans le presse-papiers');
+    });
+}
+
+// Animation CSS pour les notifications
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    @keyframes slideOutRight {
+        from {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+    }
+`;
+document.head.appendChild(style);
+
+// Améliorer le texte automatiquement
+document.addEventListener('DOMContentLoaded', function() {
+    const items = document.querySelectorAll('.result-item');
+    
+    items.forEach(item => {
+        let content = item.innerHTML;
+        
+        // Mettre en évidence les adresses IP
+        content = content.replace(/\b(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\b/g, '<span style="color: #2980b9; font-weight: bold;">$1</span>');
+        
+        // Mettre en évidence les ports
+        content = content.replace(/port\s+(\d+)/gi, 'port <span style="color: #8e44ad; font-weight: bold;">$1</span>');
+        content = content.replace(/(\d+)\/tcp/g, '<span style="color: #8e44ad; font-weight: bold;">$1</span>/tcp');
+        content = content.replace(/(\d+)\/udp/g, '<span style="color: #8e44ad; font-weight: bold;">$1</span>/udp');
+        
+        // Mettre en évidence les statuts
+        content = content.replace(/\b(up|online|active|open|running)\b/gi, '<span style="color: #27ae60; font-weight: bold;">$1</span>');
+        content = content.replace(/\b(down|offline|inactive|closed|stopped)\b/gi, '<span style="color: #e74c3c; font-weight: bold;">$1</span>');
+        
+        // Mettre en évidence les services
+        content = content.replace(/\b(http|https|ssh|ftp|smtp|dns|mysql|postgresql)\b/gi, '<span style="color: #27ae60; font-weight: bold;">$1</span>');
+        
+        // Mettre en évidence les erreurs
+        content = content.replace(/\b(error|failed|timeout|unreachable)\b/gi, '<span style="color: #e74c3c; font-weight: bold;">$1</span>');
+        
+        item.innerHTML = content;
+        
+        // Ajouter des classes selon le contenu
+        const text = item.innerText.toLowerCase();
+        if (text.includes('error') || text.includes('failed') || text.includes('down')) {
+            item.style.borderLeftColor = '#e74c3c';
+            item.style.background = 'linear-gradient(135deg, #fadbd8, #f8f9fa)';
+        } else if (text.includes('up') || text.includes('open') || text.includes('success')) {
+            item.style.borderLeftColor = '#27ae60';
+            item.style.background = 'linear-gradient(135deg, #d5f4e6, #f8f9fa)';
+        } else if (text.includes('warning') || text.includes('timeout')) {
+            item.style.borderLeftColor = '#f39c12';
+            item.style.background = 'linear-gradient(135deg, #fef5e7, #f8f9fa)';
+        }
+    });
+});
+</script>
+{% endblock %}

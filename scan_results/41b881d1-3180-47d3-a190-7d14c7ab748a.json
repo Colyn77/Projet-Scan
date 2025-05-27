@@ -1,0 +1,10 @@
+{
+  "target": "192.168.36.129",
+  "scan_time": "2025-05-27 06:36:57",
+  "host_status": "up",
+  "vulnerabilities": [],
+  "command_line": "nmap --script vuln -p 21 192.168.36.129",
+  "ports_scanned": "21",
+  "html_report": "generated_reports/report_vuln_scan_20250527_063657.html",
+  "pdf_report": "generated_reports/report_vuln_scan_20250527_063657.pdf"
+}

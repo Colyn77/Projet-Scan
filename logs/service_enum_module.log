@@ -5,3 +5,10 @@
 2025-04-26 18:31:25,515 - service_enum - INFO - [service_enum.py:44] - Service identifié: Port 80 : http (Produit : Apache httpd, Version : 2.2.14) (Unix) DAV/2 mod_ssl/2.2.14 OpenSSL/0.9.8l PHP/5.3.1 mod_apreq2-20090110/2.7.1 mod_perl/2.0.4 Perl/v5.10.1
 2025-04-26 18:31:25,515 - service_enum - INFO - [service_enum.py:44] - Service identifié: Port 443 : https (Produit : , Version : ) 
 2025-04-26 18:31:25,515 - service_enum - INFO - [service_enum.py:46] - Énumération terminée: 4 services identifiés
+2025-05-27 07:05:18,579 - service_enum - INFO - [service_enum.py:11] - Démarrage de l'énumération des services sur 192.168.36.129
+2025-05-27 07:05:18,689 - service_enum - INFO - [service_enum.py:16] - Scan d'énumération sur 192.168.36.129 (ports : 22,80,443,21)
+2025-05-27 07:05:27,204 - service_enum - INFO - [service_enum.py:44] - Service identifié: Port 21 : ftp (Produit : , Version : ) 
+2025-05-27 07:05:27,204 - service_enum - INFO - [service_enum.py:44] - Service identifié: Port 22 : ssh (Produit : OpenSSH, Version : 5.5p1 Debian 6+squeeze3) protocol 2.0
+2025-05-27 07:05:27,204 - service_enum - INFO - [service_enum.py:44] - Service identifié: Port 80 : http (Produit : Apache httpd, Version : 2.2.16) (Debian)
+2025-05-27 07:05:27,204 - service_enum - INFO - [service_enum.py:44] - Service identifié: Port 443 : https (Produit : , Version : ) 
+2025-05-27 07:05:27,204 - service_enum - INFO - [service_enum.py:46] - Énumération terminée: 4 services identifiés

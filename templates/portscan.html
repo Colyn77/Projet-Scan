@@ -1,48 +1,644 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toolbox Cyber - Scan de ports</title>
-    <link rel="stylesheet" href="/static/css/main.css">
-</head>
-<body>
-    <header>
-        <nav>
-            <a href="/" class="home-link">Toolbox Cyber</a>
-            <div class="nav-links">
-                <a href="/network">Découverte</a>
-                <a href="/portscan" class="active">Scan</a>
-                <a href="/enumerate">Énumération</a>
-                <a href="/sniffer">Capture</a>
-                <a href="/hydra">Hydra</a>
-                <a href="/vuln">Vulnérabilités</a>
+{% extends "base.html" %}
+
+{% block title %}Scan de ports{% endblock %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+<style>
+.portscan-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.form-section {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.form-section h3 {
+    margin-top: 0;
+    color: #2c3e50;
+    border-bottom: 3px solid #e74c3c;
+    padding-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #495057;
+    font-size: 1.1rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #e74c3c;
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+    transform: translateY(-1px);
+}
+
+.form-hint {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-top: 8px;
+    font-style: italic;
+}
+
+.port-presets {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.port-preset {
+    padding: 10px 14px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    background: #f8f9fa;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.port-preset:hover {
+    background: #e9ecef;
+    border-color: #e74c3c;
+    transform: translateY(-2px);
+}
+
+.port-preset.active {
+    background: #e74c3c;
+    color: white;
+    border-color: #e74c3c;
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+.scan-types {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.scan-type {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.scan-type:hover {
+    border-color: #e74c3c;
+    transform: translateY(-1px);
+}
+
+.scan-type.active {
+    border-color: #e74c3c;
+    background: #e74c3c;
+    color: white;
+}
+
+.scan-type input[type="radio"] {
+    margin: 0;
+}
+
+.scan-controls {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.btn {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: linear-gradient(135deg, #c0392b, #e74c3c);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+    color: white;
+    box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #7f8c8d, #95a5a6);
+    transform: translateY(-2px);
+}
+
+.progress-section {
+    display: none;
+    margin-top: 30px;
+    padding: 25px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #e74c3c, #c0392b);
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.results-section {
+    margin-top: 30px;
+    padding: 25px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.port-card {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 12px;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.port-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.port-card.open {
+    border-left: 4px solid #27ae60;
+    background: #d5f4e6;
+}
+
+.port-card.closed {
+    border-left: 4px solid #e74c3c;
+    background: #fadbd8;
+}
+
+.port-card.filtered {
+    border-left: 4px solid #f39c12;
+    background: #fef5e7;
+}
+
+.alert {
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: none;
+}
+
+.alert-info {
+    background: linear-gradient(135deg, #d1ecf1, #bee5eb);
+    color: #0c5460;
+    border-left: 4px solid #17a2b8;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #d4edda, #c3e6cb);
+    color: #155724;
+    border-left: 4px solid #27ae60;
+}
+
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .port-presets, .scan-types {
+        grid-template-columns: 1fr;
+    }
+    
+    .scan-controls {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s ease-in-out infinite;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="portscan-container">
+    <h1><i class="bi bi-router"></i> Scanner de Ports</h1>
+    <p>Détectez les ports ouverts sur vos cibles avec différents types de scans</p>
+    
+    <form id="portscan-form">
+        <div class="form-grid">
+            <!-- Section Cible -->
+            <div class="form-section">
+                <h3><i class="bi bi-bullseye"></i> Cible</h3>
+                
+                <div class="form-group">
+                    <label for="target">Adresse IP ou nom d'hôte</label>
+                    <input type="text" name="target" id="target" class="form-control" 
+                           placeholder="192.168.1.1" required>
+                    <div class="form-hint">
+                        Exemple: 192.168.1.1 ou exemple.com
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Type de scan</label>
+                    <div class="scan-types">
+                        <label class="scan-type active">
+                            <input type="radio" name="scan_type" value="tcp" checked>
+                            <i class="bi bi-ethernet"></i>
+                            <span>TCP</span>
+                        </label>
+                        <label class="scan-type">
+                            <input type="radio" name="scan_type" value="udp">
+                            <i class="bi bi-broadcast"></i>
+                            <span>UDP</span>
+                        </label>
+                        <label class="scan-type">
+                            <input type="radio" name="scan_type" value="syn">
+                            <i class="bi bi-lightning"></i>
+                            <span>SYN (Rapide)</span>
+                        </label>
+                    </div>
+                </div>
             </div>
-        </nav>
-    </header>
-    
-    <h1>Scan de ports</h1>
-    <p>Utilisez cet outil pour détecter les ports ouverts sur une cible spécifique.</p>
-    
-    <form action="/api/scan/" method="post" id="portscan-form">
-        <div class="form-group">
-            <label for="target">Cible (IP ou nom d'hôte):</label>
-            <input type="text" id="target" name="target" class="form-control" placeholder="192.168.1.1" required>
+            
+            <!-- Section Ports -->
+            <div class="form-section">
+                <h3><i class="bi bi-list-ol"></i> Ports</h3>
+                
+                <div class="port-presets">
+                    <div class="port-preset active" data-ports="80,443,22,21,25,53">
+                        Communs
+                    </div>
+                    <div class="port-preset" data-ports="80,443,8080,8443">
+                        Web
+                    </div>
+                    <div class="port-preset" data-ports="21,22,23,3389">
+                        Accès
+                    </div>
+                    <div class="port-preset" data-ports="25,110,143,465,587">
+                        Email
+                    </div>
+                    <div class="port-preset" data-ports="53,67,68,69">
+                        Réseau
+                    </div>
+                    <div class="port-preset" data-ports="1-1000">
+                        Top 1000
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="ports">Ports à scanner</label>
+                    <input type="text" name="ports" id="ports" class="form-control" 
+                           value="80,443,22,21,25,53" required>
+                    <div class="form-hint">
+                        Format: 80,443 ou 1-1000 ou combinaison
+                    </div>
+                </div>
+            </div>
         </div>
         
-        <div class="form-group">
-            <label for="ports">Ports à scanner:</label>
-            <input type="text" id="ports" name="ports" class="form-control" placeholder="22,80,443,8080" required>
-            <small>Format: ports séparés par des virgules (ex: 22,80,443) ou plage (ex: 1-1000)</small>
+        <div class="scan-controls">
+            <button type="submit" class="btn btn-primary" id="start-portscan-btn">
+                <i class="bi bi-play-fill"></i>
+                Lancer le scan
+            </button>
+            <button type="button" class="btn btn-secondary" id="reset-form-btn">
+                <i class="bi bi-arrow-clockwise"></i>
+                Réinitialiser
+            </button>
         </div>
-        
-        <button type="submit" id="start-portscan-btn" class="btn">Lancer le scan</button>
     </form>
     
-    <footer>
-        <p>Toolbox Cyber &copy; 2025 - Outil de formation et de test uniquement</p>
-    </footer>
+    <!-- Section de progression -->
+    <div class="progress-section" id="progress-section">
+        <h3><i class="bi bi-hourglass-split"></i> Scan en cours</h3>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div id="progress-text">Initialisation...</div>
+    </div>
     
-    <script src="/static/js/portscan.js"></script>
-</body>
-</html>
+    <!-- Section des résultats -->
+    <div class="results-section" id="results-section" style="display: none;">
+        <h3><i class="bi bi-list-check"></i> Résultats du scan</h3>
+        <div id="results-container"></div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('portscan-form');
+    const targetInput = document.getElementById('target');
+    const portsInput = document.getElementById('ports');
+    const portPresets = document.querySelectorAll('.port-preset');
+    const scanTypes = document.querySelectorAll('input[name="scan_type"]');
+    const progressSection = document.getElementById('progress-section');
+    const resultsSection = document.getElementById('results-section');
+    const startBtn = document.getElementById('start-portscan-btn');
+    const resetBtn = document.getElementById('reset-form-btn');
+    
+    // Gestion des presets de ports
+    portPresets.forEach(preset => {
+        preset.addEventListener('click', function() {
+            portPresets.forEach(p => p.classList.remove('active'));
+            this.classList.add('active');
+            portsInput.value = this.dataset.ports;
+        });
+    });
+    
+    // Gestion des types de scan
+    scanTypes.forEach(radio => {
+        radio.addEventListener('change', function() {
+            document.querySelectorAll('.scan-type').forEach(type => {
+                type.classList.remove('active');
+            });
+            radio.closest('.scan-type').classList.add('active');
+        });
+    });
+    
+    // Soumission du formulaire
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+        const target = formData.get('target');
+        const ports = formData.get('ports');
+        const scanType = formData.get('scan_type');
+        
+        if (!target.trim()) {
+            alert('Veuillez spécifier une cible');
+            return;
+        }
+        
+        if (!ports.trim()) {
+            alert('Veuillez spécifier des ports à scanner');
+            return;
+        }
+        
+        startPortScan(target, ports, scanType);
+    });
+    
+    function startPortScan(target, ports, scanType) {
+        // Désactiver le bouton et afficher la progression
+        startBtn.disabled = true;
+        startBtn.innerHTML = '<span class="spinner"></span> Scan en cours...';
+        progressSection.style.display = 'block';
+        resultsSection.style.display = 'none';
+        
+        // Simuler progression
+        let progress = 0;
+        const progressFill = document.getElementById('progress-fill');
+        const progressText = document.getElementById('progress-text');
+        
+        const progressInterval = setInterval(() => {
+            progress += Math.random() * 12;
+            if (progress > 85) progress = 85;
+            progressFill.style.width = progress + '%';
+            progressText.textContent = `Scan ${scanType.toUpperCase()} de ${target} en cours... ${Math.round(progress)}%`;
+        }, 400);
+        
+        // Envoyer la requête
+        fetch('/api/scan/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `target=${encodeURIComponent(target)}&ports=${encodeURIComponent(ports)}&scan_type=${encodeURIComponent(scanType)}`
+        })
+        .then(response => {
+            if (response.headers.get('content-type')?.includes('text/html')) {
+                return response.text().then(html => {
+                    document.open();
+                    document.write(html);
+                    document.close();
+                    return null;
+                });
+            } else {
+                return response.json();
+            }
+        })
+        .then(data => {
+            clearInterval(progressInterval);
+            progressFill.style.width = '100%';
+            progressText.textContent = 'Scan terminé !';
+            
+            if (data) {
+                displayResults(data, target);
+            }
+            
+            resetScanState();
+        })
+        .catch(error => {
+            clearInterval(progressInterval);
+            console.error('Erreur:', error);
+            alert('Erreur lors du scan: ' + error.message);
+            resetScanState();
+        });
+    }
+    
+    function displayResults(data, target) {
+        const resultsContainer = document.getElementById('results-container');
+        
+        if (data.ports && data.ports.length > 0) {
+            const openPorts = data.ports.filter(p => p.state === 'open');
+            const closedPorts = data.ports.filter(p => p.state === 'closed');
+            const filteredPorts = data.ports.filter(p => p.state === 'filtered');
+            
+            let html = `<div class="alert alert-success">
+                <strong>Scan terminé !</strong> 
+                ${openPorts.length} port(s) ouvert(s), 
+                ${closedPorts.length} fermé(s), 
+                ${filteredPorts.length} filtré(s) sur ${target}.
+            </div>`;
+            
+            // Ports ouverts
+            if (openPorts.length > 0) {
+                html += '<h4 style="color: #27ae60; margin-top: 25px;"><i class="bi bi-door-open"></i> Ports ouverts</h4>';
+                openPorts.forEach(port => {
+                    html += `
+                    <div class="port-card open">
+                        <div>
+                            <strong>Port ${port.port}/${port.protocol}</strong>
+                            ${port.service ? `<br><small>Service: ${port.service}</small>` : ''}
+                            ${port.version ? `<br><small>Version: ${port.version}</small>` : ''}
+                        </div>
+                        <div>
+                            <span style="color: #27ae60; font-weight: bold;">
+                                <i class="bi bi-check-circle"></i> OUVERT
+                            </span>
+                        </div>
+                    </div>
+                    `;
+                });
+            }
+            
+            // Ports fermés (si peu nombreux)
+            if (closedPorts.length > 0 && closedPorts.length <= 10) {
+                html += '<h4 style="color: #e74c3c; margin-top: 25px;"><i class="bi bi-door-closed"></i> Ports fermés</h4>';
+                closedPorts.forEach(port => {
+                    html += `
+                    <div class="port-card closed">
+                        <div>
+                            <strong>Port ${port.port}/${port.protocol}</strong>
+                        </div>
+                        <div>
+                            <span style="color: #e74c3c; font-weight: bold;">
+                                <i class="bi bi-x-circle"></i> FERMÉ
+                            </span>
+                        </div>
+                    </div>
+                    `;
+                });
+            } else if (closedPorts.length > 10) {
+                html += `<div class="alert alert-info" style="margin-top: 20px;">
+                    <strong>${closedPorts.length} ports fermés</strong> (non affichés pour la lisibilité)
+                </div>`;
+            }
+            
+            // Ports filtrés
+            if (filteredPorts.length > 0) {
+                html += '<h4 style="color: #f39c12; margin-top: 25px;"><i class="bi bi-funnel"></i> Ports filtrés</h4>';
+                filteredPorts.forEach(port => {
+                    html += `
+                    <div class="port-card filtered">
+                        <div>
+                            <strong>Port ${port.port}/${port.protocol}</strong>
+                        </div>
+                        <div>
+                            <span style="color: #f39c12; font-weight: bold;">
+                                <i class="bi bi-shield"></i> FILTRÉ
+                            </span>
+                        </div>
+                    </div>
+                    `;
+                });
+            }
+        } else {
+            html = `<div class="alert alert-info">
+                <strong>Aucun port détecté</strong> sur la cible ${target}.
+            </div>`;
+        }
+        
+        resultsContainer.innerHTML = html;
+        resultsSection.style.display = 'block';
+    }
+    
+    function resetScanState() {
+        startBtn.disabled = false;
+        startBtn.innerHTML = '<i class="bi bi-play-fill"></i> Lancer le scan';
+    }
+    
+    // Bouton de réinitialisation
+    resetBtn.addEventListener('click', function() {
+        form.reset();
+        targetInput.value = '';
+        portsInput.value = '80,443,22,21,25,53';
+        progressSection.style.display = 'none';
+        resultsSection.style.display = 'none';
+        
+        // Réactiver le premier preset
+        portPresets.forEach(p => p.classList.remove('active'));
+        portPresets[0].classList.add('active');
+        
+        // Réactiver le premier type de scan
+        document.querySelectorAll('.scan-type').forEach(type => {
+            type.classList.remove('active');
+        });
+        document.querySelector('input[value="tcp"]').closest('.scan-type').classList.add('active');
+        document.querySelector('input[value="tcp"]').checked = true;
+        
+        resetScanState();
+    });
+});
+</script>
+{% endblock %}

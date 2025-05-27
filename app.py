@@ -52,9 +52,6 @@ def create_app():
     app.register_blueprint(malware_bp)
     app.register_blueprint(timeline_bp)
 
-
-
-
     # 🔐 IP autorisées (pare-feu applicatif)
     ALLOWED_IPS = os.getenv("ALLOWED_IPS", "127.0.0.1,192.168.44.128,192.168.217.1,192.168.36.1").split(",")
 
@@ -84,7 +81,7 @@ def create_app():
     
     logger.debug("Blueprints enregistrés")
 
-    # === Authentification manuelle (en option si tu n’utilises pas `auth_bp`)
+    # === Authentification manuelle (en option si tu n'utilises pas `auth_bp`)
     @app.route("/login", methods=["GET", "POST"])
     def login():
         if request.method == "POST":
@@ -148,10 +145,94 @@ def create_app():
     @app.route("/vuln")
     @login_required
     def vuln_page():
-        return render_template("vuln.html")
-
         logger.debug("Accès à la page de scan de vulnérabilités")
         return render_template("vuln.html")
+
+    # 🆕 NOUVELLES ROUTES POUR LES RÉSULTATS DE VULNÉRABILITÉS
+    @app.route("/vuln/results")
+    @app.route("/vuln/results/<job_id>")
+    @login_required
+    def vuln_results_page(job_id=None):
+        """Affiche les résultats d'un scan de vulnérabilités"""
+        logger.debug(f"Accès à la page de résultats de vulnérabilités - job_id: {job_id}")
+        
+        if job_id:
+            # Rediriger vers l'API qui gère l'affichage des résultats de job
+            from routes.vuln_routes import parallel_scanner
+            
+            # Récupérer le statut et les résultats du job
+            status = parallel_scanner.get_job_status(job_id)
+            if status is None:
+                logger.warning(f"Job {job_id} introuvable")
+                return render_template('vuln_results.html', 
+                                     error="Job introuvable ou expiré",
+                                     target="Inconnu")
+            
+            if status["status"] != "completed":
+                logger.warning(f"Job {job_id} pas encore terminé (statut: {status['status']})")
+                return render_template('vuln_results.html',
+                                     error=f"Scan pas encore terminé (statut: {status['status']})",
+                                     target=status.get('target', 'Inconnu'))
+            
+            # Récupérer les résultats depuis le stockage si nécessaire
+            results = status.get("results")
+            if not results:
+                results = parallel_scanner.load_job_results(job_id)
+                if not results:
+                    logger.error(f"Impossible de charger les résultats pour job {job_id}")
+                    return render_template('vuln_results.html',
+                                         error="Résultats non disponibles",
+                                         target=status.get('target', 'Inconnu'))
+            
+            # Préparer les chemins des rapports
+            html_report_path = None
+            pdf_report_path = None
+            
+            if status.get("html_report"):
+                html_report_path = os.path.basename(status["html_report"])
+            if status.get("pdf_report"):
+                pdf_report_path = os.path.basename(status["pdf_report"])
+            
+            # Afficher les résultats dans le template vuln_results.html
+            return render_template('vuln_results.html',
+                                 target=results.get('target'),
+                                 vulnerabilities=results.get('vulnerabilities', []),
+                                 scan_time=results.get('scan_time'),
+                                 host_status=results.get('host_status'),
+                                 command_line=results.get('command_line'),
+                                 report_path=status.get("html_report"),
+                                 html_report_path=html_report_path,
+                                 pdf_report_path=pdf_report_path,
+                                 job_id=job_id,
+                                 is_parallel_job=True)
+        else:
+            # Si pas de job_id, utiliser le template qui récupère depuis sessionStorage
+            return render_template('vuln_results_from_session.html')
+
+    @app.route("/vuln/batch_results/<batch_id>")
+    @login_required
+    def vuln_batch_results_page(batch_id):
+        """Affiche les résultats d'un scan parallèle"""
+        logger.debug(f"Accès aux résultats de batch: {batch_id}")
+        
+        try:
+            # Récupérer les résultats du batch depuis votre système
+            # Adapter selon votre implémentation
+            batch_file = f"batch_results/{batch_id}.json"
+            if os.path.exists(batch_file):
+                with open(batch_file, 'r') as f:
+                    batch_data = json.load(f)
+                    
+                return render_template('vuln_batch_results.html', 
+                                     batch_data=batch_data,
+                                     batch_id=batch_id)
+            else:
+                logger.warning(f"Résultats de batch non trouvés: {batch_id}")
+                return redirect('/vuln')
+                
+        except Exception as e:
+            logger.error(f"Erreur lors de l'affichage des résultats de batch: {e}")
+            return redirect('/vuln')
 
     @app.route("/exploit")
     def exploit_page():

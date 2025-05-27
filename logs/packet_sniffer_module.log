@@ -111,3 +111,33 @@
 2025-05-23 00:02:35,560 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
 2025-05-23 00:10:49,404 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
 2025-05-23 00:13:54,623 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-27 03:31:58,222 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-27 03:41:59,412 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-27 04:08:47,466 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-27 04:10:06,380 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-27 04:34:48,624 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-27 05:37:00,087 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-27 05:52:07,955 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-27 05:53:42,210 - packet_sniffer - INFO - [packet_sniffer.py:15] - Récupération des interfaces réseau
+2025-05-27 05:53:42,444 - packet_sniffer - INFO - [packet_sniffer.py:41] - 4 interfaces trouvées
+2025-05-27 06:03:45,272 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-27 06:10:31,561 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-27 06:30:55,127 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-27 06:36:02,965 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-27 06:52:40,008 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-27 06:55:49,714 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-27 06:56:43,525 - packet_sniffer - INFO - [packet_sniffer.py:15] - Récupération des interfaces réseau
+2025-05-27 06:56:43,729 - packet_sniffer - INFO - [packet_sniffer.py:41] - 4 interfaces trouvées
+2025-05-27 06:57:06,984 - packet_sniffer - INFO - [packet_sniffer.py:15] - Récupération des interfaces réseau
+2025-05-27 06:57:06,991 - packet_sniffer - INFO - [packet_sniffer.py:41] - 4 interfaces trouvées
+2025-05-27 06:57:10,413 - packet_sniffer - INFO - [packet_sniffer.py:58] - Démarrage de la capture sur eth0 - 100 paquets
+2025-05-27 06:57:54,684 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-27 07:00:12,338 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-27 07:02:31,490 - packet_sniffer - INFO - [packet_sniffer.py:15] - Récupération des interfaces réseau
+2025-05-27 07:02:31,495 - packet_sniffer - INFO - [packet_sniffer.py:41] - 4 interfaces trouvées
+2025-05-27 07:02:42,855 - packet_sniffer - INFO - [packet_sniffer.py:58] - Démarrage de la capture sur eth0 - 10 paquets
+2025-05-27 07:03:05,725 - packet_sniffer - INFO - [packet_sniffer.py:76] - Capture enregistrée : captures/capture_20250527_070242.pcap (10 paquets)
+2025-05-27 07:03:05,725 - packet_sniffer - INFO - [packet_sniffer.py:92] - Début de l'analyse du fichier pcap: captures/capture_20250527_070242.pcap
+2025-05-27 07:03:13,367 - packet_sniffer - INFO - [packet_sniffer.py:225] - Analyse terminée: 10 paquets analysés, 12 IPs uniques
+2025-05-27 07:03:13,367 - packet_sniffer - INFO - [packet_sniffer.py:92] - Début de l'analyse du fichier pcap: captures/capture_20250527_070242.pcap
+2025-05-27 07:03:13,841 - packet_sniffer - INFO - [packet_sniffer.py:225] - Analyse terminée: 10 paquets analysés, 12 IPs uniques

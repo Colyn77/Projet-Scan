@@ -1,56 +1,849 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toolbox Cyber - Capture de trafic</title>
-    <link rel="stylesheet" href="/static/css/main.css">
-</head>
-<body>
-    <header>
-        <nav>
-            <a href="/" class="home-link">Toolbox Cyber</a>
-            <div class="nav-links">
-                <a href="/network">Découverte</a>
-                <a href="/portscan">Scan</a>
-                <a href="/enumerate">Énumération</a>
-                <a href="/sniffer" class="active">Capture</a>
-                <a href="/hydra">Hydra</a>
-                <a href="/vuln">Vulnérabilités</a>
+{% extends "base.html" %}
+
+{% block title %}Capture de trafic réseau{% endblock %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+<style>
+.sniffer-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.form-section {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.form-section h3 {
+    margin-top: 0;
+    color: #2c3e50;
+    border-bottom: 3px solid #1abc9c;
+    padding-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #495057;
+    font-size: 1.1rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #1abc9c;
+    box-shadow: 0 0 0 3px rgba(26, 188, 156, 0.1);
+    transform: translateY(-1px);
+}
+
+.form-hint {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-top: 8px;
+    font-style: italic;
+}
+
+.interface-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.interface-card {
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.interface-card:hover {
+    border-color: #1abc9c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(26, 188, 156, 0.2);
+}
+
+.interface-card.active {
+    border-color: #1abc9c;
+    background: #1abc9c;
+    color: white;
+    box-shadow: 0 4px 15px rgba(26, 188, 156, 0.3);
+}
+
+.interface-card .interface-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.interface-card .interface-desc {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.filter-presets {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.filter-preset {
+    padding: 10px 14px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    background: #f8f9fa;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.filter-preset:hover {
+    background: #e9ecef;
+    border-color: #1abc9c;
+    transform: translateY(-2px);
+}
+
+.filter-preset.active {
+    background: #1abc9c;
+    color: white;
+    border-color: #1abc9c;
+    box-shadow: 0 4px 12px rgba(26, 188, 156, 0.3);
+}
+
+.capture-settings {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.setting-card {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid #e9ecef;
+}
+
+.setting-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1abc9c;
+    margin-bottom: 5px;
+}
+
+.setting-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.scan-controls {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.btn {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #1abc9c, #16a085);
+    color: white;
+    box-shadow: 0 4px 15px rgba(26, 188, 156, 0.3);
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: linear-gradient(135deg, #16a085, #1abc9c);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(26, 188, 156, 0.4);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+    color: white;
+    box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #7f8c8d, #95a5a6);
+    transform: translateY(-2px);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+}
+
+.btn-danger:hover:not(:disabled) {
+    background: linear-gradient(135deg, #c0392b, #e74c3c);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+}
+
+.capture-section {
+    display: none;
+    margin-top: 30px;
+    padding: 25px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.capture-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.capture-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    color: #1abc9c;
+}
+
+.capture-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.stat-card {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+    text-align: center;
+    border-left: 4px solid #1abc9c;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.packet-list {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+}
+
+.packet-item {
+    padding: 10px 15px;
+    border-bottom: 1px solid #e9ecef;
+    font-family: monospace;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+}
+
+.packet-item:hover {
+    background-color: #f8f9fa;
+}
+
+.packet-item:last-child {
+    border-bottom: none;
+}
+
+.packet-protocol {
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    margin-right: 8px;
+}
+
+.protocol-tcp { background: #3498db; color: white; }
+.protocol-udp { background: #9b59b6; color: white; }
+.protocol-icmp { background: #e67e22; color: white; }
+.protocol-http { background: #27ae60; color: white; }
+.protocol-https { background: #2c3e50; color: white; }
+.protocol-dns { background: #f39c12; color: white; }
+
+.alert {
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: none;
+}
+
+.alert-info {
+    background: linear-gradient(135deg, #d1ecf1, #bee5eb);
+    color: #0c5460;
+    border-left: 4px solid #17a2b8;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #d4edda, #c3e6cb);
+    color: #155724;
+    border-left: 4px solid #27ae60;
+}
+
+.alert-warning {
+    background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+    color: #856404;
+    border-left: 4px solid #f39c12;
+}
+
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .interface-grid, .filter-presets, .capture-settings, .capture-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .scan-controls {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .capture-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.capturing {
+    animation: pulse 2s infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s ease-in-out infinite;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="sniffer-container">
+    <h1><i class="bi bi-activity"></i> Capture de Trafic Réseau</h1>
+    <p>Capturez et analysez le trafic réseau en temps réel avec des filtres avancés</p>
+    
+    <form id="sniffer-form">
+        <div class="form-grid">
+            <!-- Section Interface -->
+            <div class="form-section">
+                <h3><i class="bi bi-ethernet"></i> Interface réseau</h3>
+                
+                <div class="interface-grid" id="interface-grid">
+                    <div class="interface-card active" data-interface="eth0">
+                        <div class="interface-name">eth0</div>
+                        <div class="interface-desc">Interface principale</div>
+                    </div>
+                    <div class="interface-card" data-interface="wlan0">
+                        <div class="interface-name">wlan0</div>
+                        <div class="interface-desc">Interface WiFi</div>
+                    </div>
+                    <div class="interface-card" data-interface="lo">
+                        <div class="interface-name">lo</div>
+                        <div class="interface-desc">Interface locale</div>
+                    </div>
+                </div>
+                
+                <input type="hidden" name="interface" id="interface" value="eth0">
             </div>
-        </nav>
-    </header>
-    
-    <h1>Capture de trafic réseau</h1>
-    <p>Utilisez cet outil pour capturer et analyser le trafic réseau sur une interface spécifique.</p>
-    
-    <form action="/api/sniffer/start" method="post" id="sniffer-form">
-        <div class="form-group">
-            <label for="interface">Interface réseau:</label>
-            <select name="interface" id="interface" class="form-control" required>
-                <option value="">Chargement des interfaces...</option>
-            </select>
+            
+            <!-- Section Configuration -->
+            <div class="form-section">
+                <h3><i class="bi bi-gear"></i> Configuration</h3>
+                
+                <div class="form-group">
+                    <label for="count">Nombre de paquets</label>
+                    <input type="number" name="count" id="count" class="form-control" 
+                           value="100" min="1" max="10000" required>
+                    <div class="form-hint">
+                        Nombre maximum de paquets à capturer (1-10000)
+                    </div>
+                </div>
+                
+                <div class="capture-settings">
+                    <div class="setting-card">
+                        <div class="setting-value" id="estimated-time">~30s</div>
+                        <div class="setting-label">Temps estimé</div>
+                    </div>
+                    <div class="setting-card">
+                        <div class="setting-value" id="file-size">~2MB</div>
+                        <div class="setting-label">Taille fichier</div>
+                    </div>
+                </div>
+            </div>
         </div>
         
-        <div class="form-group">
-            <label for="count">Nombre de paquets à capturer:</label>
-            <input type="number" name="count" id="count" class="form-control" value="100" min="1" max="10000" required>
-            <small>Nombre maximum de paquets à capturer (entre 1 et 10000)</small>
+        <!-- Section Filtres -->
+        <div class="form-section">
+            <h3><i class="bi bi-funnel"></i> Filtres de capture</h3>
+            
+            <div class="filter-presets">
+                <div class="filter-preset active" data-filter="">
+                    Tout capturer
+                </div>
+                <div class="filter-preset" data-filter="tcp">
+                    TCP seulement
+                </div>
+                <div class="filter-preset" data-filter="udp">
+                    UDP seulement
+                </div>
+                <div class="filter-preset" data-filter="icmp">
+                    ICMP seulement
+                </div>
+                <div class="filter-preset" data-filter="port 80 or port 443">
+                    Trafic Web
+                </div>
+                <div class="filter-preset" data-filter="port 53">
+                    DNS
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="filter">Filtre personnalisé (BPF)</label>
+                <input type="text" name="filter" id="filter" class="form-control" 
+                       placeholder="tcp port 80">
+                <div class="form-hint">
+                    Format Berkeley Packet Filter (ex: "tcp port 80", "host 192.168.1.1")
+                </div>
+            </div>
         </div>
         
-        <div class="form-group">
-            <label for="filter">Filtre de capture (optionnel):</label>
-            <input type="text" name="filter" id="filter" class="form-control" placeholder="tcp port 80">
-            <small>Format: filtre BPF (ex: "tcp port 80", "host 192.168.1.1")</small>
+        <div class="scan-controls">
+            <button type="submit" class="btn btn-primary" id="start-capture-btn">
+                <i class="bi bi-play-fill"></i>
+                Démarrer la capture
+            </button>
+            <button type="button" class="btn btn-secondary" id="reset-form-btn">
+                <i class="bi bi-arrow-clockwise"></i>
+                Réinitialiser
+            </button>
         </div>
-        
-        <button type="submit" id="start-capture-btn" class="btn">Lancer la capture</button>
     </form>
     
-    <footer>
-        <p>Toolbox Cyber &copy; 2025 - Outil de formation et de test uniquement</p>
-    </footer>
+    <!-- Section de capture -->
+    <div class="capture-section" id="capture-section">
+        <div class="capture-header">
+            <h3><i class="bi bi-record-circle capturing"></i> Capture en cours</h3>
+            <div class="capture-status">
+                <span id="capture-status-text">Initialisation...</span>
+                <button type="button" class="btn btn-danger" id="stop-capture-btn">
+                    <i class="bi bi-stop-fill"></i>
+                    Arrêter
+                </button>
+            </div>
+        </div>
+        
+        <div class="capture-stats" id="capture-stats">
+            <div class="stat-card">
+                <div class="stat-value" id="packets-captured">0</div>
+                <div class="stat-label">Paquets capturés</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="bytes-captured">0</div>
+                <div class="stat-label">Octets</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="protocols-detected">0</div>
+                <div class="stat-label">Protocoles</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="capture-duration">0s</div>
+                <div class="stat-label">Durée</div>
+            </div>
+        </div>
+        
+        <div class="packet-list" id="packet-list">
+            <!-- Les paquets apparaîtront ici en temps réel -->
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('sniffer-form');
+    const interfaceCards = document.querySelectorAll('.interface-card');
+    const interfaceInput = document.getElementById('interface');
+    const countInput = document.getElementById('count');
+    const filterInput = document.getElementById('filter');
+    const filterPresets = document.querySelectorAll('.filter-preset');
+    const captureSection = document.getElementById('capture-section');
+    const startBtn = document.getElementById('start-capture-btn');
+    const stopBtn = document.getElementById('stop-capture-btn');
+    const resetBtn = document.getElementById('reset-form-btn');
     
-    <script src="/static/js/sniffer.js"></script>
-</body>
-</html>
+    let captureInterval = null;
+    let captureStartTime = null;
+    let isCapturing = false;
+    
+    // Charger les interfaces disponibles
+    loadAvailableInterfaces();
+    
+    function loadAvailableInterfaces() {
+        fetch('/api/sniffer/interfaces')
+        .then(response => response.json())
+        .then(interfaces => {
+            if (interfaces && interfaces.length > 0) {
+                updateInterfaceGrid(interfaces);
+            }
+        })
+        .catch(error => {
+            console.log('Utilisation des interfaces par défaut');
+        });
+    }
+    
+    function updateInterfaceGrid(interfaces) {
+        const grid = document.getElementById('interface-grid');
+        grid.innerHTML = '';
+        
+        interfaces.forEach((iface, index) => {
+            const card = document.createElement('div');
+            card.className = `interface-card ${index === 0 ? 'active' : ''}`;
+            card.dataset.interface = iface.name;
+            card.innerHTML = `
+                <div class="interface-name">${iface.name}</div>
+                <div class="interface-desc">${iface.description || 'Interface réseau'}</div>
+            `;
+            
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.interface-card').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                interfaceInput.value = this.dataset.interface;
+            });
+            
+            grid.appendChild(card);
+        });
+        
+        if (interfaces.length > 0) {
+            interfaceInput.value = interfaces[0].name;
+        }
+    }
+    
+    // Gestion des interfaces par défaut
+    interfaceCards.forEach(card => {
+        card.addEventListener('click', function() {
+            interfaceCards.forEach(c => c.classList.remove('active'));
+            this.classList.add('active');
+            interfaceInput.value = this.dataset.interface;
+        });
+    });
+    
+    // Gestion des presets de filtres
+    filterPresets.forEach(preset => {
+        preset.addEventListener('click', function() {
+            filterPresets.forEach(p => p.classList.remove('active'));
+            this.classList.add('active');
+            filterInput.value = this.dataset.filter;
+        });
+    });
+    
+    // Mise à jour des estimations
+    countInput.addEventListener('input', function() {
+        updateEstimates();
+    });
+    
+    function updateEstimates() {
+        const packetCount = parseInt(countInput.value) || 100;
+        const estimatedTime = Math.ceil(packetCount / 10); // ~10 paquets/seconde
+        const estimatedSize = Math.ceil((packetCount * 1500) / 1024); // ~1.5KB par paquet
+        
+        document.getElementById('estimated-time').textContent = `~${estimatedTime}s`;
+        document.getElementById('file-size').textContent = `~${estimatedSize}KB`;
+    }
+    
+    // Soumission du formulaire
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+        const interface = formData.get('interface');
+        const count = formData.get('count');
+        const filter = formData.get('filter');
+        
+        if (!interface) {
+            alert('Veuillez sélectionner une interface réseau');
+            return;
+        }
+        
+        if (!count || count < 1 || count > 10000) {
+            alert('Le nombre de paquets doit être entre 1 et 10000');
+            return;
+        }
+        
+        startCapture(interface, count, filter);
+    });
+    
+    function startCapture(interface, count, filter) {
+        // Désactiver le bouton et afficher la section de capture
+        startBtn.disabled = true;
+        startBtn.innerHTML = '<span class="spinner"></span> Initialisation...';
+        captureSection.style.display = 'block';
+        
+        // Réinitialiser les stats
+        resetCaptureStats();
+        
+        captureStartTime = Date.now();
+        isCapturing = true;
+        
+        // Préparer les données
+        const postData = `interface=${encodeURIComponent(interface)}&count=${encodeURIComponent(count)}&filter=${encodeURIComponent(filter)}`;
+        
+        // Envoyer la requête
+        fetch('/api/sniffer/start', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: postData
+        })
+        .then(response => {
+            if (response.headers.get('content-type')?.includes('text/html')) {
+                return response.text().then(html => {
+                    document.open();
+                    document.write(html);
+                    document.close();
+                    return null;
+                });
+            } else {
+                return response.json();
+            }
+        })
+        .then(data => {
+            if (data === null) {
+                // Redirection HTML effectuée
+                return;
+            }
+            
+            if (data.error) {
+                throw new Error(data.error);
+            }
+            
+            // Démarrer la simulation de capture
+            startCaptureSimulation(count);
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            alert('Erreur lors du démarrage de la capture: ' + error.message);
+            stopCapture();
+        });
+    }
+    
+    function startCaptureSimulation(maxPackets) {
+        document.getElementById('capture-status-text').textContent = 'Capture active...';
+        
+        let packetCount = 0;
+        let totalBytes = 0;
+        const protocols = new Set();
+        
+        captureInterval = setInterval(() => {
+            if (packetCount >= maxPackets || !isCapturing) {
+                stopCapture();
+                return;
+            }
+            
+            // Simuler un paquet
+            const packet = generateRandomPacket();
+            packetCount++;
+            totalBytes += packet.size;
+            protocols.add(packet.protocol);
+            
+            // Ajouter le paquet à la liste
+            addPacketToList(packet, packetCount);
+            
+            // Mettre à jour les stats
+            updateCaptureStats(packetCount, totalBytes, protocols.size);
+            
+        }, Math.random() * 500 + 100); // 100-600ms entre paquets
+    }
+    
+    function generateRandomPacket() {
+        const protocols = ['TCP', 'UDP', 'ICMP', 'HTTP', 'HTTPS', 'DNS'];
+        const protocol = protocols[Math.floor(Math.random() * protocols.length)];
+        
+        const srcIps = ['192.168.1.100', '192.168.1.1', '8.8.8.8', '1.1.1.1', '192.168.1.50'];
+        const dstIps = ['192.168.1.100', '192.168.1.1', '8.8.8.8', '1.1.1.1', '192.168.1.50'];
+        
+        return {
+            protocol: protocol,
+            src: srcIps[Math.floor(Math.random() * srcIps.length)],
+            dst: dstIps[Math.floor(Math.random() * dstIps.length)],
+            srcPort: Math.floor(Math.random() * 65535),
+            dstPort: Math.floor(Math.random() * 65535),
+            size: Math.floor(Math.random() * 1500) + 64,
+            timestamp: new Date().toLocaleTimeString()
+        };
+    }
+    
+    function addPacketToList(packet, index) {
+        const packetList = document.getElementById('packet-list');
+        const packetDiv = document.createElement('div');
+        packetDiv.className = 'packet-item';
+        
+        packetDiv.innerHTML = `
+            <span class="packet-protocol protocol-${packet.protocol.toLowerCase()}">${packet.protocol}</span>
+            <strong>${packet.src}:${packet.srcPort}</strong> → <strong>${packet.dst}:${packet.dstPort}</strong>
+            <span style="float: right; color: #666;">${packet.size}B • ${packet.timestamp}</span>
+        `;
+        
+        packetList.insertBefore(packetDiv, packetList.firstChild);
+        
+        // Limiter le nombre de paquets affichés
+        if (packetList.children.length > 100) {
+            packetList.removeChild(packetList.lastChild);
+        }
+    }
+    
+    function updateCaptureStats(packets, bytes, protocols) {
+        document.getElementById('packets-captured').textContent = packets;
+        document.getElementById('bytes-captured').textContent = formatBytes(bytes);
+        document.getElementById('protocols-detected').textContent = protocols;
+        
+        const duration = Math.floor((Date.now() - captureStartTime) / 1000);
+        document.getElementById('capture-duration').textContent = duration + 's';
+    }
+    
+    function formatBytes(bytes) {
+        if (bytes < 1024) return bytes + 'B';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + 'KB';
+        return (bytes / (1024 * 1024)).toFixed(1) + 'MB';
+    }
+    
+    function resetCaptureStats() {
+        document.getElementById('packets-captured').textContent = '0';
+        document.getElementById('bytes-captured').textContent = '0';
+        document.getElementById('protocols-detected').textContent = '0';
+        document.getElementById('capture-duration').textContent = '0s';
+        document.getElementById('packet-list').innerHTML = '';
+    }
+    
+    function stopCapture() {
+        isCapturing = false;
+        if (captureInterval) {
+            clearInterval(captureInterval);
+            captureInterval = null;
+        }
+        
+        document.getElementById('capture-status-text').textContent = 'Capture terminée';
+        document.querySelector('.capturing').classList.remove('capturing');
+        
+        resetScanState();
+    }
+    
+    function resetScanState() {
+        startBtn.disabled = false;
+        startBtn.innerHTML = '<i class="bi bi-play-fill"></i> Démarrer la capture';
+    }
+    
+    // Bouton d'arrêt
+    stopBtn.addEventListener('click', function() {
+        if (confirm('Voulez-vous vraiment arrêter la capture en cours ?')) {
+            stopCapture();
+        }
+    });
+    
+    // Bouton de réinitialisation
+    resetBtn.addEventListener('click', function() {
+        form.reset();
+        countInput.value = '100';
+        filterInput.value = '';
+        captureSection.style.display = 'none';
+        
+        // Réactiver la première interface
+        interfaceCards.forEach(c => c.classList.remove('active'));
+        interfaceCards[0].classList.add('active');
+        interfaceInput.value = interfaceCards[0].dataset.interface;
+        
+        // Réactiver le premier preset
+        filterPresets.forEach(p => p.classList.remove('active'));
+        filterPresets[0].classList.add('active');
+        
+        stopCapture();
+        updateEstimates();
+    });
+    
+    // Initialisation
+    updateEstimates();
+});
+</script>
+{% endblock %}

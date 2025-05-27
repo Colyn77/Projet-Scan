@@ -1,0 +1,20 @@
+{
+  "target": "192.168.36.132",
+  "scan_time": "2025-05-27 06:36:58",
+  "host_status": "up",
+  "vulnerabilities": [
+    {
+      "port": 21,
+      "protocol": "tcp",
+      "service": "ftp",
+      "state": "open",
+      "vulnerability": "ftp-vsftpd-backdoor",
+      "details": "\n  VULNERABLE:\n  vsFTPd version 2.3.4 backdoor\n    State: VULNERABLE (Exploitable)\n    IDs:  CVE:CVE-2011-2523  BID:48539\n      vsFTPd version 2.3.4 backdoor, this was reported on 2011-07-04.\n    Disclosure date: 2011-07-03\n    Exploit results:\n      Shell command: id\n      Results: uid=0(root) gid=0(root)\n    References:\n      https://github.com/rapid7/metasploit-framework/blob/master/modules/exploits/unix/ftp/vsftpd_234_backdoor.rb\n      http://scarybeastsecurity.blogspot.com/2011/07/alert-vsftpd-download-backdoored.html\n      https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2011-2523\n      https://www.securityfocus.com/bid/48539\n",
+      "severity": "info"
+    }
+  ],
+  "command_line": "nmap --script vuln -p 21 192.168.36.132",
+  "ports_scanned": "21",
+  "html_report": "generated_reports/report_vuln_scan_20250527_063658.html",
+  "pdf_report": "generated_reports/report_vuln_scan_20250527_063658.pdf"
+}

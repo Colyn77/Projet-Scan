@@ -1,0 +1,644 @@
+{% extends "base.html" %}
+
+{% block title %}Monitoring Scan Parallèle{% endblock %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+<style>
+.monitor-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.scan-header {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.progress-section {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 25px;
+    background: #e9ecef;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(45deg, #2c3e50, #34495e);
+    width: 0%;
+    transition: width 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.stat-card {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    border-left: 4px solid #2c3e50;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    color: #6c757d;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.jobs-section {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.job-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    transition: all 0.2s;
+}
+
+.job-item:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.job-info {
+    flex: 1;
+}
+
+.job-target {
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.job-ports {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.job-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-running {
+    background: #cce5ff;
+    color: #004085;
+}
+
+.status-completed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-failed {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.job-progress {
+    width: 60px;
+    height: 6px;
+    background: #e9ecef;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.job-progress-fill {
+    height: 100%;
+    background: #2c3e50;
+    transition: width 0.3s ease;
+}
+
+.controls {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background-color: #2c3e50;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.results-section {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-top: 30px;
+    display: none;
+}
+
+.vuln-summary {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.vuln-item {
+    background: #fff8f8;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.vuln-critical {
+    border-left: 4px solid #dc3545;
+}
+
+.vuln-high {
+    border-left: 4px solid #fd7e14;
+}
+
+.vuln-medium {
+    border-left: 4px solid #ffc107;
+}
+
+.vuln-low {
+    border-left: 4px solid #28a745;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="monitor-container">
+    <div class="scan-header">
+        <h1><i class="bi bi-activity"></i> Monitoring du Scan Parallèle</h1>
+        <p>Batch ID: <code>{{ batch_id }}</code></p>
+        <p>Cibles: {{ targets|length }} | Ports: {{ ports }}</p>
+    </div>
+    
+    <div class="progress-section" id="progress-section">
+        <h3><i class="bi bi-bar-chart"></i> Progression Globale</h3>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill">0%</div>
+        </div>
+        <div id="progress-text">Initialisation du scan...</div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="total-jobs">{{ job_ids|length }}</div>
+                <div class="stat-label">Total Jobs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="completed-jobs">0</div>
+                <div class="stat-label">Terminés</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="running-jobs">0</div>
+                <div class="stat-label">En Cours</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="failed-jobs">0</div>
+                <div class="stat-label">Échecs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="total-vulns">0</div>
+                <div class="stat-label">Vulnérabilités</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="jobs-section">
+        <h3><i class="bi bi-list-task"></i> Détail des Jobs</h3>
+        <div id="jobs-list">
+            {% for i in range(job_ids|length) %}
+            <div class="job-item" id="job-{{ job_ids[i] }}">
+                <div class="job-info">
+                    <div class="job-target">{{ targets[i] if i < targets|length else targets[0] }}</div>
+                    <div class="job-ports">Ports: {{ ports }}</div>
+                </div>
+                <div class="job-status">
+                    <div class="job-progress">
+                        <div class="job-progress-fill" style="width: 0%"></div>
+                    </div>
+                    <span class="status-badge status-pending">En attente</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="controls">
+        <button type="button" class="btn btn-danger" id="stop-scan-btn">
+            <i class="bi bi-stop-fill"></i>
+            Arrêter le Scan
+        </button>
+        <a href="/vuln" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i>
+            Nouveau Scan
+        </a>
+        <button type="button" class="btn btn-primary" id="export-results-btn" style="display: none;">
+            <i class="bi bi-download"></i>
+            Exporter Résultats
+        </button>
+    </div>
+    
+    <div class="results-section" id="results-section">
+        <h3><i class="bi bi-clipboard-data"></i> Résultats du Scan</h3>
+        <div id="results-content">
+            <!-- Les résultats seront chargés ici -->
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const jobIds = {{ job_ids|tojson }};
+    const batchId = '{{ batch_id }}';
+    let updateInterval;
+    let scanCompleted = false;
+    
+    // Éléments du DOM
+    const progressFill = document.getElementById('progress-fill');
+    const progressText = document.getElementById('progress-text');
+    const totalJobsEl = document.getElementById('total-jobs');
+    const completedJobsEl = document.getElementById('completed-jobs');
+    const runningJobsEl = document.getElementById('running-jobs');
+    const failedJobsEl = document.getElementById('failed-jobs');
+    const totalVulnsEl = document.getElementById('total-vulns');
+    const stopScanBtn = document.getElementById('stop-scan-btn');
+    const exportBtn = document.getElementById('export-results-btn');
+    const resultsSection = document.getElementById('results-section');
+    
+    // Démarrer le monitoring
+    startMonitoring();
+    
+    function startMonitoring() {
+        updateProgress();
+        updateInterval = setInterval(updateProgress, 3000); // Mise à jour toutes les 3 secondes
+    }
+    
+    function updateProgress() {
+        if (scanCompleted) {
+            clearInterval(updateInterval);
+            return;
+        }
+        
+        const params = new URLSearchParams();
+        jobIds.forEach(id => params.append('job_ids', id));
+        
+        fetch('/api/vuln/batch_status?' + params.toString())
+        .then(response => response.json())
+        .then(data => {
+            updateProgressDisplay(data);
+            updateJobsList(data.jobs);
+            
+            // Vérifier si le scan est terminé
+            if (data.completed + data.failed >= data.total_jobs) {
+                scanCompleted = true;
+                clearInterval(updateInterval);
+                onScanCompleted(data);
+            }
+        })
+        .catch(error => {
+            console.error('Erreur lors de la récupération du statut:', error);
+        });
+    }
+    
+    function updateProgressDisplay(batchData) {
+        const progress = Math.round(batchData.progress);
+        
+        progressFill.style.width = progress + '%';
+        progressFill.textContent = progress + '%';
+        progressText.textContent = `${batchData.completed}/${batchData.total_jobs} jobs terminés`;
+        
+        completedJobsEl.textContent = batchData.completed;
+        runningJobsEl.textContent = batchData.running;
+        failedJobsEl.textContent = batchData.failed;
+        
+        // Compter les vulnérabilités totales
+        let totalVulns = 0;
+        batchData.jobs.forEach(job => {
+            if (job.results && job.results.vulnerabilities) {
+                totalVulns += job.results.vulnerabilities.length;
+            }
+        });
+        totalVulnsEl.textContent = totalVulns;
+    }
+    
+    function updateJobsList(jobs) {
+        jobs.forEach(job => {
+            const jobElement = document.getElementById('job-' + job.job_id);
+            if (jobElement) {
+                const progressBar = jobElement.querySelector('.job-progress-fill');
+                const statusBadge = jobElement.querySelector('.status-badge');
+                
+                // Mise à jour de la barre de progression
+                progressBar.style.width = job.progress + '%';
+                
+                // Mise à jour du statut
+                statusBadge.className = 'status-badge status-' + job.status;
+                statusBadge.textContent = getStatusText(job.status);
+                
+                // Ajouter des informations supplémentaires si terminé
+                if (job.status === 'completed' && job.results) {
+                    const vulnCount = job.results.vulnerabilities ? job.results.vulnerabilities.length : 0;
+                    const jobInfo = jobElement.querySelector('.job-info');
+                    const existingVulnInfo = jobInfo.querySelector('.vuln-count');
+                    
+                    if (!existingVulnInfo) {
+                        const vulnInfo = document.createElement('div');
+                        vulnInfo.className = 'vuln-count';
+                        vulnInfo.style.color = vulnCount > 0 ? '#dc3545' : '#28a745';
+                        vulnInfo.style.fontSize = '0.85rem';
+                        vulnInfo.textContent = `${vulnCount} vulnérabilité(s) trouvée(s)`;
+                        jobInfo.appendChild(vulnInfo);
+                    }
+                }
+                
+                if (job.status === 'failed' && job.error) {
+                    const jobInfo = jobElement.querySelector('.job-info');
+                    const existingErrorInfo = jobInfo.querySelector('.error-info');
+                    
+                    if (!existingErrorInfo) {
+                        const errorInfo = document.createElement('div');
+                        errorInfo.className = 'error-info';
+                        errorInfo.style.color = '#dc3545';
+                        errorInfo.style.fontSize = '0.85rem';
+                        errorInfo.textContent = 'Erreur: ' + job.error;
+                        jobInfo.appendChild(errorInfo);
+                    }
+                }
+            }
+        });
+    }
+    
+    function getStatusText(status) {
+        const statusTexts = {
+            'pending': 'En attente',
+            'running': 'En cours',
+            'completed': 'Terminé',
+            'failed': 'Échec',
+            'cancelled': 'Annulé'
+        };
+        return statusTexts[status] || status;
+    }
+    
+    function onScanCompleted(batchData) {
+        progressText.textContent = 'Scan terminé !';
+        stopScanBtn.style.display = 'none';
+        exportBtn.style.display = 'inline-flex';
+        
+        // Afficher les résultats détaillés
+        displayResults(batchData);
+        
+        // Notification
+        if ('Notification' in window && Notification.permission === 'granted') {
+            new Notification('Scan de vulnérabilités terminé', {
+                body: `${batchData.completed} jobs terminés avec succès, ${batchData.failed} échecs`,
+                icon: '/static/favicon.ico'
+            });
+        }
+    }
+    
+    function displayResults(batchData) {
+        resultsSection.style.display = 'block';
+        const resultsContent = document.getElementById('results-content');
+        
+        let html = `
+        <div class="vuln-summary">
+            <h4>Résumé du Scan</h4>
+            <p><strong>Jobs terminés:</strong> ${batchData.completed}/${batchData.total_jobs}</p>
+            <p><strong>Échecs:</strong> ${batchData.failed}</p>
+            <p><strong>Vulnérabilités totales:</strong> ${totalVulnsEl.textContent}</p>
+        </div>
+        `;
+        
+        // Grouper les résultats par cible
+        const targetResults = {};
+        batchData.jobs.forEach(job => {
+            if (job.status === 'completed' && job.results) {
+                if (!targetResults[job.target]) {
+                    targetResults[job.target] = [];
+                }
+                targetResults[job.target].push(job);
+            }
+        });
+        
+        // Afficher les résultats par cible
+        Object.keys(targetResults).forEach(target => {
+            const jobs = targetResults[target];
+            let allVulns = [];
+            
+            jobs.forEach(job => {
+                if (job.results.vulnerabilities) {
+                    allVulns = allVulns.concat(job.results.vulnerabilities);
+                }
+            });
+            
+            html += `
+            <div style="margin-bottom: 30px; padding: 20px; border: 1px solid #dee2e6; border-radius: 8px;">
+                <h4><i class="bi bi-server"></i> ${target}</h4>
+                <p><strong>Vulnérabilités trouvées:</strong> ${allVulns.length}</p>
+                
+                ${allVulns.length > 0 ? `
+                <details style="margin-top: 15px;">
+                    <summary style="cursor: pointer; font-weight: bold; margin-bottom: 10px;">
+                        Détails des vulnérabilités (${allVulns.length})
+                    </summary>
+                    <div style="margin-top: 15px;">
+                        ${allVulns.map(vuln => `
+                            <div class="vuln-item vuln-${getSeverityClass(vuln.vulnerability)}">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                    <div>
+                                        <strong>${vuln.vulnerability}</strong>
+                                        <br>
+                                        <small>Port ${vuln.port}/${vuln.protocol} - ${vuln.service} (${vuln.state})</small>
+                                    </div>
+                                    <span class="status-badge" style="background: #dc3545; color: white; margin-left: 10px;">
+                                        Vulnérable
+                                    </span>
+                                </div>
+                                ${vuln.details ? `
+                                <details style="margin-top: 10px;">
+                                    <summary style="cursor: pointer; font-size: 0.9rem;">Détails techniques</summary>
+                                    <pre style="background: #f8f9fa; padding: 10px; border-radius: 4px; margin-top: 5px; font-size: 0.8rem; overflow-x: auto;">${vuln.details}</pre>
+                                </details>
+                                ` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                </details>
+                ` : `
+                <div style="color: #28a745; font-weight: bold;">
+                    <i class="bi bi-shield-check"></i> Aucune vulnérabilité détectée
+                </div>
+                `}
+            </div>
+            `;
+        });
+        
+        // Afficher les échecs
+        const failedJobs = batchData.jobs.filter(job => job.status === 'failed');
+        if (failedJobs.length > 0) {
+            html += `
+            <div style="margin-bottom: 30px; padding: 20px; border: 1px solid #dc3545; border-radius: 8px; background: #f8d7da;">
+                <h4><i class="bi bi-exclamation-triangle"></i> Échecs de Scan</h4>
+                ${failedJobs.map(job => `
+                    <div style="margin-bottom: 10px;">
+                        <strong>${job.target}</strong> - ${job.error || 'Erreur inconnue'}
+                    </div>
+                `).join('')}
+            </div>
+            `;
+        }
+        
+        resultsContent.innerHTML = html;
+    }
+    
+    function getSeverityClass(vulnName) {
+        const vulnLower = vulnName.toLowerCase();
+        if (vulnLower.includes('critical') || vulnLower.includes('rce') || vulnLower.includes('remote code')) {
+            return 'critical';
+        } else if (vulnLower.includes('high') || vulnLower.includes('exploit')) {
+            return 'high';
+        } else if (vulnLower.includes('medium') || vulnLower.includes('info')) {
+            return 'medium';
+        }
+        return 'low';
+    }
+    
+    // Gestionnaire pour arrêter le scan
+    stopScanBtn.addEventListener('click', function() {
+        if (confirm('Êtes-vous sûr de vouloir arrêter le scan en cours ?')) {
+            // Annuler tous les jobs
+            Promise.all(jobIds.map(jobId => 
+                fetch(`/api/vuln/cancel/${jobId}`, { method: 'POST' })
+            )).then(() => {
+                clearInterval(updateInterval);
+                progressText.textContent = 'Scan annulé par l\'utilisateur';
+                stopScanBtn.style.display = 'none';
+                
+                // Mettre à jour le statut une dernière fois
+                setTimeout(updateProgress, 1000);
+            });
+        }
+    });
+    
+    // Gestionnaire pour exporter les résultats
+    exportBtn.addEventListener('click', function() {
+        // Créer et télécharger un rapport JSON
+        const params = new URLSearchParams();
+        jobIds.forEach(id => params.append('job_ids', id));
+        
+        fetch('/api/vuln/batch_status?' + params.toString())
+        .then(response => response.json())
+        .then(data => {
+            const reportData = {
+                batch_id: batchId,
+                scan_date: new Date().toISOString(),
+                summary: {
+                    total_jobs: data.total_jobs,
+                    completed: data.completed,
+                    failed: data.failed,
+                    total_vulnerabilities: parseInt(totalVulnsEl.textContent)
+                },
+                jobs: data.jobs
+            };
+            
+            // Créer le fichier et le télécharger
+            const blob = new Blob([JSON.stringify(reportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `scan_parallel_${batchId.substring(0, 8)}_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+    });
+    
+    // Demander la permission pour les notifications
+    if ('Notification' in window && Notification.permission === 'default') {
+        Notification.requestPermission();
+    }
+});
+</script>
+{% endblock %}

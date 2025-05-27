@@ -1,48 +1,748 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toolbox Cyber - Énumération des services</title>
-    <link rel="stylesheet" href="/static/css/main.css">
-</head>
-<body>
-    <header>
-        <nav>
-            <a href="/" class="home-link">Toolbox Cyber</a>
-            <div class="nav-links">
-                <a href="/network">Découverte</a>
-                <a href="/portscan">Scan</a>
-                <a href="/enumerate" class="active">Énumération</a>
-                <a href="/sniffer">Capture</a>
-                <a href="/hydra">Hydra</a>
-				<a href="/vuln">Vulnérabilités</a>
+{% extends "base.html" %}
+
+{% block title %}Énumération des services{% endblock %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+<style>
+.enumerate-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.form-section {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.form-section h3 {
+    margin-top: 0;
+    color: #2c3e50;
+    border-bottom: 3px solid #9b59b6;
+    padding-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #495057;
+    font-size: 1.1rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #9b59b6;
+    box-shadow: 0 0 0 3px rgba(155, 89, 182, 0.1);
+    transform: translateY(-1px);
+}
+
+.form-hint {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-top: 8px;
+    font-style: italic;
+}
+
+.port-suggestions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.port-suggestion {
+    padding: 10px 14px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    background: #f8f9fa;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.port-suggestion:hover {
+    background: #e9ecef;
+    border-color: #9b59b6;
+    transform: translateY(-2px);
+}
+
+.port-suggestion.active {
+    background: #9b59b6;
+    color: white;
+    border-color: #9b59b6;
+    box-shadow: 0 4px 12px rgba(155, 89, 182, 0.3);
+}
+
+.enum-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.enum-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.enum-option:hover {
+    border-color: #9b59b6;
+    transform: translateY(-1px);
+}
+
+.enum-option.active {
+    border-color: #9b59b6;
+    background: #9b59b6;
+    color: white;
+}
+
+.enum-option input[type="checkbox"] {
+    margin: 0;
+}
+
+.scan-controls {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.btn {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #9b59b6, #8e44ad);
+    color: white;
+    box-shadow: 0 4px 15px rgba(155, 89, 182, 0.3);
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: linear-gradient(135deg, #8e44ad, #9b59b6);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(155, 89, 182, 0.4);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+    color: white;
+    box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #7f8c8d, #95a5a6);
+    transform: translateY(-2px);
+}
+
+.progress-section {
+    display: none;
+    margin-top: 30px;
+    padding: 25px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #9b59b6, #8e44ad);
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.results-section {
+    margin-top: 30px;
+    padding: 25px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.service-card {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+.service-card.vulnerable {
+    border-left: 4px solid #e74c3c;
+    background: linear-gradient(135deg, #fadbd8, #f8f9fa);
+}
+
+.service-card.secure {
+    border-left: 4px solid #27ae60;
+    background: linear-gradient(135deg, #d5f4e6, #f8f9fa);
+}
+
+.service-card.unknown {
+    border-left: 4px solid #f39c12;
+    background: linear-gradient(135deg, #fef5e7, #f8f9fa);
+}
+
+.service-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.service-details {
+    background: white;
+    padding: 15px;
+    border-radius: 6px;
+    margin-top: 15px;
+    border: 1px solid #e9ecef;
+}
+
+.alert {
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: none;
+}
+
+.alert-info {
+    background: linear-gradient(135deg, #d1ecf1, #bee5eb);
+    color: #0c5460;
+    border-left: 4px solid #17a2b8;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #d4edda, #c3e6cb);
+    color: #155724;
+    border-left: 4px solid #27ae60;
+}
+
+.alert-warning {
+    background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+    color: #856404;
+    border-left: 4px solid #f39c12;
+}
+
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .port-suggestions, .enum-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .scan-controls {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .service-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s ease-in-out infinite;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="enumerate-container">
+    <h1><i class="bi bi-search"></i> Énumération des Services</h1>
+    <p>Identifiez et analysez en détail les services en cours d'exécution sur vos cibles</p>
+    
+    <form id="enumeration-form">
+        <div class="form-grid">
+            <!-- Section Cible -->
+            <div class="form-section">
+                <h3><i class="bi bi-bullseye"></i> Cible</h3>
+                
+                <div class="form-group">
+                    <label for="target">Adresse IP ou nom d'hôte</label>
+                    <input type="text" name="target" id="target" class="form-control" 
+                           placeholder="192.168.1.1" required>
+                    <div class="form-hint">
+                        Cible unique pour l'énumération détaillée
+                    </div>
+                </div>
             </div>
-        </nav>
-    </header>
-    
-    <h1>Énumération des services</h1>
-    <p>Utilisez cet outil pour identifier et analyser les services en cours d'exécution sur les ports ouverts d'un système.</p>
-    
-    <form action="/api/enumerate/" method="post" id="enumeration-form">
-        <div class="form-group">
-            <label for="target">Cible (IP ou nom d'hôte):</label>
-            <input type="text" id="target" name="target" class="form-control" placeholder="192.168.1.1" required>
+            
+            <!-- Section Ports -->
+            <div class="form-section">
+                <h3><i class="bi bi-list-ol"></i> Ports</h3>
+                
+                <div class="port-suggestions">
+                    <div class="port-suggestion active" data-ports="22,80,443,21">
+                        Essentiels
+                    </div>
+                    <div class="port-suggestion" data-ports="80,443,8080,8443">
+                        Web
+                    </div>
+                    <div class="port-suggestion" data-ports="21,22,23,3389">
+                        Accès distant
+                    </div>
+                    <div class="port-suggestion" data-ports="25,110,143,465">
+                        Email
+                    </div>
+                    <div class="port-suggestion" data-ports="53,67,68,123">
+                        Réseau
+                    </div>
+                    <div class="port-suggestion" data-ports="1433,3306,5432">
+                        Bases de données
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="ports">Ports à analyser</label>
+                    <input type="text" name="ports" id="ports" class="form-control" 
+                           value="22,80,443,21" required>
+                    <div class="form-hint">
+                        Ports séparés par des virgules (ex: 22,80,443)
+                    </div>
+                </div>
+            </div>
         </div>
         
-        <div class="form-group">
-            <label for="ports">Ports à analyser:</label>
-            <input type="text" id="ports" name="ports" class="form-control" placeholder="22,80,443,8080" required>
-            <small>Format: ports séparés par des virgules (ex: 22,80,443)</small>
+        <!-- Options d'énumération -->
+        <div class="form-section">
+            <h3><i class="bi bi-gear"></i> Options d'énumération</h3>
+            
+            <div class="enum-options">
+                <label class="enum-option active">
+                    <input type="checkbox" name="enum_options" value="version" checked>
+                    <i class="bi bi-info-circle"></i>
+                    <span>Détection de version</span>
+                </label>
+                <label class="enum-option active">
+                    <input type="checkbox" name="enum_options" value="scripts" checked>
+                    <i class="bi bi-code-slash"></i>
+                    <span>Scripts NSE</span>
+                </label>
+                <label class="enum-option">
+                    <input type="checkbox" name="enum_options" value="os">
+                    <i class="bi bi-laptop"></i>
+                    <span>Détection OS</span>
+                </label>
+                <label class="enum-option">
+                    <input type="checkbox" name="enum_options" value="aggressive">
+                    <i class="bi bi-lightning"></i>
+                    <span>Scan agressif</span>
+                </label>
+                <label class="enum-option">
+                    <input type="checkbox" name="enum_options" value="traceroute">
+                    <i class="bi bi-signpost"></i>
+                    <span>Traceroute</span>
+                </label>
+                <label class="enum-option">
+                    <input type="checkbox" name="enum_options" value="timing">
+                    <i class="bi bi-stopwatch"></i>
+                    <span>Timing rapide</span>
+                </label>
+            </div>
         </div>
         
-        <button type="submit" id="start-enumeration-btn" class="btn">Lancer l'énumération</button>
+        <div class="scan-controls">
+            <button type="submit" class="btn btn-primary" id="start-enumeration-btn">
+                <i class="bi bi-play-fill"></i>
+                Lancer l'énumération
+            </button>
+            <button type="button" class="btn btn-secondary" id="reset-form-btn">
+                <i class="bi bi-arrow-clockwise"></i>
+                Réinitialiser
+            </button>
+        </div>
     </form>
     
-    <footer>
-        <p>Toolbox Cyber &copy; 2025 - Outil de formation et de test uniquement</p>
-    </footer>
+    <!-- Section de progression -->
+    <div class="progress-section" id="progress-section">
+        <h3><i class="bi bi-hourglass-split"></i> Énumération en cours</h3>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div id="progress-text">Initialisation...</div>
+    </div>
     
-    <script src="/static/js/enumerate.js"></script>
-</body>
-</html>
+    <!-- Section des résultats -->
+    <div class="results-section" id="results-section" style="display: none;">
+        <h3><i class="bi bi-list-check"></i> Services énumérés</h3>
+        <div id="results-container"></div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('enumeration-form');
+    const targetInput = document.getElementById('target');
+    const portsInput = document.getElementById('ports');
+    const portSuggestions = document.querySelectorAll('.port-suggestion');
+    const enumOptions = document.querySelectorAll('.enum-option');
+    const progressSection = document.getElementById('progress-section');
+    const resultsSection = document.getElementById('results-section');
+    const startBtn = document.getElementById('start-enumeration-btn');
+    const resetBtn = document.getElementById('reset-form-btn');
+    
+    // Gestion des suggestions de ports
+    portSuggestions.forEach(suggestion => {
+        suggestion.addEventListener('click', function() {
+            portSuggestions.forEach(s => s.classList.remove('active'));
+            this.classList.add('active');
+            portsInput.value = this.dataset.ports;
+        });
+    });
+    
+    // Gestion des options d'énumération
+    enumOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            const checkbox = this.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            
+            if (checkbox.checked) {
+                this.classList.add('active');
+            } else {
+                this.classList.remove('active');
+            }
+        });
+        
+        // Synchroniser l'état initial
+        const checkbox = option.querySelector('input[type="checkbox"]');
+        if (checkbox.checked) {
+            option.classList.add('active');
+        }
+    });
+    
+    // Soumission du formulaire
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+        const target = formData.get('target');
+        const ports = formData.get('ports');
+        const options = formData.getAll('enum_options');
+        
+        if (!target.trim()) {
+            alert('Veuillez spécifier une cible');
+            return;
+        }
+        
+        if (!ports.trim()) {
+            alert('Veuillez spécifier des ports à analyser');
+            return;
+        }
+        
+        startEnumeration(target, ports, options);
+    });
+    
+    function startEnumeration(target, ports, options) {
+        // Désactiver le bouton et afficher la progression
+        startBtn.disabled = true;
+        startBtn.innerHTML = '<span class="spinner"></span> Énumération en cours...';
+        progressSection.style.display = 'block';
+        resultsSection.style.display = 'none';
+        
+        // Simuler progression
+        let progress = 0;
+        const progressFill = document.getElementById('progress-fill');
+        const progressText = document.getElementById('progress-text');
+        
+        const progressInterval = setInterval(() => {
+            progress += Math.random() * 8;
+            if (progress > 80) progress = 80;
+            progressFill.style.width = progress + '%';
+            progressText.textContent = `Énumération de ${target} en cours... ${Math.round(progress)}%`;
+        }, 600);
+        
+        // Préparer les données pour l'API
+        const postData = `target=${encodeURIComponent(target)}&ports=${encodeURIComponent(ports)}&options=${encodeURIComponent(options.join(','))}`;
+        
+        // Envoyer la requête
+        fetch('/api/enumerate/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: postData
+        })
+        .then(response => {
+            if (response.headers.get('content-type')?.includes('text/html')) {
+                return response.text().then(html => {
+                    document.open();
+                    document.write(html);
+                    document.close();
+                    return null;
+                });
+            } else {
+                return response.json();
+            }
+        })
+        .then(data => {
+            clearInterval(progressInterval);
+            progressFill.style.width = '100%';
+            progressText.textContent = 'Énumération terminée !';
+            
+            if (data) {
+                displayResults(data, target);
+            }
+            
+            resetScanState();
+        })
+        .catch(error => {
+            clearInterval(progressInterval);
+            console.error('Erreur:', error);
+            alert('Erreur lors de l\'énumération: ' + error.message);
+            resetScanState();
+        });
+    }
+    
+    function displayResults(data, target) {
+        const resultsContainer = document.getElementById('results-container');
+        
+        if (data.services && data.services.length > 0) {
+            let html = `<div class="alert alert-success">
+                <strong>Énumération terminée !</strong> ${data.services.length} service(s) analysé(s) sur ${target}.
+            </div>`;
+            
+            data.services.forEach(service => {
+                const cardClass = getServiceCardClass(service);
+                const statusColor = getServiceStatusColor(service);
+                const statusIcon = getServiceStatusIcon(service);
+                
+                html += `
+                <div class="service-card ${cardClass}">
+                    <div class="service-header">
+                        <div>
+                            <p style="margin: 5px 0; color: #666;">
+                                ${service.service || 'Service inconnu'}
+                                ${service.version ? ` - ${service.version}` : ''}
+                            </p>
+                        </div>
+                        <div>
+                            <span style="color: ${statusColor}; font-weight: bold; display: flex; align-items: center; gap: 5px;">
+                                <i class="bi ${statusIcon}"></i> ${service.state?.toUpperCase() || 'INCONNU'}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    ${service.details ? `
+                    <div class="service-details">
+                        <h5 style="margin: 0 0 10px 0; color: #2c3e50;">
+                            <i class="bi bi-info-circle"></i> Détails techniques
+                        </h5>
+                        <pre style="margin: 0; white-space: pre-wrap; font-size: 0.9rem; color: #495057;">${service.details}</pre>
+                    </div>
+                    ` : ''}
+                    
+                    ${service.vulnerabilities && service.vulnerabilities.length > 0 ? `
+                    <div class="service-details" style="border-color: #e74c3c; background: #fadbd8;">
+                        <h5 style="margin: 0 0 10px 0; color: #e74c3c;">
+                            <i class="bi bi-exclamation-triangle"></i> Vulnérabilités détectées (${service.vulnerabilities.length})
+                        </h5>
+                        ${service.vulnerabilities.map(vuln => `
+                            <div style="margin-bottom: 10px; padding: 8px; background: white; border-radius: 4px; border-left: 3px solid #e74c3c;">
+                                <strong>${vuln.name || vuln}</strong>
+                                ${vuln.description ? `<br><small>${vuln.description}</small>` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                    ` : ''}
+                    
+                    ${service.recommendations && service.recommendations.length > 0 ? `
+                    <div class="service-details" style="border-color: #17a2b8; background: #d1ecf1;">
+                        <h5 style="margin: 0 0 10px 0; color: #17a2b8;">
+                            <i class="bi bi-lightbulb"></i> Recommandations
+                        </h5>
+                        <ul style="margin: 0; padding-left: 20px;">
+                            ${service.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                        </ul>
+                    </div>
+                    ` : ''}
+                </div>
+                `;
+            });
+            
+            // Ajouter un résumé de sécurité
+            const vulnerableServices = data.services.filter(s => s.vulnerabilities && s.vulnerabilities.length > 0);
+            const secureServices = data.services.filter(s => (!s.vulnerabilities || s.vulnerabilities.length === 0) && s.state === 'open');
+            
+            if (vulnerableServices.length > 0) {
+                html += `
+                <div class="alert alert-warning">
+                    <strong><i class="bi bi-shield-exclamation"></i> Attention !</strong> 
+                    ${vulnerableServices.length} service(s) présentent des vulnérabilités potentielles. 
+                    Vérifiez les recommandations ci-dessus.
+                </div>
+                `;
+            }
+            
+            if (secureServices.length > 0) {
+                html += `
+                <div class="alert alert-info">
+                    <strong><i class="bi bi-shield-check"></i> Bonne pratique !</strong> 
+                    ${secureServices.length} service(s) semblent correctement configurés.
+                </div>
+                `;
+            }
+            
+        } else {
+            html = `<div class="alert alert-info">
+                <strong>Aucun service détecté</strong> sur les ports spécifiés de ${target}.
+            </div>`;
+        }
+        
+        resultsContainer.innerHTML = html;
+        resultsSection.style.display = 'block';
+    }
+    
+    function getServiceCardClass(service) {
+        if (service.vulnerabilities && service.vulnerabilities.length > 0) {
+            return 'vulnerable';
+        } else if (service.state === 'open' && service.service) {
+            return 'secure';
+        } else {
+            return 'unknown';
+        }
+    }
+    
+    function getServiceStatusColor(service) {
+        if (service.state === 'open') {
+            return service.vulnerabilities && service.vulnerabilities.length > 0 ? '#e74c3c' : '#27ae60';
+        } else if (service.state === 'closed') {
+            return '#95a5a6';
+        } else {
+            return '#f39c12';
+        }
+    }
+    
+    function getServiceStatusIcon(service) {
+        if (service.state === 'open') {
+            return service.vulnerabilities && service.vulnerabilities.length > 0 ? 'bi-exclamation-triangle' : 'bi-check-circle';
+        } else if (service.state === 'closed') {
+            return 'bi-x-circle';
+        } else {
+            return 'bi-question-circle';
+        }
+    }
+    
+    function resetScanState() {
+        startBtn.disabled = false;
+        startBtn.innerHTML = '<i class="bi bi-play-fill"></i> Lancer l\'énumération';
+    }
+    
+    // Bouton de réinitialisation
+    resetBtn.addEventListener('click', function() {
+        form.reset();
+        targetInput.value = '';
+        portsInput.value = '22,80,443,21';
+        progressSection.style.display = 'none';
+        resultsSection.style.display = 'none';
+        
+        // Réactiver la première suggestion
+        portSuggestions.forEach(s => s.classList.remove('active'));
+        portSuggestions[0].classList.add('active');
+        
+        // Réinitialiser les options
+        enumOptions.forEach(option => {
+            const checkbox = option.querySelector('input[type="checkbox"]');
+            option.classList.remove('active');
+            
+            // Réactiver les options par défaut
+            if (checkbox.value === 'version' || checkbox.value === 'scripts') {
+                checkbox.checked = true;
+                option.classList.add('active');
+            } else {
+                checkbox.checked = false;
+            }
+        });
+        
+        resetScanState();
+    });
+});
+</script>
+{% endblock %}
