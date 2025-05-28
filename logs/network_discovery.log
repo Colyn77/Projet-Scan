@@ -16,3 +16,6 @@
 2025-05-27 07:00:25,823 - network_discovery - INFO - [network_discovery.py:11] - Démarrage de la découverte du réseau: 192.168.36.0/24
 2025-05-27 07:00:27,825 - network_discovery - INFO - [network_discovery.py:21] - 6 hôtes trouvés
 2025-05-27 07:00:27,825 - network_discovery - INFO - [network_discovery.py:32] - Découverte terminée: 6 hôtes actifs trouvés
+2025-05-28 09:01:09,735 - network_discovery - INFO - [network_discovery.py:11] - Démarrage de la découverte du réseau: 192.168.36.0/24
+2025-05-28 09:01:12,268 - network_discovery - INFO - [network_discovery.py:21] - 6 hôtes trouvés
+2025-05-28 09:01:12,268 - network_discovery - INFO - [network_discovery.py:32] - Découverte terminée: 6 hôtes actifs trouvés

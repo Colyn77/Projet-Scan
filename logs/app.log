@@ -1424,3 +1424,29 @@ Traceback (most recent call last):
   File "/home/kali/Projet-Scan/templates/enumerate.html", line 337, in template
     {% block content %}
 jinja2.exceptions.TemplateSyntaxError: Unexpected end of template. Jinja was looking for the following tags: 'endblock'. The innermost block that needs to be closed is 'block'.
+2025-05-28 09:00:18,399 - app - INFO - [app.py:47] - Création de l'application Flask
+2025-05-28 09:00:18,454 - app - INFO - [app.py:369] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-28 09:03:54,068 - app - INFO - [app.py:240] - Accès à la page d'exploitation
+2025-05-28 09:03:54,068 - app - INFO - [app.py:260] - Préparation de l'exploitation de ftp-vsftpd-backdoor sur 192.168.36.132:21
+2025-05-28 09:05:14,754 - app - INFO - [app.py:47] - Création de l'application Flask
+2025-05-28 09:05:14,768 - app - INFO - [app.py:369] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-28 09:07:35,676 - app - INFO - [app.py:47] - Création de l'application Flask
+2025-05-28 09:07:35,692 - app - INFO - [app.py:369] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-28 09:07:52,436 - app - INFO - [app.py:47] - Création de l'application Flask
+2025-05-28 09:07:52,452 - app - INFO - [app.py:369] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-28 09:09:13,929 - app - INFO - [app.py:47] - Création de l'application Flask
+2025-05-28 09:09:13,961 - app - INFO - [app.py:369] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-28 09:24:04,720 - app - INFO - [app.py:47] - Création de l'application Flask
+2025-05-28 09:24:04,745 - app - INFO - [app.py:369] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-28 09:27:15,063 - app - INFO - [app.py:47] - Création de l'application Flask
+2025-05-28 09:27:15,080 - app - INFO - [app.py:369] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-28 09:32:15,300 - app - INFO - [app.py:240] - Accès à la page d'exploitation
+2025-05-28 09:32:15,300 - app - INFO - [app.py:260] - Préparation de l'exploitation de ftp-vsftpd-backdoor sur 192.168.36.132:21
+2025-05-28 09:55:06,704 - app - INFO - [app.py:47] - Création de l'application Flask
+2025-05-28 09:55:06,719 - app - INFO - [app.py:369] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-28 10:07:09,574 - app - INFO - [app.py:47] - Création de l'application Flask
+2025-05-28 10:07:09,590 - app - INFO - [app.py:369] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-28 10:15:43,623 - app - INFO - [app.py:47] - Création de l'application Flask
+2025-05-28 10:15:43,640 - app - INFO - [app.py:369] - 🚀 Application démarrée sur http://0.0.0.0:5000
+2025-05-28 10:26:28,280 - app - INFO - [app.py:47] - Création de l'application Flask
+2025-05-28 10:26:28,298 - app - INFO - [app.py:369] - 🚀 Application démarrée sur http://0.0.0.0:5000

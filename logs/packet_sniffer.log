@@ -141,3 +141,16 @@
 2025-05-27 07:03:13,367 - packet_sniffer - INFO - [packet_sniffer.py:225] - Analyse terminée: 10 paquets analysés, 12 IPs uniques
 2025-05-27 07:03:13,367 - packet_sniffer - INFO - [packet_sniffer.py:92] - Début de l'analyse du fichier pcap: captures/capture_20250527_070242.pcap
 2025-05-27 07:03:13,841 - packet_sniffer - INFO - [packet_sniffer.py:225] - Analyse terminée: 10 paquets analysés, 12 IPs uniques
+2025-05-28 09:00:16,927 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-28 09:05:14,371 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-28 09:07:35,390 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-28 09:07:52,162 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-28 09:09:12,922 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-28 09:24:04,237 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-28 09:27:14,617 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-28 09:40:55,655 - packet_sniffer - INFO - [packet_sniffer.py:15] - Récupération des interfaces réseau
+2025-05-28 09:40:55,662 - packet_sniffer - INFO - [packet_sniffer.py:41] - 4 interfaces trouvées
+2025-05-28 09:55:06,064 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-28 10:07:09,180 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-28 10:15:43,314 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-28 10:26:27,000 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture

@@ -21,3 +21,8 @@
 2025-05-27 07:01:13,924 - port_scanner - INFO - [port_scanner.py:48] - Port ouvert trouvé: 80/tcp - Service: http
 2025-05-27 07:01:13,924 - port_scanner - INFO - [port_scanner.py:48] - Port ouvert trouvé: 389/tcp - Service: ldap
 2025-05-27 07:01:13,924 - port_scanner - INFO - [port_scanner.py:52] - Scan terminé: 3 ports ouverts trouvés sur 3 ports scannés
+2025-05-28 09:01:27,824 - port_scanner - INFO - [port_scanner.py:16] - Démarrage du scan de ports sur 192.168.36.129
+2025-05-28 09:01:27,935 - port_scanner - INFO - [port_scanner.py:21] - Scan en cours sur 192.168.36.129, ports : 80,443,22,21,25,53 (-sT)...
+2025-05-28 09:01:28,170 - port_scanner - INFO - [port_scanner.py:48] - Port ouvert trouvé: 22/tcp - Service: ssh
+2025-05-28 09:01:28,171 - port_scanner - INFO - [port_scanner.py:48] - Port ouvert trouvé: 80/tcp - Service: http
+2025-05-28 09:01:28,171 - port_scanner - INFO - [port_scanner.py:52] - Scan terminé: 2 ports ouverts trouvés sur 6 ports scannés

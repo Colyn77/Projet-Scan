@@ -111,3 +111,11 @@ jinja2.exceptions.UndefinedError: 'list object' has no attribute 'items'
 2025-05-27 07:03:13,945 - reporting_generator - INFO - [reporting_generator.py:259] - Génération d'un rapport pdf pour capture réseau avec données préparées
 2025-05-27 07:03:13,945 - reporting_generator - INFO - [reporting_generator.py:32] - Génération d'un rapport PDF pour le module sniffer
 2025-05-27 07:03:47,686 - reporting_generator - INFO - [reporting_generator.py:74] - Rapport PDF généré avec succès: generated_reports/report_sniffer_20250527_070313.pdf
+2025-05-28 09:03:18,560 - reporting_generator - INFO - [reporting_generator.py:32] - Génération d'un rapport HTML pour le module vuln_scan
+2025-05-28 09:03:18,670 - reporting_generator - INFO - [reporting_generator.py:81] - Rapport HTML généré avec succès: generated_reports/report_vuln_scan_20250528_090318.html
+2025-05-28 09:03:18,670 - reporting_generator - INFO - [reporting_generator.py:32] - Génération d'un rapport PDF pour le module vuln_scan
+2025-05-28 09:03:19,033 - reporting_generator - INFO - [reporting_generator.py:74] - Rapport PDF généré avec succès: generated_reports/report_vuln_scan_20250528_090318.pdf
+2025-05-28 09:03:19,857 - reporting_generator - INFO - [reporting_generator.py:32] - Génération d'un rapport HTML pour le module vuln_scan
+2025-05-28 09:03:19,860 - reporting_generator - INFO - [reporting_generator.py:81] - Rapport HTML généré avec succès: generated_reports/report_vuln_scan_20250528_090319.html
+2025-05-28 09:03:19,860 - reporting_generator - INFO - [reporting_generator.py:32] - Génération d'un rapport PDF pour le module vuln_scan
+2025-05-28 09:03:20,043 - reporting_generator - INFO - [reporting_generator.py:74] - Rapport PDF généré avec succès: generated_reports/report_vuln_scan_20250528_090319.pdf
