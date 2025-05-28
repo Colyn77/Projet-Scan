@@ -7,7 +7,8 @@ Cette toolbox a pour objectif de centraliser et d’automatiser plusieurs tests 
 ## 🚀 Fonctionnalités principales
 
 - 🔎 Scan réseau via Nmap
-- 🌐 Scan de vulnérabilités web (OWASP)
+- 🌐 Scan de vulnérabilités web (OWASP) & CVEs (Nmap NSE)
+- 🦈 Capture réseau via WireShark
 - 🧠 Détection automatique de services et déclenchement des modules associés
 - 📁 Génération de rapports
 - 🧰 Modules extensibles (plug & play)
@@ -24,10 +25,9 @@ Cette toolbox a pour objectif de centraliser et d’automatiser plusieurs tests 
 ## 🧪 Installation
 
 ```bash
-git clone https://github.com/tonrepo/toolbox-scan.git
-cd toolbox-scan
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload
+git clone https://github.com/Colyn77/Projet-Scan
+cd Projet-Scan
+./install.sh
+source venv/bin/activate (si environnement virtuel voulu)
+python3 app.py
 
