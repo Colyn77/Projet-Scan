@@ -7,7 +7,7 @@ Cette toolbox a pour objectif de centraliser et d’automatiser plusieurs tests 
 ## 🚀 Fonctionnalités principales
 
 - 🔎 Scan réseau via Nmap
-- 🌐 Scan de vulnérabilités web (OWASP) & CVEs (Nmap NSE)
+- 🌐 Scan de vulnérabilités web (Nucléi) & Systeme (Nmap NSE)
 - 🦈 Capture réseau via WireShark
 - 🧠 Détection automatique de services et déclenchement des modules associés
 - 📁 Génération de rapports
