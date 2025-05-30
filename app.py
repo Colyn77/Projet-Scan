@@ -29,6 +29,7 @@ from routes.vuln_routes import vuln_bp
 from routes.exploit_routes import exploit_bp
 from routes.post_exploit_routes import post_exploit_bp
 from routes.plugin_routes import plugin_bp
+from routes.nuclei_routes import nuclei_bp
 from services.plugin_manager import init_plugin_environment
 
 # 🌍 Initialisation
@@ -77,6 +78,7 @@ def create_app():
     app.register_blueprint(auth_bp)
     app.register_blueprint(exploit_bp, url_prefix='/api/exploit')
     app.register_blueprint(post_exploit_bp, url_prefix="/api/post_exploit")
+    app.register_blueprint(nuclei_bp, url_prefix='/nuclei')
     app.register_blueprint(plugin_bp)
     
     logger.debug("Blueprints enregistrés")

@@ -152,3 +152,7 @@
 2025-05-27 06:39:00,682 - nmap_vulnscan - INFO - [nmap_vulnscan.py:64] - Vulnérabilité trouvée sur port 80: http-vuln-cve2017-1001000
 2025-05-27 06:39:00,682 - nmap_vulnscan - INFO - [nmap_vulnscan.py:64] - Vulnérabilité trouvée sur port 80: http-phpself-xss
 2025-05-27 06:39:00,682 - nmap_vulnscan - INFO - [nmap_vulnscan.py:66] - Scan terminé: 2 vulnérabilité(s) trouvée(s) sur 192.168.36.129
+2025-05-30 06:02:29,234 - nmap_vulnscan - INFO - [nmap_vulnscan.py:22] - Démarrage du scan de vulnérabilités sur 192.168.36.132
+2025-05-30 06:02:29,242 - nmap_vulnscan - INFO - [nmap_vulnscan.py:29] - Exécution de nmap avec arguments: --script vuln -p 21
+2025-05-30 06:02:41,444 - nmap_vulnscan - INFO - [nmap_vulnscan.py:64] - Vulnérabilité trouvée sur port 21: ftp-vsftpd-backdoor
+2025-05-30 06:02:41,444 - nmap_vulnscan - INFO - [nmap_vulnscan.py:66] - Scan terminé: 1 vulnérabilité(s) trouvée(s) sur 192.168.36.132

@@ -1,5 +1,4 @@
 # services/metasploit_integration.py
-# Créez ce nouveau fichier dans votre dossier services/
 
 import subprocess
 import shutil

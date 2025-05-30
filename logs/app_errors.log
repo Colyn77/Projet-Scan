@@ -1252,3 +1252,64 @@ Traceback (most recent call last):
   File "/home/kali/Projet-Scan/templates/enumerate.html", line 337, in template
     {% block content %}
 jinja2.exceptions.TemplateSyntaxError: Unexpected end of template. Jinja was looking for the following tags: 'endblock'. The innermost block that needs to be closed is 'block'.
+2025-05-30 07:01:01,526 - app - ERROR - [app.py:875] - Exception on /nuclei/ [GET]
+Traceback (most recent call last):
+  File "/home/kali/Projet-Scan/routes/nuclei_routes.py", line 21, in index
+    return render_template(
+        'nuclei_simple.html',  # Utiliser le template simplifié
+    ...<2 lines>...
+        templates=templates
+    )
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+                                 ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: nuclei_simple.html
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/routes/nuclei_routes.py", line 30, in index
+    return render_template('nuclei_simple.html', nuclei_available=False)
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+                                 ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/kali/Projet-Scan/venv/lib/python3.13/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: nuclei_simple.html

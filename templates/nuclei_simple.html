@@ -1,0 +1,907 @@
+{% extends "base.html" %}
+
+{% block title %}Scanner Nuclei - Vulnérabilités Web{% endblock %}
+
+{% block head %}
+<style>
+/* Styles pour le module Nuclei */
+.nuclei-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.page-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 10px;
+}
+
+.page-header h1 {
+    margin: 0 0 10px 0;
+    font-size: 2.5em;
+}
+
+.status-info {
+    margin-top: 15px;
+}
+
+.status-badge {
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.status-available {
+    background: #28a745;
+    color: white;
+}
+
+.status-unavailable {
+    background: #dc3545;
+    color: white;
+}
+
+.alert {
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 5px;
+    border-left: 4px solid #ffc107;
+}
+
+.alert-warning {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.tabs {
+    display: flex;
+    background: #f8f9fa;
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+.tab {
+    flex: 1;
+    padding: 15px 20px;
+    background: #e9ecef;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.tab:hover {
+    background: #dee2e6;
+}
+
+.tab.active {
+    background: #007bff;
+    color: white;
+}
+
+.tab-content {
+    display: none;
+    background: white;
+    padding: 30px;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.scan-form {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #495057;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e9ecef;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.25);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.severity-selector {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.severity-selector label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 0;
+    cursor: pointer;
+    padding: 8px 12px;
+    border: 2px solid #e9ecef;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.severity-selector label:hover {
+    background: #f8f9fa;
+}
+
+.severity-selector input[type="checkbox"]:checked + label,
+.severity-selector label:has(input[type="checkbox"]:checked) {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.templates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #e9ecef;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.template-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.template-item label {
+    margin-bottom: 0;
+    cursor: pointer;
+}
+
+.advanced-options {
+    display: none;
+    margin-top: 20px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 5px;
+    border-left: 4px solid #007bff;
+}
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s;
+    margin-right: 10px;
+}
+
+.btn-primary {
+    background: #007bff;
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: #0056b3;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: #545b62;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.loading {
+    display: none;
+    text-align: center;
+    padding: 40px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #e9ecef;
+    border-left: 5px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.results-container {
+    margin-top: 30px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.results-header {
+    padding: 20px;
+    background: #28a745;
+    color: white;
+    border-radius: 10px 10px 0 0;
+}
+
+.results-content {
+    padding: 20px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+}
+
+.stat-value {
+    font-size: 2em;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.stat-label {
+    margin-top: 5px;
+    color: #6c757d;
+}
+
+.findings-container {
+    margin-top: 20px;
+}
+
+.finding-item {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    overflow: hidden;
+}
+
+.finding-header {
+    padding: 15px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.finding-title {
+    font-weight: bold;
+    color: #495057;
+}
+
+.severity-critical { border-left: 5px solid #dc3545; }
+.severity-high { border-left: 5px solid #fd7e14; }
+.severity-medium { border-left: 5px solid #ffc107; }
+.severity-low { border-left: 5px solid #28a745; }
+.severity-info { border-left: 5px solid #17a2b8; }
+
+.finding-details {
+    display: none;
+    padding: 0 15px 15px;
+    border-top: 1px solid #e9ecef;
+}
+
+.finding-details.show {
+    display: block;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.history-table th,
+.history-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.history-table th {
+    background: #f8f9fa;
+    font-weight: bold;
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 14px;
+}
+
+.btn-info {
+    background: #17a2b8;
+    color: white;
+}
+
+.btn-info:hover {
+    background: #138496;
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .severity-selector {
+        flex-direction: column;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="nuclei-container">
+    <div class="page-header">
+        <h1>🔬 Scanner Nuclei</h1>
+        <p>Scanner de vulnérabilités web avec templates communautaires</p>
+        
+        <div class="status-info">
+            Status: 
+            {% if nuclei_available %}
+                <span class="status-badge status-available">✅ Disponible</span>
+            {% else %}
+                <span class="status-badge status-unavailable">❌ Non disponible</span>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if not nuclei_available %}
+    <div class="alert alert-warning">
+        <strong>⚠️ Nuclei non disponible!</strong> 
+        Nuclei n'est pas installé sur ce système.
+        <div style="margin-top: 10px;">
+            <button class="btn btn-primary" onclick="installNuclei()">
+                📥 Installer Nuclei automatiquement
+            </button>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="tabs">
+        <button class="tab active" onclick="switchTab('scan')">🎯 Scanner</button>
+        <button class="tab" onclick="switchTab('batch')">📋 Scan Multiple</button>
+        <button class="tab" onclick="switchTab('history')">📚 Historique</button>
+    </div>
+
+    <!-- Onglet Scanner Simple -->
+    <div class="tab-content active" id="tab-scan">
+        <div class="scan-form">
+            <h3>🎯 Scanner une URL</h3>
+            <form id="scanForm">
+                <div class="form-group">
+                    <label for="url">🌐 URL à scanner:</label>
+                    <input type="url" id="url" name="url" class="form-control" 
+                           placeholder="https://example.com ou example.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>🚨 Niveau de sévérité:</label>
+                    <div class="severity-selector">
+                        <label><input type="checkbox" name="severity" value="info"> ℹ️ Info</label>
+                        <label><input type="checkbox" name="severity" value="low"> 🟡 Low</label>
+                        <label><input type="checkbox" name="severity" value="medium" checked> 🟠 Medium</label>
+                        <label><input type="checkbox" name="severity" value="high" checked> 🔴 High</label>
+                        <label><input type="checkbox" name="severity" value="critical" checked> ⚠️ Critical</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <button type="button" onclick="toggleAdvanced()">⚙️ Options avancées</button>
+                </div>
+                
+                <div class="advanced-options" id="advancedOptions">
+                    <div class="form-group">
+                        <label>📝 Catégories de templates:</label>
+                        <div class="templates-grid">
+                            {% for template in templates %}
+                            <div class="template-item">
+                                <input type="checkbox" name="templates" value="{{ template }}" id="tpl_{{ template }}">
+                                <label for="tpl_{{ template }}">{{ template }}</label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="timeout">⏱️ Timeout (secondes):</label>
+                            <input type="number" id="timeout" name="timeout" value="300" min="60" max="1800" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="rate_limit">🚀 Limite de taux (req/sec):</label>
+                            <input type="number" id="rate_limit" name="rate_limit" value="150" min="1" max="1000" class="form-control">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="user_agent">🕵️ User-Agent personnalisé:</label>
+                        <input type="text" id="user_agent" name="user_agent" class="form-control" 
+                               placeholder="Mozilla/5.0 (optionnel)">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary" {% if not nuclei_available %}disabled{% endif %}>
+                        🚀 Lancer le scan
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="updateTemplates()" 
+                            {% if not nuclei_available %}disabled{% endif %}>
+                        🔄 Mettre à jour les templates
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Onglet Scan Multiple -->
+    <div class="tab-content" id="tab-batch">
+        <div class="scan-form">
+            <h3>📋 Scanner plusieurs URLs</h3>
+            <form id="batchScanForm">
+                <div class="form-group">
+                    <label for="urls">📝 URLs à scanner (une par ligne, max 100):</label>
+                    <textarea id="urls" name="urls" class="form-control" rows="10" 
+                              placeholder="https://example1.com&#10;https://example2.com&#10;subdomain.example.com" required></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>🚨 Niveau de sévérité:</label>
+                        <div class="severity-selector">
+                            <label><input type="checkbox" name="batch_severity" value="info"> ℹ️ Info</label>
+                            <label><input type="checkbox" name="batch_severity" value="low"> 🟡 Low</label>
+                            <label><input type="checkbox" name="batch_severity" value="medium" checked> 🟠 Medium</label>
+                            <label><input type="checkbox" name="batch_severity" value="high" checked> 🔴 High</label>
+                            <label><input type="checkbox" name="batch_severity" value="critical" checked> ⚠️ Critical</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="batch_size">📦 Taille du lot:</label>
+                        <input type="number" id="batch_size" name="batch_size" value="10" min="1" max="50" class="form-control">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary" {% if not nuclei_available %}disabled{% endif %}>
+                        🚀 Lancer le scan multiple
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Onglet Historique -->
+    <div class="tab-content" id="tab-history">
+        <div class="history-section">
+            <h3>📚 Historique des scans</h3>
+            <button class="btn btn-secondary" onclick="refreshHistory()">🔄 Actualiser</button>
+            
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>📅 Date</th>
+                        <th>📄 Fichier</th>
+                        <th>🐛 Vulnérabilités</th>
+                        <th>💾 Taille</th>
+                        <th>⚡ Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="historyTable">
+                    {% for scan in scan_history %}
+                    <tr>
+                        <td>{{ scan.timestamp[:19].replace('T', ' ') }}</td>
+                        <td>{{ scan.filename }}</td>
+                        <td>{{ scan.findings_count }}</td>
+                        <td>{{ "%.1f"|format(scan.size / 1024) }} KB</td>
+                        <td>
+                            <button class="btn btn-sm btn-info" onclick="viewReport('{{ scan.filename }}')">
+                                👁️ Voir
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Zone de chargement -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>🔄 Scan en cours, veuillez patienter...</p>
+    </div>
+
+    <!-- Zone des résultats -->
+    <div class="results-container" id="results" style="display: none;">
+        <div class="results-header">
+            <h3>📊 Résultats du scan</h3>
+            <div id="scanInfo"></div>
+        </div>
+        <div class="results-content">
+            <div class="stats-grid" id="statsGrid"></div>
+            <div id="findingsContainer"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Variables globales
+let currentResults = null;
+
+// Fonction pour changer d'onglet
+function switchTab(tabName) {
+    // Masquer tous les contenus d'onglets
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+    });
+    
+    // Désactiver tous les onglets
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    
+    // Activer l'onglet et le contenu sélectionnés
+    document.getElementById(`tab-${tabName}`).classList.add('active');
+    event.target.classList.add('active');
+    
+    // Charger l'historique si nécessaire
+    if (tabName === 'history') {
+        refreshHistory();
+    }
+}
+
+// Fonction pour afficher/masquer les options avancées
+function toggleAdvanced() {
+    const advancedOptions = document.getElementById('advancedOptions');
+    const isVisible = advancedOptions.style.display === 'block';
+    advancedOptions.style.display = isVisible ? 'none' : 'block';
+}
+
+// Fonction pour collecter les valeurs des checkboxes
+function getCheckedValues(name) {
+    const checkboxes = document.querySelectorAll(`input[name="${name}"]:checked`);
+    return Array.from(checkboxes).map(cb => cb.value);
+}
+
+// Gestion du formulaire de scan simple
+document.getElementById('scanForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const url = formData.get('url');
+    
+    // Collecte des sévérités sélectionnées
+    const severities = getCheckedValues('severity');
+    const templates = getCheckedValues('templates');
+    
+    const data = {
+        url: url,
+        severity: severities.join(',') || 'medium,high,critical',
+        templates: templates,
+        timeout: parseInt(formData.get('timeout')),
+        rate_limit: parseInt(formData.get('rate_limit')),
+        user_agent: formData.get('user_agent')
+    };
+    
+    await performScan('/nuclei/scan', data);
+});
+
+// Gestion du formulaire de scan multiple
+document.getElementById('batchScanForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const severities = getCheckedValues('batch_severity');
+    
+    const data = {
+        urls: formData.get('urls'),
+        severity: severities.join(',') || 'medium,high,critical',
+        batch_size: parseInt(formData.get('batch_size'))
+    };
+    
+    await performScan('/nuclei/scan-multiple', data);
+});
+
+// Fonction principale pour effectuer un scan
+async function performScan(endpoint, data) {
+    const loading = document.getElementById('loading');
+    const results = document.getElementById('results');
+    
+    // Afficher le chargement
+    loading.style.display = 'block';
+    results.style.display = 'none';
+    
+    try {
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+            displayResults(result);
+        } else {
+            throw new Error(result.error || 'Erreur inconnue');
+        }
+        
+    } catch (error) {
+        alert('Erreur: ' + error.message);
+        console.error('Erreur scan:', error);
+    } finally {
+        loading.style.display = 'none';
+    }
+}
+
+// Fonction pour afficher les résultats
+function displayResults(data) {
+    const results = document.getElementById('results');
+    const scanInfo = document.getElementById('scanInfo');
+    const statsGrid = document.getElementById('statsGrid');
+    const findingsContainer = document.getElementById('findingsContainer');
+    
+    currentResults = data;
+    
+    // Informations du scan
+    if (data.scan_info) {
+        scanInfo.innerHTML = `
+            <p><strong>Cible:</strong> ${data.scan_info.target}</p>
+            <p><strong>Date:</strong> ${data.scan_info.timestamp}</p>
+            <p><strong>Sévérité:</strong> ${data.scan_info.severity}</p>
+        `;
+    }
+    
+    // Statistiques
+    const stats = data.stats || {};
+    statsGrid.innerHTML = `
+        <div class="stat-card">
+            <div class="stat-value">${stats.total || 0}</div>
+            <div class="stat-label">Total</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">${stats.by_severity?.critical || 0}</div>
+            <div class="stat-label">Critical</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">${stats.by_severity?.high || 0}</div>
+            <div class="stat-label">High</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">${stats.by_severity?.medium || 0}</div>
+            <div class="stat-label">Medium</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">${stats.by_severity?.low || 0}</div>
+            <div class="stat-label">Low</div>
+        </div>
+    `;
+    
+    // Résultats détaillés
+    displayFindings(data.findings || []);
+    
+    results.style.display = 'block';
+    results.scrollIntoView({ behavior: 'smooth' });
+}
+
+// Fonction pour afficher les vulnérabilités trouvées
+function displayFindings(findings) {
+    const container = document.getElementById('findingsContainer');
+    
+    if (!findings.length) {
+        container.innerHTML = '<p>🎉 Aucune vulnérabilité trouvée!</p>';
+        return;
+    }
+    
+    const findingsHtml = findings.map((finding, index) => {
+        const info = finding.info || {};
+        const severity = info.severity || 'unknown';
+        
+        return `
+            <div class="finding-item severity-${severity}">
+                <div class="finding-header" onclick="toggleFinding(${index})">
+                    <div>
+                        <span class="finding-title">${info.name || 'Vulnérabilité inconnue'}</span>
+                        <span class="severity-badge severity-${severity}">${severity.toUpperCase()}</span>
+                    </div>
+                    <span>▼</span>
+                </div>
+                <div class="finding-details" id="finding-${index}">
+                    <p><strong>Description:</strong> ${info.description || 'Aucune description'}</p>
+                    <p><strong>URL:</strong> ${finding.matched_at || finding.host || 'N/A'}</p>
+                    ${info.reference ? `<p><strong>Référence:</strong> ${Array.isArray(info.reference) ? info.reference.join(', ') : info.reference}</p>` : ''}
+                    ${finding.curl_command ? `<p><strong>Curl:</strong> <code>${finding.curl_command}</code></p>` : ''}
+                    ${finding.response ? `<div><strong>Réponse:</strong><pre style="max-height: 200px; overflow-y: auto; background: #f8f9fa; padding: 10px; border-radius: 4px;">${finding.response.substring(0, 1000)}${finding.response.length > 1000 ? '...' : ''}</pre></div>` : ''}
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    container.innerHTML = `
+        <div class="findings-container">
+            <h4>🐛 Vulnérabilités détectées (${findings.length})</h4>
+            ${findingsHtml}
+        </div>
+    `;
+}
+
+// Fonction pour afficher/masquer les détails d'une vulnérabilité
+function toggleFinding(index) {
+    const details = document.getElementById(`finding-${index}`);
+    const isVisible = details.classList.contains('show');
+    
+    // Fermer tous les autres détails
+    document.querySelectorAll('.finding-details').forEach(detail => {
+        detail.classList.remove('show');
+    });
+    
+    // Afficher ou masquer le détail sélectionné
+    if (!isVisible) {
+        details.classList.add('show');
+    }
+}
+
+// Fonction pour installer Nuclei
+async function installNuclei() {
+    const button = event.target;
+    const originalText = button.innerHTML;
+    
+    button.innerHTML = '⏳ Installation en cours...';
+    button.disabled = true;
+    
+    try {
+        const response = await fetch('/nuclei/install', {
+            method: 'POST'
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+            showNotification('✅ Nuclei installé avec succès!', 'success');
+            // Recharger la page après 2 secondes
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
+        } else {
+            showNotification('❌ Erreur d\'installation: ' + result.error, 'error');
+            button.innerHTML = originalText;
+            button.disabled = false;
+        }
+    } catch (error) {
+        showNotification('❌ Erreur d\'installation: ' + error.message, 'error');
+        button.innerHTML = originalText;
+        button.disabled = false;
+    }
+}
+
+// Fonction pour mettre à jour les templates
+async function updateTemplates() {
+    try {
+        const response = await fetch('/nuclei/update-templates', {
+            method: 'POST'
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+            alert('✅ Templates mis à jour avec succès!');
+        } else {
+            alert('❌ Erreur: ' + result.error);
+        }
+    } catch (error) {
+        alert('❌ Erreur: ' + error.message);
+    }
+}
+
+// Fonction pour actualiser l'historique
+async function refreshHistory() {
+    try {
+        const response = await fetch('/nuclei/history');
+        const data = await response.json();
+        
+        const tbody = document.getElementById('historyTable');
+        
+        if (data.history && data.history.length > 0) {
+            tbody.innerHTML = data.history.map(scan => `
+                <tr>
+                    <td>${scan.timestamp.substring(0, 19).replace('T', ' ')}</td>
+                    <td>${scan.filename}</td>
+                    <td>${scan.findings_count}</td>
+                    <td>${(scan.size / 1024).toFixed(1)} KB</td>
+                    <td>
+                        <button class="btn btn-sm btn-info" onclick="viewReport('${scan.filename}')">
+                            👁️ Voir
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        } else {
+            tbody.innerHTML = '<tr><td colspan="5">Aucun scan dans l\'historique</td></tr>';
+        }
+    } catch (error) {
+        console.error('Erreur lors du chargement de l\'historique:', error);
+    }
+}
+
+// Fonction pour voir un rapport
+async function viewReport(filename) {
+    try {
+        const response = await fetch(`/nuclei/report/${filename}`);
+        const data = await response.json();
+        
+        if (response.ok) {
+            displayResults(data);
+            // Remonter vers les résultats
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        } else {
+            alert('Erreur: ' + data.error);
+        }
+    } catch (error) {
+        alert('Erreur: ' + error.message);
+    }
+}
+
+// Chargement initial
+document.addEventListener('DOMContentLoaded', function() {
+    refreshHistory();
+});
+</script>
+{% endblock %}

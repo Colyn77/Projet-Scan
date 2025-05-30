@@ -19,3 +19,18 @@
 2025-05-28 09:01:09,735 - network_discovery - INFO - [network_discovery.py:11] - Démarrage de la découverte du réseau: 192.168.36.0/24
 2025-05-28 09:01:12,268 - network_discovery - INFO - [network_discovery.py:21] - 6 hôtes trouvés
 2025-05-28 09:01:12,268 - network_discovery - INFO - [network_discovery.py:32] - Découverte terminée: 6 hôtes actifs trouvés
+2025-05-30 05:58:20,072 - network_discovery - INFO - [network_discovery.py:11] - Démarrage de la découverte du réseau: 192.168.36.0/24
+2025-05-30 05:58:22,630 - network_discovery - INFO - [network_discovery.py:21] - 5 hôtes trouvés
+2025-05-30 05:58:22,630 - network_discovery - INFO - [network_discovery.py:32] - Découverte terminée: 5 hôtes actifs trouvés
+2025-05-30 05:59:03,674 - network_discovery - INFO - [network_discovery.py:11] - Démarrage de la découverte du réseau: 192.9.200.0/24
+2025-05-30 05:59:05,389 - network_discovery - INFO - [network_discovery.py:21] - 256 hôtes trouvés
+2025-05-30 05:59:05,389 - network_discovery - INFO - [network_discovery.py:32] - Découverte terminée: 256 hôtes actifs trouvés
+2025-05-30 05:59:24,161 - network_discovery - INFO - [network_discovery.py:11] - Démarrage de la découverte du réseau: 192.168.1.0/24
+2025-05-30 05:59:42,760 - network_discovery - INFO - [network_discovery.py:21] - 256 hôtes trouvés
+2025-05-30 05:59:42,760 - network_discovery - INFO - [network_discovery.py:32] - Découverte terminée: 256 hôtes actifs trouvés
+2025-05-30 06:00:30,994 - network_discovery - INFO - [network_discovery.py:11] - Démarrage de la découverte du réseau: 10.10.10.0/24
+2025-05-30 06:00:53,606 - network_discovery - INFO - [network_discovery.py:21] - 256 hôtes trouvés
+2025-05-30 06:00:53,606 - network_discovery - INFO - [network_discovery.py:32] - Découverte terminée: 256 hôtes actifs trouvés
+2025-05-30 06:01:26,539 - network_discovery - INFO - [network_discovery.py:11] - Démarrage de la découverte du réseau: 192.168.36.0/24
+2025-05-30 06:01:28,529 - network_discovery - INFO - [network_discovery.py:21] - 5 hôtes trouvés
+2025-05-30 06:01:28,529 - network_discovery - INFO - [network_discovery.py:32] - Découverte terminée: 5 hôtes actifs trouvés

@@ -119,3 +119,7 @@ jinja2.exceptions.UndefinedError: 'list object' has no attribute 'items'
 2025-05-28 09:03:19,860 - reporting_generator - INFO - [reporting_generator.py:81] - Rapport HTML généré avec succès: generated_reports/report_vuln_scan_20250528_090319.html
 2025-05-28 09:03:19,860 - reporting_generator - INFO - [reporting_generator.py:32] - Génération d'un rapport PDF pour le module vuln_scan
 2025-05-28 09:03:20,043 - reporting_generator - INFO - [reporting_generator.py:74] - Rapport PDF généré avec succès: generated_reports/report_vuln_scan_20250528_090319.pdf
+2025-05-30 06:02:41,445 - reporting_generator - INFO - [reporting_generator.py:32] - Génération d'un rapport HTML pour le module vuln_scan
+2025-05-30 06:02:41,448 - reporting_generator - INFO - [reporting_generator.py:81] - Rapport HTML généré avec succès: generated_reports/report_vuln_scan_20250530_060241.html
+2025-05-30 06:02:41,448 - reporting_generator - INFO - [reporting_generator.py:32] - Génération d'un rapport PDF pour le module vuln_scan
+2025-05-30 06:02:42,040 - reporting_generator - INFO - [reporting_generator.py:74] - Rapport PDF généré avec succès: generated_reports/report_vuln_scan_20250530_060241.pdf

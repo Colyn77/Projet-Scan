@@ -154,3 +154,31 @@
 2025-05-28 10:07:09,180 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
 2025-05-28 10:15:43,314 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
 2025-05-28 10:26:27,000 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-30 05:56:38,254 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-30 06:04:42,927 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-30 06:07:18,643 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-30 06:53:03,129 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-30 06:54:19,105 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-30 07:00:53,375 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-30 07:03:17,778 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-30 07:04:31,817 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-30 07:05:27,476 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-30 07:06:47,894 - packet_sniffer - INFO - [packet_sniffer.py:15] - Récupération des interfaces réseau
+2025-05-30 07:06:48,059 - packet_sniffer - INFO - [packet_sniffer.py:41] - 4 interfaces trouvées
+2025-05-30 07:17:14,673 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-30 07:22:32,417 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-30 07:24:07,178 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-30 08:37:48,198 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-30 08:38:39,503 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-30 08:44:17,843 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-30 08:55:05,236 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-30 08:58:18,282 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-30 09:01:24,130 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-30 09:05:02,436 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-30 09:11:26,702 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-30 09:12:41,998 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-30 09:17:10,080 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-30 09:18:17,722 - packet_sniffer - INFO - [packet_sniffer.py:15] - Récupération des interfaces réseau
+2025-05-30 09:18:17,726 - packet_sniffer - INFO - [packet_sniffer.py:41] - 4 interfaces trouvées
+2025-05-30 09:34:09,769 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture
+2025-05-30 09:39:39,523 - packet_sniffer - INFO - [packet_sniffer.py:243] - Scapy est disponible - utilisation pour la capture

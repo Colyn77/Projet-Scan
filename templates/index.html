@@ -5,18 +5,26 @@
   <p>Choisissez un module :</p>
 
   <div class="module-grid">
-    <a href="/network" class="card">🌐 Découverte réseau</a>
-    <a href="/portscan" class="card">🧠 Scan de ports</a>
-    <a href="/enumerate" class="card">🧩 Énumération</a>
-    <a href="/sniffer" class="card">🔍 Sniffer</a>
-    <a href="/hydra" class="card">🔐 Hydra</a>
-    <a href="/vuln" class="card">🛡 Vulnérabilités</a>
-    <a href="/reports" class="card">📊 Rapports de scan</a>
-    <a href="/api/exploit/reports" class="card">🐞 Rapports d'exploitation</a>
-    <a href="/plugins" class="card">🔌 Plugins</a>
-    <a href="/api/forensics" class="card">🔬 Analyse forensique</a>
-    <a href="/malware" class="card">🦠 Analyse de fichiers</a>
-    <a href="/timeline" class="card">📅 Timeline système</a>
+    <!-- Modules Réseau -->
+    <a href="/network" class="card network">🌐 Découverte réseau</a>
+    <a href="/portscan" class="card network">🔍 Scan de ports</a>
+    <a href="/enumerate" class="card network">🧩 Énumération</a>
+    <a href="/sniffer" class="card network">📡 Sniffer</a>
+    
+    <!-- Modules Sécurité -->
+    <a href="/vuln" class="card security">🛡 Vulnérabilités NSE</a>
+    <a href="/nuclei" class="card security">🔬 Scanner Nuclei</a>
+    <a href="/hydra" class="card security">🔐 Bruteforce</a>
+    
+    <!-- Modules Analyse -->
+    <a href="/api/forensics" class="card analysis">🔬 Analyse forensique</a>
+    <a href="/malware" class="card analysis">🦠 Analyse de fichiers</a>
+    <a href="/timeline" class="card analysis">📅 Timeline système</a>
+    
+    <!-- Modules Rapports et Outils -->
+    <a href="/reports" class="card reports">📊 Rapports de scan</a>
+    <a href="/api/exploit/reports" class="card reports">🐞 Rapports d'exploitation</a>
+    <a href="/plugins" class="card tools">🔌 Plugins</a>
   </div>
 {% endblock %}
 
@@ -39,14 +47,84 @@
     font-size: 16px;
     text-decoration: none;
     color: #2c3e50;
-    transition: all 0.2s ease-in-out;
-    box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    transition: all 0.3s ease;
+  }
+
+  /* Catégories de couleurs */
+  .card.network::before {
+    background: linear-gradient(90deg, #3498db, #2980b9);
+  }
+  
+  .card.security::before {
+    background: linear-gradient(90deg, #e74c3c, #c0392b);
+  }
+  
+  .card.analysis::before {
+    background: linear-gradient(90deg, #9b59b6, #8e44ad);
+  }
+  
+  .card.reports::before {
+    background: linear-gradient(90deg, #f39c12, #e67e22);
+  }
+  
+  .card.tools::before {
+    background: linear-gradient(90deg, #1abc9c, #16a085);
   }
 
   .card:hover {
-    background-color: #f0f9f1;
-    border-color: #4CAF50;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  }
+
+  .card.network:hover {
+    background: linear-gradient(135deg, #ebf3fd, #d6eaf8);
+    border-color: #3498db;
+  }
+
+  .card.security:hover {
+    background: linear-gradient(135deg, #fdebea, #fadbd8);
+    border-color: #e74c3c;
+  }
+
+  .card.analysis:hover {
+    background: linear-gradient(135deg, #f4ecf7, #e8daef);
+    border-color: #9b59b6;
+  }
+
+  .card.reports:hover {
+    background: linear-gradient(135deg, #fef5e7, #fdeaa7);
+    border-color: #f39c12;
+  }
+
+  .card.tools:hover {
+    background: linear-gradient(135deg, #e8f8f5, #d1f2eb);
+    border-color: #1abc9c;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .module-grid {
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 15px;
+    }
+    
+    .card {
+      padding: 20px;
+      font-size: 14px;
+    }
   }
 </style>
 {% endblock %}
