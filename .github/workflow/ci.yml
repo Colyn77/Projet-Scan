@@ -1,0 +1,205 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+
+jobs:
+  # -------------------------------------------------------
+  # 1 Job: installer et exécuter pytest‐benchmark
+  # -------------------------------------------------------
+  benchmark:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.10, 3.11]
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v3
+
+      - name: Configurer la version de Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Créer un venv et l’activer
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install --upgrade pip
+
+      - name: Installer les dépendances
+        run: |
+          source .venv/bin/activate
+          pip install -r requirements.txt
+          pip install pytest-benchmark
+
+      - name: Lancer pytest‐benchmark et comparer au baseline
+        run: |
+          source .venv/bin/activate
+          pytest --benchmark-only
+        # (Le fichier pytest.ini doit contenir les options pour comparer au baseline,
+        #  par exemple --benchmark-compare=.benchmarks/baseline.json et --benchmark-compare-fail=20%)
+
+  # -------------------------------------------------------
+  # 2 Job: lancer Locust en headless contre votre Flask
+  # -------------------------------------------------------
+  load-test:
+    runs-on: ubuntu-latest
+    needs: [benchmark]
+    services:
+      web:
+        image: python:3.11-slim
+        ports:
+          - 5000:5000
+        env:
+          FLASK_ENV: development
+        options: >-
+          --health-cmd="curl --fail http://localhost:5000/ || exit 1"
+          --health-interval=5s
+        command: >
+          /bin/bash -lc "
+            pip install flask requests python-dotenv python-nmap &&
+            cd /github/workspace &&
+            python app.py
+          "
+    steps:
+      - name: Attendre que le service web soit “healthy”
+        run: sleep 10
+
+      - name: Checkout du code (nécessaire pour récupérer le locustfile)
+        uses: actions/checkout@v3
+
+      - name: Configurer Python dans le runner
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Installer Locust dans le runner
+        run: |
+          python -m pip install --upgrade pip
+          pip install locust
+
+      - name: Lancer Locust en mode headless
+        run: |
+          locust -f load_tests/locustfile.py \
+            --host=http://127.0.0.1:5000 \
+            --users 50 \
+            --spawn-rate 5 \
+            --run-time 30s \
+            --headless \
+            --csv=reports/locust-report || { echo "Locust échoué !"; exit 1; }
+
+      - name: Publier les rapports Locust en tant qu’artéfact
+        uses: actions/upload-artifact@v3
+        with:
+          name: locust-reports
+          path: reports/
+
+  # -------------------------------------------------------
+  # 3 Job: lint (Flake8 uniquement)
+  # -------------------------------------------------------
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+      - name: Installer flake8
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8
+      - name: Lancer flake8
+        run: flake8 .
+
+  # -------------------------------------------------------
+  # 4 Job: SAST (Bandit uniquement)
+  # -------------------------------------------------------
+  sast:
+    runs-on: ubuntu-latest
+    needs: [lint]
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v3
+
+      - name: Configurer Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Créer un venv + installer Bandit
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install --upgrade pip
+          pip install bandit
+
+      - name: Lancer Bandit (analyse statique sécurité)
+        run: |
+          source .venv/bin/activate
+          bandit -r . -x venv,tests
+
+  # -------------------------------------------------------
+  # 5 Job: Dependency Scan (pip-audit)
+  # -------------------------------------------------------
+  dependency-scan:
+    runs-on: ubuntu-latest
+    needs: [sast]
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v3
+
+      - name: Configurer Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Créer un venv + installer dépendances + pip-audit
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pip-audit
+
+      - name: Lancer pip-audit pour détecter CVE high/critical
+        run: |
+          source .venv/bin/activate
+          pip-audit --fail-on high,critical
+
+  # -------------------------------------------------------
+  # 6 Job: Injection SQL (sqlmap)
+  # -------------------------------------------------------
+  sqlmap_scan:
+    runs-on: ubuntu-latest
+    needs: [dependency-scan]
+    services:
+      web:
+        image: python:3.11-slim
+        ports: ['5000:5000']
+        options: >-
+          --health-cmd="curl --fail http://localhost:5000/ || exit 1"
+          --health-interval=5s
+        command: >
+          /bin/bash -lc "
+            pip install flask requests python-dotenv python-nmap &&
+            cd /github/workspace &&
+            python app.py
+          "
+    steps:
+      - name: Attendre que le service Flask soit “healthy”
+        run: sleep 10
+
+      - name: Installer sqlmap
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sqlmap
+
+      - name: Lancer sqlmap contre un endpoint critique
+        run: |
+          sqlmap -u "http://127.0.0.1:5000/api/vuln?target=127.0.0.1" --batch --crawl=1 \
+            && echo "Pas de faille SQL détectée" || (echo "Injection SQL possible !" && exit 1)
