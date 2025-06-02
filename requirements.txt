@@ -25,3 +25,14 @@ requests>=2.31.0
 python-dotenv
 zipp==3.21.0
 importlib-metadata==8.6.1
+
+#Module pour les Test
+pytest
+pytest-benchmark
+locust
+bandit
+flake8
+pip-audit
+pytest-benchmark
+locust
+
