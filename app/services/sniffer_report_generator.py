@@ -4,15 +4,14 @@ import datetime
 import json
 from jinja2 import Environment, FileSystemLoader
 from app.services.packet_sniffer import analyze_pcap
-import logging
-
+from utils.logger import get_logger
 # Configuration des chemins
 TEMPLATES_DIR = "templates"
 REPORTS_DIR = "generated_reports"
 
 # Configuration du logging
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("sniffer_report_generator")
+logger = get_logger("sniffer_report_generator")
 
 class SnifferReportGenerator:
     def __init__(self):

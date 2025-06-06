@@ -2,12 +2,12 @@ from flask import Blueprint, request, jsonify, render_template, flash, redirect,
 from markupsafe import Markup
 from app.services.hydra_bruteforce import run_hydra, get_available_wordlists, create_custom_wordlist, get_services
 import os
-import logging
+from utils.logger import get_logger
 from werkzeug.utils import secure_filename
 
 # Configuration du logging
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("hydra_routes")
+logger = get_logger("hydra_routes")
 
 hydra_bp = Blueprint('hydra', __name__)
 

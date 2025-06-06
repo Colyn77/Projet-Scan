@@ -5,13 +5,13 @@ from services.parallel_vuln_scanner import parallel_scanner, parse_targets, pars
 from services.reporting_generator import generate_vuln_report
 import os
 import json
-import logging
+from utils.logger import get_logger
 import time
 from datetime import datetime
 
 # Configuration du logging
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("vuln_routes")
+logger = get_logger("vuln_routes")
 
 vuln_bp = Blueprint("vuln", __name__)
 

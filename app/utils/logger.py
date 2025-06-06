@@ -1,6 +1,5 @@
 # utils/logger.py
-
-import logging
+from utils.logger import get_logger
 import os
 from logging.handlers import RotatingFileHandler
 from datetime import datetime
@@ -34,7 +33,7 @@ class ToolboxLogger:
             os.makedirs(log_dir)
         
         # Configuration du logger
-        self.logger = logging.getLogger(name)
+        self.logger = get_logger(name)
         
         # Éviter d'ajouter plusieurs handlers
         if not self.logger.handlers:

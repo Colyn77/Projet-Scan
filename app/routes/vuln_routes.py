@@ -4,11 +4,10 @@ from app.services.nmap_vulnscan import vuln_scan, get_common_ports_by_category
 from app.services.reporting_generator import generate_vuln_report
 import os
 import json
-import logging
-
+from utils.logger import get_logger
 # Configuration du logging
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("vuln_routes")
+logger = get_logger("vuln_routes")
 
 vuln_bp = Blueprint("vuln", __name__)
 

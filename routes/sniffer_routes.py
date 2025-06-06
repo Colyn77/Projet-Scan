@@ -5,12 +5,12 @@ from services.sniffer_report_generator import SnifferReportGenerator
 from services.reporting_generator import generate_sniffer_report as gen_pdf_report
 from securite.chiffrement_module import encrypt_file
 import os
-import logging
+from utils.logger import get_logger
 import zipfile
 import datetime
 
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("sniffer_routes")
+logger = get_logger("sniffer_routes")
 
 sniffer_bp = Blueprint('sniffer', __name__)
 

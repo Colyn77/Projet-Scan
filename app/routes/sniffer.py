@@ -4,11 +4,11 @@ from app.services.packet_sniffer import capture_packets, get_interfaces, analyze
 from app.services.sniffer_report_generator import SnifferReportGenerator
 from app.securite.chiffrement_module import encrypt_file
 import os
-import logging
+from utils.logger import get_logger
 import zipfile
 
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("sniffer_routes")
+logger = get_logger("sniffer_routes")
 
 sniffer_bp = Blueprint('sniffer', __name__)
 

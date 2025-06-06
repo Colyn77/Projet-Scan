@@ -1,9 +1,9 @@
 from flask import Blueprint, request, jsonify, render_template, flash, redirect, url_for
 from services import nuclei_scanner
-import logging
+from utils.logger import get_logger
 import traceback
 
-logger = logging.getLogger(__name__)
+logger = get_logger("nuclei_routes")
 nuclei_bp = Blueprint("nuclei", __name__)
 
 @nuclei_bp.route("/")

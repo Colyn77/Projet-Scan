@@ -1,14 +1,13 @@
 import subprocess
 import os
 import json
-import logging
+from utils.logger import get_logger
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Union
 import csv
 
 # Configuration du logging
-logger = logging.getLogger(__name__)
-
+logger = get_logger("nuclei_scanner")
 # Configuration simple - chemins possibles pour Nuclei
 POSSIBLE_NUCLEI_PATHS = [
     "./bin/nuclei",
