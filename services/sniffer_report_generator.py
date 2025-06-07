@@ -2,6 +2,7 @@
 import os
 import datetime
 import json
+import logging
 from jinja2 import Environment, FileSystemLoader
 from services.packet_sniffer import analyze_pcap
 from utils.logger import get_logger

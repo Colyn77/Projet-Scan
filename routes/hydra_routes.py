@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify, render_template, flash, redirect,
 from markupsafe import Markup
 from services.hydra_bruteforce import run_hydra, get_available_wordlists, create_custom_wordlist, get_services
 import os
+import logging
 from utils.logger import get_logger
 from werkzeug.utils import secure_filename
 

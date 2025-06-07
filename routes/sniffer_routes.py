@@ -6,6 +6,7 @@ from services.reporting_generator import generate_sniffer_report as gen_pdf_repo
 from securite.chiffrement_module import encrypt_file
 import os
 from utils.logger import get_logger
+import logging
 import zipfile
 import datetime
 

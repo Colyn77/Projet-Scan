@@ -1,0 +1,14 @@
+🧠 Analyse mémoire lancée par : bryan
+📅 Date : 2025-06-07 16:30:13.113332
+
+[⚠️] Process suspect : python3 (PID 25098) avec connexions actives.
+
+=== État mémoire (RAM) ===
+Total       : 1964.54 MB
+Utilisé     : 486.30 MB
+Disponible  : 1240.89 MB
+Pourcentage : 36.8%
+
+=== Mémoire SWAP ===
+Total   : 1024.00 MB
+Utilisé : 398.86 MB
