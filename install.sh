@@ -131,6 +131,7 @@ if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
     sudo ufw allow from 192.168.0.0/16 to any port 5000
     sudo ufw allow 22  # SSH
     sudo ufw allow 443
+    sudo ufw allow 5432
     sudo ufw --force enable
 
     print_success "UFW configuré : seul le réseau local peut accéder à Flask (port 5000)"
