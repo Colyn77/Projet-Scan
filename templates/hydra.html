@@ -631,34 +631,54 @@
                     <h4><i class="bi bi-person"></i> Utilisateurs</h4>
                     
                     <div class="wordlist-presets">
-                        <div class="wordlist-preset active" data-type="users" data-list="common_users">
+                        <div class="wordlist-preset active" data-type="users" data-list="common">
                             Communs
                         </div>
-                        <div class="wordlist-preset" data-type="users" data-list="default_users">
+                        <div class="wordlist-preset" data-type="users" data-list="default">
                             Par défaut
                         </div>
-                        <div class="wordlist-preset" data-type="users" data-list="admin_users">
+                        <div class="wordlist-preset" data-type="users" data-list="admin">
                             Admin
                         </div>
                     </div>
                     
                     <div class="form-group">
-                        <label for="userlist">Liste sélectionnée</label>
                         <select name="userlist" id="userlist" class="form-control">
                             <option value="common_users">Utilisateurs communs</option>
                             <option value="default_users">Utilisateurs par défaut</option>
                             <option value="admin_users">Comptes administrateur</option>
-                            <option value="custom">Liste personnalisée</option>
                         </select>
+                    </div>
+                    
+                    <div class="wordlist-actions">
+                        <label class="checkbox-option">
+                            <input type="checkbox" id="toggle-custom-userlist">
+                            <span>Liste personnalisée</span>
+                        </label>
+                        
+                        <button type="button" id="upload-userlist-btn" class="btn-secondary">
+                            <i class="bi bi-upload"></i> Importer
+                        </button>
                     </div>
                     
                     <div class="custom-input-section" id="custom-userlist-container">
                         <div class="form-group">
                             <label for="custom_userlist">Liste personnalisée</label>
                             <textarea name="custom_userlist" id="custom_userlist" class="form-control" 
-                                      rows="6" placeholder="admin&#10;root&#10;user&#10;test&#10;guest"></textarea>
+                                      rows="6" placeholder="admin&#10;root&#10;user&#10;test"></textarea>
                             <div class="form-hint">Un nom d'utilisateur par ligne</div>
                         </div>
+                    </div>
+                    
+                    <div class="upload-section" id="upload-userlist-container">
+                        <div class="upload-form">
+                            <input type="file" id="userlist-file" class="file-input form-control" 
+                                   accept=".txt,.lst,.dict">
+                            <button type="button" id="submit-userlist-upload" class="btn-secondary">
+                                <i class="bi bi-check"></i> Valider
+                            </button>
+                        </div>
+                        <div id="userlist-upload-status"></div>
                     </div>
                 </div>
                 
@@ -667,10 +687,10 @@
                     <h4><i class="bi bi-key"></i> Mots de passe</h4>
                     
                     <div class="wordlist-presets">
-                        <div class="wordlist-preset active" data-type="passwords" data-list="common_passwords">
+                        <div class="wordlist-preset active" data-type="passwords" data-list="common">
                             Communs
                         </div>
-                        <div class="wordlist-preset" data-type="passwords" data-list="weak_passwords">
+                        <div class="wordlist-preset" data-type="passwords" data-list="weak">
                             Faibles
                         </div>
                         <div class="wordlist-preset" data-type="passwords" data-list="rockyou">
@@ -679,22 +699,42 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="passlist">Liste sélectionnée</label>
                         <select name="passlist" id="passlist" class="form-control">
                             <option value="common_passwords">Mots de passe communs</option>
                             <option value="weak_passwords">Mots de passe faibles</option>
                             <option value="rockyou">RockYou (top 1000)</option>
-                            <option value="custom">Liste personnalisée</option>
                         </select>
+                    </div>
+                    
+                    <div class="wordlist-actions">
+                        <label class="checkbox-option">
+                            <input type="checkbox" id="toggle-custom-passlist">
+                            <span>Liste personnalisée</span>
+                        </label>
+                        
+                        <button type="button" id="upload-passlist-btn" class="btn-secondary">
+                            <i class="bi bi-upload"></i> Importer
+                        </button>
                     </div>
                     
                     <div class="custom-input-section" id="custom-passlist-container">
                         <div class="form-group">
                             <label for="custom_passlist">Liste personnalisée</label>
                             <textarea name="custom_passlist" id="custom_passlist" class="form-control" 
-                                      rows="6" placeholder="123456&#10;password&#10;admin&#10;qwerty&#10;letmein"></textarea>
+                                      rows="6" placeholder="123456&#10;password&#10;admin&#10;qwerty"></textarea>
                             <div class="form-hint">Un mot de passe par ligne</div>
                         </div>
+                    </div>
+                    
+                    <div class="upload-section" id="upload-passlist-container">
+                        <div class="upload-form">
+                            <input type="file" id="passlist-file" class="file-input form-control" 
+                                   accept=".txt,.lst,.dict">
+                            <button type="button" id="submit-passlist-upload" class="btn-secondary">
+                                <i class="bi bi-check"></i> Valider
+                            </button>
+                        </div>
+                        <div id="passlist-upload-status"></div>
                     </div>
                 </div>
             </div>
@@ -838,48 +878,106 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Mettre à jour le select correspondant
             if (type === 'users') {
-                document.getElementById('userlist').value = list;
+                document.getElementById('userlist').value = `${list}_users`;
             } else if (type === 'passwords') {
-                document.getElementById('passlist').value = list;
+                document.getElementById('passlist').value = `${list}_passwords`;
             }
         });
     });
     
-    // Gestion des selects pour afficher les listes personnalisées
-    const userlistSelect = document.getElementById('userlist');
-    const passlistSelect = document.getElementById('passlist');
-    const customUserContainer = document.getElementById('custom-userlist-container');
-    const customPassContainer = document.getElementById('custom-passlist-container');
+    // Gestion des listes personnalisées
+    const customToggles = [
+        { toggle: 'toggle-custom-userlist', container: 'custom-userlist-container' },
+        { toggle: 'toggle-custom-passlist', container: 'custom-passlist-container' }
+    ];
     
-    if (userlistSelect && customUserContainer) {
-        userlistSelect.addEventListener('change', function() {
-            if (this.value === 'custom') {
-                customUserContainer.classList.add('active');
-            } else {
-                customUserContainer.classList.remove('active');
-            }
-            
-            // Mettre à jour les presets visuels
-            document.querySelectorAll('[data-type="users"]').forEach(p => p.classList.remove('active'));
-            const preset = document.querySelector(`[data-list="${this.value}"]`);
-            if (preset) preset.classList.add('active');
-        });
-    }
+    customToggles.forEach(({ toggle, container }) => {
+        const toggleEl = document.getElementById(toggle);
+        const containerEl = document.getElementById(container);
+        
+        if (toggleEl && containerEl) {
+            toggleEl.addEventListener('change', function() {
+                if (this.checked) {
+                    containerEl.classList.add('active');
+                } else {
+                    containerEl.classList.remove('active');
+                }
+            });
+        }
+    });
     
-    if (passlistSelect && customPassContainer) {
-        passlistSelect.addEventListener('change', function() {
-            if (this.value === 'custom') {
-                customPassContainer.classList.add('active');
-            } else {
-                customPassContainer.classList.remove('active');
-            }
-            
-            // Mettre à jour les presets visuels
-            document.querySelectorAll('[data-type="passwords"]').forEach(p => p.classList.remove('active'));
-            const preset = document.querySelector(`[data-list="${this.value}"]`);
-            if (preset) preset.classList.add('active');
-        });
-    }
+    // Gestion des uploads
+    const uploadToggles = [
+        { button: 'upload-userlist-btn', container: 'upload-userlist-container' },
+        { button: 'upload-passlist-btn', container: 'upload-passlist-container' }
+    ];
+    
+    uploadToggles.forEach(({ button, container }) => {
+        const buttonEl = document.getElementById(button);
+        const containerEl = document.getElementById(container);
+        
+        if (buttonEl && containerEl) {
+            buttonEl.addEventListener('click', function() {
+                if (containerEl.classList.contains('active')) {
+                    containerEl.classList.remove('active');
+                } else {
+                    containerEl.classList.add('active');
+                }
+            });
+        }
+    });
+    
+    // Gestion des uploads de fichiers
+    const fileUploads = [
+        { 
+            fileInput: 'userlist-file', 
+            submitButton: 'submit-userlist-upload', 
+            statusDiv: 'userlist-upload-status',
+            textarea: 'custom_userlist'
+        },
+        { 
+            fileInput: 'passlist-file', 
+            submitButton: 'submit-passlist-upload', 
+            statusDiv: 'passlist-upload-status',
+            textarea: 'custom_passlist'
+        }
+    ];
+    
+    fileUploads.forEach(({ fileInput, submitButton, statusDiv, textarea }) => {
+        const fileEl = document.getElementById(fileInput);
+        const submitEl = document.getElementById(submitButton);
+        const statusEl = document.getElementById(statusDiv);
+        const textareaEl = document.getElementById(textarea);
+        
+        if (submitEl && fileEl && statusEl && textareaEl) {
+            submitEl.addEventListener('click', function() {
+                const file = fileEl.files[0];
+                if (!file) {
+                    statusEl.innerHTML = '<div style="color: #e74c3c;">Veuillez sélectionner un fichier</div>';
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    textareaEl.value = e.target.result;
+                    statusEl.innerHTML = '<div style="color: #27ae60;">✓ Fichier chargé avec succès</div>';
+                    
+                    // Activer la liste personnalisée
+                    const toggleId = textarea.includes('user') ? 'toggle-custom-userlist' : 'toggle-custom-passlist';
+                    const containerId = textarea.includes('user') ? 'custom-userlist-container' : 'custom-passlist-container';
+                    
+                    document.getElementById(toggleId).checked = true;
+                    document.getElementById(containerId).classList.add('active');
+                };
+                
+                reader.onerror = function() {
+                    statusEl.innerHTML = '<div style="color: #e74c3c;">Erreur lors de la lecture du fichier</div>';
+                };
+                
+                reader.readAsText(file);
+            });
+        }
+    });
     
     // Gestion du formulaire
     const form = document.getElementById('hydra-form');
@@ -1095,22 +1193,18 @@ document.addEventListener('DOMContentLoaded', function() {
             servicePresets[0].classList.add('active');
             serviceSelect.value = 'ssh';
             
-            // Réactiver les presets de wordlists par défaut
             wordlistPresets.forEach(p => p.classList.remove('active'));
-            document.querySelector('[data-type="users"][data-list="common_users"]').classList.add('active');
-            document.querySelector('[data-type="passwords"][data-list="common_passwords"]').classList.add('active');
+            document.querySelectorAll('[data-type="users"][data-list="common"]')[0].classList.add('active');
+            document.querySelectorAll('[data-type="passwords"][data-list="common"]')[0].classList.add('active');
             
-            // Réinitialiser les selects
-            document.getElementById('userlist').value = 'common_users';
-            document.getElementById('passlist').value = 'common_passwords';
+            // Réinitialiser les sections personnalisées
+            document.querySelectorAll('.custom-input-section, .upload-section').forEach(section => {
+                section.classList.remove('active');
+            });
             
-            // Masquer les sections personnalisées
-            document.getElementById('custom-userlist-container').classList.remove('active');
-            document.getElementById('custom-passlist-container').classList.remove('active');
-            
-            // Vider les textareas
-            document.getElementById('custom_userlist').value = '';
-            document.getElementById('custom_passlist').value = '';
+            customToggles.forEach(({ toggle }) => {
+                document.getElementById(toggle).checked = false;
+            });
             
             stopAttack();
         });
