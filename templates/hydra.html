@@ -1,1214 +1,794 @@
-{% extends "base.html" %}
-
-{% block title %}Attaque par force brute - Hydra{% endblock %}
-
-{% block head %}
-{{ super() }}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-<style>
-.hydra-container {
-    max-width: 1300px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-.form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 25px;
-    margin-bottom: 30px;
-}
-
-.form-section {
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-}
-
-.form-section h3 {
-    margin-top: 0;
-    color: #2c3e50;
-    border-bottom: 3px solid #e67e22;
-    padding-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #495057;
-    font-size: 1.1rem;
-}
-
-.form-control {
-    width: 100%;
-    padding: 12px 16px;
-    border: 2px solid #e9ecef;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    box-sizing: border-box;
-}
-
-.form-control:focus {
-    outline: none;
-    border-color: #e67e22;
-    box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
-    transform: translateY(-1px);
-}
-
-.form-hint {
-    font-size: 0.9rem;
-    color: #6c757d;
-    margin-top: 8px;
-    font-style: italic;
-}
-
-.service-presets {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 12px;
-    margin-bottom: 20px;
-}
-
-.service-preset {
-    padding: 10px 14px;
-    border: 2px solid #e9ecef;
-    border-radius: 8px;
-    background: #f8f9fa;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.3s ease;
-    font-weight: 500;
-    font-size: 0.9rem;
-}
-
-.service-preset:hover {
-    background: #e9ecef;
-    border-color: #e67e22;
-    transform: translateY(-2px);
-}
-
-.service-preset.active {
-    background: #e67e22;
-    color: white;
-    border-color: #e67e22;
-    box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3);
-}
-
-.wordlist-section {
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    margin-bottom: 30px;
-}
-
-.wordlist-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-}
-
-.wordlist-column {
-    position: relative;
-}
-
-.wordlist-column h4 {
-    color: #2c3e50;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.wordlist-presets {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-.wordlist-preset {
-    padding: 8px 12px;
-    border: 2px solid #e9ecef;
-    border-radius: 6px;
-    background: #f8f9fa;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.3s ease;
-    font-size: 0.85rem;
-    font-weight: 500;
-}
-
-.wordlist-preset:hover {
-    background: #e9ecef;
-    border-color: #e67e22;
-    transform: translateY(-1px);
-}
-
-.wordlist-preset.active {
-    background: #e67e22;
-    color: white;
-    border-color: #e67e22;
-    box-shadow: 0 2px 8px rgba(230, 126, 34, 0.3);
-}
-
-.wordlist-actions {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-    margin-top: 15px;
-    flex-wrap: wrap;
-}
-
-.checkbox-option {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    padding: 8px 12px;
-    border-radius: 6px;
-    transition: background-color 0.3s ease;
-}
-
-.checkbox-option:hover {
-    background: #f8f9fa;
-}
-
-.checkbox-option input[type="checkbox"] {
-    margin: 0;
-    transform: scale(1.2);
-}
-
-.custom-input-section {
-    margin-top: 15px;
-    padding: 15px;
-    background: #f8f9fa;
-    border-radius: 8px;
-    border: 2px dashed #e9ecef;
-    display: none;
-}
-
-.custom-input-section.active {
-    display: block;
-    border-color: #e67e22;
-}
-
-.upload-section {
-    margin-top: 15px;
-    padding: 15px;
-    background: #f0f8ff;
-    border-radius: 8px;
-    border: 2px dashed #3498db;
-    display: none;
-}
-
-.upload-section.active {
-    display: block;
-}
-
-.upload-form {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
-.file-input {
-    flex: 1;
-    min-width: 200px;
-}
-
-.http-options {
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    margin-bottom: 30px;
-    border-left: 5px solid #f39c12;
-    display: none;
-}
-
-.http-options.active {
-    display: block;
-}
-
-.http-options h3 {
-    color: #f39c12;
-    margin-top: 0;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.attack-settings {
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    margin-bottom: 30px;
-}
-
-.settings-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-}
-
-.setting-card {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-    border: 1px solid #e9ecef;
-}
-
-.setting-value {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #e67e22;
-    margin-bottom: 5px;
-}
-
-.setting-label {
-    font-size: 0.9rem;
-    color: #6c757d;
-}
-
-.attack-controls {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    margin-top: 30px;
-}
-
-.btn {
-    padding: 14px 28px;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    font-size: 1rem;
-}
-
-.btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none !important;
-}
-
-.btn-primary {
-    background: linear-gradient(135deg, #e67e22, #d35400);
-    color: white;
-    box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
-}
-
-.btn-primary:hover:not(:disabled) {
-    background: linear-gradient(135deg, #d35400, #e67e22);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(230, 126, 34, 0.4);
-}
-
-.btn-secondary {
-    background: linear-gradient(135deg, #95a5a6, #7f8c8d);
-    color: white;
-    box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
-}
-
-.btn-secondary:hover {
-    background: linear-gradient(135deg, #7f8c8d, #95a5a6);
-    transform: translateY(-2px);
-}
-
-.btn-danger {
-    background: linear-gradient(135deg, #e74c3c, #c0392b);
-    color: white;
-    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
-}
-
-.btn-danger:hover:not(:disabled) {
-    background: linear-gradient(135deg, #c0392b, #e74c3c);
-    transform: translateY(-2px);
-}
-
-.attack-section {
-    display: none;
-    margin-top: 30px;
-    padding: 25px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-}
-
-.attack-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.attack-status {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: bold;
-    color: #e67e22;
-}
-
-.attack-stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.stat-card {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 6px;
-    text-align: center;
-    border-left: 4px solid #e67e22;
-}
-
-.stat-value {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #2c3e50;
-}
-
-.stat-label {
-    font-size: 0.9rem;
-    color: #6c757d;
-}
-
-.results-list {
-    max-height: 400px;
-    overflow-y: auto;
-    border: 1px solid #e9ecef;
-    border-radius: 8px;
-}
-
-.result-item {
-    padding: 12px 15px;
-    border-bottom: 1px solid #e9ecef;
-    font-family: monospace;
-    font-size: 0.9rem;
-    transition: background-color 0.2s;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.result-item:hover {
-    background-color: #f8f9fa;
-}
-
-.result-item:last-child {
-    border-bottom: none;
-}
-
-.result-item.success {
-    background: linear-gradient(135deg, #d5f4e6, #f8f9fa);
-    border-left: 4px solid #27ae60;
-}
-
-.result-item.failed {
-    background: linear-gradient(135deg, #fadbd8, #f8f9fa);
-    border-left: 4px solid #e74c3c;
-}
-
-.credentials {
-    font-weight: bold;
-    color: #27ae60;
-}
-
-.alert {
-    padding: 15px 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    border: none;
-}
-
-.alert-warning {
-    background: linear-gradient(135deg, #fff3cd, #ffeaa7);
-    color: #856404;
-    border-left: 4px solid #f39c12;
-}
-
-.alert-danger {
-    background: linear-gradient(135deg, #f8d7da, #fadbd8);
-    color: #721c24;
-    border-left: 4px solid #e74c3c;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-    .form-grid, .wordlist-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .service-presets, .wordlist-presets {
-        grid-template-columns: 1fr;
-    }
-    
-    .attack-controls {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .btn {
-        width: 100%;
-        max-width: 300px;
-    }
-    
-    .wordlist-actions {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .upload-form {
-        flex-direction: column;
-        align-items: stretch;
-    }
-}
-
-@keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
-}
-
-.attacking {
-    animation: pulse 2s infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.spinner {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    border: 2px solid #ffffff;
-    border-radius: 50%;
-    border-top-color: transparent;
-    animation: spin 1s ease-in-out infinite;
-}
-</style>
-{% endblock %}
-
-{% block content %}
-<div class="hydra-container">
-    <h1><i class="bi bi-shield-slash"></i> Attaque par Force Brute - Hydra</h1>
-    <p>Testez la résistance de vos systèmes face aux attaques par dictionnaire avec des outils professionnels</p>
-    
-    <!-- Avertissement de sécurité -->
-    <div class="alert alert-warning">
-        <strong><i class="bi bi-exclamation-triangle"></i> Avertissement :</strong>
-        Cet outil doit être utilisé uniquement sur vos propres systèmes ou avec autorisation explicite. 
-        L'utilisation non autorisée peut être illégale.
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toolbox Cyber - Hydra</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <style>
+        .hydra-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 40px 0;
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .hero-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-section {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .form-section h3 {
+            margin-top: 0;
+            color: #2c3e50;
+            border-bottom: 3px solid #e67e22;
+            padding-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+            font-size: 1.1rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #e67e22;
+            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .form-hint {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        .service-presets {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .service-preset {
+            padding: 10px 14px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            background: #f8f9fa;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .service-preset:hover {
+            background: #e9ecef;
+            border-color: #e67e22;
+            transform: translateY(-2px);
+        }
+
+        .service-preset.active {
+            background: #e67e22;
+            color: white;
+            border-color: #e67e22;
+            box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3);
+        }
+
+        .wordlist-section {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .wordlist-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .wordlist-column {
+            position: relative;
+        }
+
+        .wordlist-column h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .wordlist-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+        }
+
+        .checkbox-option:hover {
+            background: #f8f9fa;
+        }
+
+        .checkbox-option input[type="checkbox"] {
+            margin: 0;
+            transform: scale(1.2);
+        }
+
+        .custom-input-section {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 2px dashed #e9ecef;
+            display: none;
+        }
+
+        .custom-input-section.active {
+            display: block;
+            border-color: #e67e22;
+        }
+
+        .upload-section {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f0f8ff;
+            border-radius: 8px;
+            border: 2px dashed #3498db;
+            display: none;
+        }
+
+        .upload-section.active {
+            display: block;
+        }
+
+        .upload-form {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .file-input {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .http-options {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            border-left: 5px solid #f39c12;
+            display: none;
+        }
+
+        .http-options.active {
+            display: block;
+        }
+
+        .http-options h3 {
+            color: #f39c12;
+            margin-top: 0;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .attack-settings {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .attack-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            color: white;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: linear-gradient(135deg, #d35400, #e67e22);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(230, 126, 34, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+            color: white;
+            box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #7f8c8d, #95a5a6);
+            transform: translateY(-2px);
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: none;
+        }
+
+        .alert-warning {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            color: #856404;
+            border-left: 4px solid #f39c12;
+        }
+
+        .nav-container {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            padding: 15px 0;
+            margin-bottom: 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container nav {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .home-link {
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-1px);
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            border-radius: 8px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .form-grid, .wordlist-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .service-presets {
+                grid-template-columns: 1fr;
+            }
+            
+            .attack-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .wordlist-actions {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .upload-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .nav-container nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero-section h1 {
+                font-size: 2rem;
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-container">
+        <nav>
+            <a href="/" class="home-link">Toolbox Cyber</a>
+            <div class="nav-links">
+                <a href="/network">Découverte</a>
+                <a href="/portscan">Scan</a>
+                <a href="/enumerate">Énumération</a>
+                <a href="/sniffer">Capture</a>
+                <a href="/hydra" class="active">Hydra</a>
+                <a href="/vuln">Vulnérabilités</a>
+            </div>
+        </nav>
     </div>
     
-    <form id="hydra-form">
-        <div class="form-grid">
-            <!-- Section Cible -->
-            <div class="form-section">
-                <h3><i class="bi bi-bullseye"></i> Cible</h3>
-                
-                <div class="form-group">
-                    <label for="target">Adresse IP ou nom d'hôte</label>
-                    <input type="text" name="target" id="target" class="form-control" 
-                           placeholder="192.168.1.100" required>
-                    <div class="form-hint">
-                        Cible à attaquer (IP ou nom de domaine)
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Section Service -->
-            <div class="form-section">
-                <h3><i class="bi bi-gear"></i> Service</h3>
-                
-                <div class="service-presets">
-                    <div class="service-preset active" data-service="ssh">
-                        SSH (22)
-                    </div>
-                    <div class="service-preset" data-service="ftp">
-                        FTP (21)
-                    </div>
-                    <div class="service-preset" data-service="telnet">
-                        Telnet (23)
-                    </div>
-                    <div class="service-preset" data-service="http-post-form">
-                        HTTP Form
-                    </div>
-                    <div class="service-preset" data-service="mysql">
-                        MySQL (3306)
-                    </div>
-                    <div class="service-preset" data-service="rdp">
-                        RDP (3389)
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="service">Service sélectionné</label>
-                    <select name="service" id="service" class="form-control" required>
-                        <option value="ssh">SSH (Port 22)</option>
-                        <option value="ftp">FTP (Port 21)</option>
-                        <option value="telnet">Telnet (Port 23)</option>
-                        <option value="http-post-form">Formulaire HTTP</option>
-                        <option value="mysql">MySQL (Port 3306)</option>
-                        <option value="rdp">RDP (Port 3389)</option>
-                        <option value="smtp">SMTP (Port 25)</option>
-                        <option value="pop3">POP3 (Port 110)</option>
-                        <option value="imap">IMAP (Port 143)</option>
-                    </select>
-                </div>
-            </div>
+    <div class="hydra-container">
+        <div class="hero-section">
+            <h1><i class="bi bi-shield-slash"></i> Attaque par Force Brute - Hydra</h1>
+            <p>Testez la résistance de vos systèmes face aux attaques par dictionnaire avec des outils professionnels</p>
         </div>
         
-        <!-- Options HTTP (conditionnelles) -->
-        <div class="http-options" id="http-options">
-            <h3><i class="bi bi-globe"></i> Configuration du formulaire HTTP</h3>
-            
+        <!-- Avertissement de sécurité -->
+        <div class="alert alert-warning">
+            <strong><i class="bi bi-exclamation-triangle"></i> Avertissement :</strong>
+            Cet outil doit être utilisé uniquement sur vos propres systèmes ou avec autorisation explicite. 
+            L'utilisation non autorisée peut être illégale.
+        </div>
+        
+        <form action="/api/hydra/attack" method="post" id="hydra-form">
             <div class="form-grid">
-                <div class="form-group">
-                    <label for="form_path">Chemin du formulaire</label>
-                    <input type="text" name="form_path" id="form_path" class="form-control" 
-                           value="/login.php" placeholder="/login.php">
-                    <div class="form-hint">
-                        Chemin vers le formulaire de connexion
+                <!-- Section Cible -->
+                <div class="form-section">
+                    <h3><i class="bi bi-bullseye"></i> Cible</h3>
+                    
+                    <div class="form-group">
+                        <label for="target">Adresse IP ou nom d'hôte</label>
+                        <input type="text" name="target" id="target" class="form-control" 
+                               placeholder="192.168.1.100" required>
+                        <div class="form-hint">
+                            Cible à attaquer (IP ou nom de domaine)
+                        </div>
                     </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="form_data">Données POST</label>
-                    <input type="text" name="form_data" id="form_data" class="form-control" 
-                           value="username=^USER^&password=^PASS^" 
-                           placeholder="username=^USER^&password=^PASS^">
-                    <div class="form-hint">
-                        Format des données envoyées (^USER^ et ^PASS^ seront remplacés)
-                    </div>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label for="form_success">Condition d'échec</label>
-                <input type="text" name="form_success" id="form_success" class="form-control" 
-                       value="F=Login failed" placeholder="F=Login failed">
-                <div class="form-hint">
-                    Message ou condition indiquant un échec (F=message) ou succès (S=message)
-                </div>
-            </div>
-        </div>
-        
-        <!-- Listes de mots -->
-        <div class="wordlist-section">
-            <h3 style="color: #2c3e50; border-bottom: 3px solid #e67e22; padding-bottom: 15px; display: flex; align-items: center; gap: 10px; margin-bottom: 25px;">
-                <i class="bi bi-list-ul"></i> Dictionnaires d'attaque
-            </h3>
-            
-            <div class="wordlist-grid">
-                <!-- Utilisateurs -->
-                <div class="wordlist-column">
-                    <h4><i class="bi bi-person"></i> Utilisateurs</h4>
+                <!-- Section Service -->
+                <div class="form-section">
+                    <h3><i class="bi bi-gear"></i> Service</h3>
                     
-                    <div class="wordlist-presets">
-                        <div class="wordlist-preset active" data-type="users" data-list="common">
-                            Communs
+                    <div class="service-presets">
+                        <div class="service-preset active" data-service="ssh">
+                            SSH (22)
                         </div>
-                        <div class="wordlist-preset" data-type="users" data-list="default">
-                            Par défaut
+                        <div class="service-preset" data-service="ftp">
+                            FTP (21)
                         </div>
-                        <div class="wordlist-preset" data-type="users" data-list="admin">
-                            Admin
+                        <div class="service-preset" data-service="telnet">
+                            Telnet (23)
+                        </div>
+                        <div class="service-preset" data-service="http-post-form">
+                            HTTP Form
+                        </div>
+                        <div class="service-preset" data-service="mysql">
+                            MySQL (3306)
+                        </div>
+                        <div class="service-preset" data-service="rdp">
+                            RDP (3389)
                         </div>
                     </div>
                     
                     <div class="form-group">
-                        <select name="userlist" id="userlist" class="form-control">
-                            <option value="common_users">Utilisateurs communs</option>
-                            <option value="default_users">Utilisateurs par défaut</option>
-                            <option value="admin_users">Comptes administrateur</option>
+                        <label for="service">Service sélectionné</label>
+                        <select name="service" id="service" class="form-control" required>
+                            <option value="">Chargement des services...</option>
                         </select>
                     </div>
-                    
-                    <div class="wordlist-actions">
-                        <label class="checkbox-option">
-                            <input type="checkbox" id="toggle-custom-userlist">
-                            <span>Liste personnalisée</span>
-                        </label>
-                        
-                        <button type="button" id="upload-userlist-btn" class="btn-secondary">
-                            <i class="bi bi-upload"></i> Importer
-                        </button>
-                    </div>
-                    
-                    <div class="custom-input-section" id="custom-userlist-container">
-                        <div class="form-group">
-                            <label for="custom_userlist">Liste personnalisée</label>
-                            <textarea name="custom_userlist" id="custom_userlist" class="form-control" 
-                                      rows="6" placeholder="admin&#10;root&#10;user&#10;test"></textarea>
-                            <div class="form-hint">Un nom d'utilisateur par ligne</div>
-                        </div>
-                    </div>
-                    
-                    <div class="upload-section" id="upload-userlist-container">
-                        <div class="upload-form">
-                            <input type="file" id="userlist-file" class="file-input form-control" 
-                                   accept=".txt,.lst,.dict">
-                            <button type="button" id="submit-userlist-upload" class="btn-secondary">
-                                <i class="bi bi-check"></i> Valider
-                            </button>
-                        </div>
-                        <div id="userlist-upload-status"></div>
-                    </div>
                 </div>
+            </div>
+            
+            <!-- Options HTTP (conditionnelles) -->
+            <div class="http-options" id="http-options">
+                <h3><i class="bi bi-globe"></i> Configuration du formulaire HTTP</h3>
                 
-                <!-- Mots de passe -->
-                <div class="wordlist-column">
-                    <h4><i class="bi bi-key"></i> Mots de passe</h4>
-                    
-                    <div class="wordlist-presets">
-                        <div class="wordlist-preset active" data-type="passwords" data-list="common">
-                            Communs
-                        </div>
-                        <div class="wordlist-preset" data-type="passwords" data-list="weak">
-                            Faibles
-                        </div>
-                        <div class="wordlist-preset" data-type="passwords" data-list="rockyou">
-                            RockYou
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="form_path">Chemin du formulaire</label>
+                        <input type="text" name="form_path" id="form_path" class="form-control" 
+                               value="/" placeholder="/login.php">
+                        <div class="form-hint">
+                            Chemin vers le formulaire de connexion
                         </div>
                     </div>
                     
                     <div class="form-group">
-                        <select name="passlist" id="passlist" class="form-control">
-                            <option value="common_passwords">Mots de passe communs</option>
-                            <option value="weak_passwords">Mots de passe faibles</option>
-                            <option value="rockyou">RockYou (top 1000)</option>
-                        </select>
-                    </div>
-                    
-                    <div class="wordlist-actions">
-                        <label class="checkbox-option">
-                            <input type="checkbox" id="toggle-custom-passlist">
-                            <span>Liste personnalisée</span>
-                        </label>
-                        
-                        <button type="button" id="upload-passlist-btn" class="btn-secondary">
-                            <i class="bi bi-upload"></i> Importer
-                        </button>
-                    </div>
-                    
-                    <div class="custom-input-section" id="custom-passlist-container">
-                        <div class="form-group">
-                            <label for="custom_passlist">Liste personnalisée</label>
-                            <textarea name="custom_passlist" id="custom_passlist" class="form-control" 
-                                      rows="6" placeholder="123456&#10;password&#10;admin&#10;qwerty"></textarea>
-                            <div class="form-hint">Un mot de passe par ligne</div>
+                        <label for="form_data">Données POST</label>
+                        <input type="text" name="form_data" id="form_data" class="form-control" 
+                               value="username=^USER^&password=^PASS^" 
+                               placeholder="username=^USER^&password=^PASS^">
+                        <div class="form-hint">
+                            Format des données envoyées (^USER^ et ^PASS^ seront remplacés)
                         </div>
                     </div>
-                    
-                    <div class="upload-section" id="upload-passlist-container">
-                        <div class="upload-form">
-                            <input type="file" id="passlist-file" class="file-input form-control" 
-                                   accept=".txt,.lst,.dict">
-                            <button type="button" id="submit-passlist-upload" class="btn-secondary">
-                                <i class="bi bi-check"></i> Valider
+                </div>
+                
+                <div class="form-group">
+                    <label for="form_success">Message d'erreur</label>
+                    <input type="text" name="form_success" id="form_success" class="form-control" 
+                           value="F=incorrect" placeholder="F=Login failed">
+                    <div class="form-hint">
+                        Préfixez avec F= pour un message d'échec ou S= pour un message de succès
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Listes de mots -->
+            <div class="wordlist-section">
+                <h3 style="color: #2c3e50; border-bottom: 3px solid #e67e22; padding-bottom: 15px; display: flex; align-items: center; gap: 10px; margin-bottom: 25px;">
+                    <i class="bi bi-list-ul"></i> Dictionnaires d'attaque
+                </h3>
+                
+                <div class="wordlist-grid">
+                    <!-- Utilisateurs -->
+                    <div class="wordlist-column">
+                        <h4><i class="bi bi-person"></i> Utilisateurs</h4>
+                        
+                        <div class="form-group">
+                            <label for="userlist">Liste d'utilisateurs</label>
+                            <select name="userlist" id="userlist" class="form-control">
+                                <option value="">Chargement des listes...</option>
+                            </select>
+                        </div>
+                        
+                        <div class="wordlist-actions">
+                            <label class="checkbox-option">
+                                <input type="checkbox" id="toggle-custom-userlist">
+                                <span>Liste personnalisée</span>
+                            </label>
+                            
+                            <button type="button" id="upload-userlist-btn" class="btn-secondary">
+                                <i class="bi bi-upload"></i> Importer
                             </button>
                         </div>
-                        <div id="passlist-upload-status"></div>
+                        
+                        <div class="custom-input-section" id="custom-userlist-container">
+                            <div class="form-group">
+                                <label for="custom_userlist">Liste personnalisée</label>
+                                <textarea name="custom_userlist" id="custom_userlist" class="form-control" 
+                                          rows="5" placeholder="admin&#10;root&#10;user&#10;test"></textarea>
+                                <div class="form-hint">Un nom d'utilisateur par ligne</div>
+                            </div>
+                        </div>
+                        
+                        <div class="upload-section" id="upload-userlist-container">
+                            <div class="upload-form">
+                                <input type="file" id="userlist-file" class="file-input form-control" 
+                                       accept=".txt,.lst,.dict,.wordlist">
+                                <button type="button" id="submit-userlist-upload" class="btn-secondary">
+                                    <i class="bi bi-check"></i> Valider
+                                </button>
+                            </div>
+                            <div id="userlist-upload-status"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Mots de passe -->
+                    <div class="wordlist-column">
+                        <h4><i class="bi bi-key"></i> Mots de passe</h4>
+                        
+                        <div class="form-group">
+                            <label for="passlist">Liste de mots de passe</label>
+                            <select name="passlist" id="passlist" class="form-control">
+                                <option value="">Chargement des listes...</option>
+                            </select>
+                        </div>
+                        
+                        <div class="wordlist-actions">
+                            <label class="checkbox-option">
+                                <input type="checkbox" id="toggle-custom-passlist">
+                                <span>Liste personnalisée</span>
+                            </label>
+                            
+                            <button type="button" id="upload-passlist-btn" class="btn-secondary">
+                                <i class="bi bi-upload"></i> Importer
+                            </button>
+                        </div>
+                        
+                        <div class="custom-input-section" id="custom-passlist-container">
+                            <div class="form-group">
+                                <label for="custom_passlist">Liste personnalisée</label>
+                                <textarea name="custom_passlist" id="custom_passlist" class="form-control" 
+                                          rows="5" placeholder="123456&#10;password&#10;admin&#10;qwerty"></textarea>
+                                <div class="form-hint">Un mot de passe par ligne</div>
+                            </div>
+                        </div>
+                        
+                        <div class="upload-section" id="upload-passlist-container">
+                            <div class="upload-form">
+                                <input type="file" id="passlist-file" class="file-input form-control" 
+                                       accept=".txt,.lst,.dict,.wordlist">
+                                <button type="button" id="submit-passlist-upload" class="btn-secondary">
+                                    <i class="bi bi-check"></i> Valider
+                                </button>
+                            </div>
+                            <div id="passlist-upload-status"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <!-- Paramètres d'attaque -->
-        <div class="attack-settings">
-            <h3 style="color: #2c3e50; border-bottom: 3px solid #e67e22; padding-bottom: 15px; display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
-                <i class="bi bi-sliders"></i> Paramètres d'attaque
-            </h3>
             
-            <div class="settings-grid">
-                <div class="form-group">
-                    <label for="tasks">Tâches parallèles</label>
-                    <input type="number" name="tasks" id="tasks" class="form-control" 
-                           min="1" max="64" value="16" required>
-                    <div class="form-hint">Nombre de connexions simultanées (1-64)</div>
-                </div>
+            <!-- Paramètres d'attaque -->
+            <div class="attack-settings">
+                <h3 style="color: #2c3e50; border-bottom: 3px solid #e67e22; padding-bottom: 15px; display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                    <i class="bi bi-sliders"></i> Paramètres d'attaque
+                </h3>
                 
-                <div class="form-group">
-                    <label for="timeout">Timeout (secondes)</label>
-                    <input type="number" name="timeout" id="timeout" class="form-control" 
-                           min="1" max="300" value="30">
-                    <div class="form-hint">Délai d'attente par tentative</div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Options avancées</label>
-                    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
-                        <label class="checkbox-option">
-                            <input type="checkbox" name="verbose" id="verbose">
-                            <span>Mode verbeux</span>
-                        </label>
-                        
-                        <label class="checkbox-option">
-                            <input type="checkbox" name="continue_on_success" id="continue_on_success">
-                            <span>Continuer après succès</span>
-                        </label>
-                        
-                        <label class="checkbox-option">
-                            <input type="checkbox" name="exit_on_first" id="exit_on_first" checked>
-                            <span>Arrêter au premier succès</span>
-                        </label>
+                <div class="settings-grid">
+                    <div class="form-group">
+                        <label for="tasks">Tâches parallèles</label>
+                        <input type="number" name="tasks" id="tasks" class="form-control" 
+                               min="1" max="64" value="16" required>
+                        <div class="form-hint">Nombre de connexions simultanées (1-64)</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Options avancées</label>
+                        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="verbose" id="verbose">
+                                <span>Mode verbeux</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="attack-controls">
-            <button type="submit" class="btn btn-primary" id="start-hydra-btn">
-                <i class="bi bi-play-fill"></i>
-                Lancer l'attaque
-            </button>
-            <button type="button" class="btn btn-secondary" id="reset-form-btn">
-                <i class="bi bi-arrow-clockwise"></i>
-                Réinitialiser
-            </button>
-        </div>
-    </form>
-    
-    <!-- Section d'attaque -->
-    <div class="attack-section" id="attack-section">
-        <div class="attack-header">
-            <h3><i class="bi bi-lightning attacking"></i> Attaque en cours</h3>
-            <div class="attack-status">
-                <span id="attack-status-text">Initialisation...</span>
-                <button type="button" class="btn btn-danger" id="stop-attack-btn">
-                    <i class="bi bi-stop-fill"></i>
-                    Arrêter
+            
+            <div class="attack-controls">
+                <button type="submit" class="btn btn-primary" id="start-hydra-btn">
+                    <i class="bi bi-play-fill"></i>
+                    Lancer l'attaque
                 </button>
             </div>
-        </div>
-        
-        <div class="attack-stats" id="attack-stats">
-            <div class="stat-card">
-                <div class="stat-value" id="attempts-made">0</div>
-                <div class="stat-label">Tentatives</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="credentials-found">0</div>
-                <div class="stat-label">Identifiants trouvés</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="attack-speed">0/s</div>
-                <div class="stat-label">Vitesse</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="attack-duration">0s</div>
-                <div class="stat-label">Durée</div>
-            </div>
-        </div>
-        
-        <div class="results-list" id="results-list">
-            <!-- Les résultats apparaîtront ici en temps réel -->
-        </div>
+        </form>
     </div>
-</div>
-
-<script src="/static/js/hydra.js"></script>
-
-<script>
-// Script additionnel pour la gestion de l'interface moderne
-document.addEventListener('DOMContentLoaded', function() {
-    const servicePresets = document.querySelectorAll('.service-preset');
-    const serviceSelect = document.getElementById('service');
-    const httpOptions = document.getElementById('http-options');
-    const wordlistPresets = document.querySelectorAll('.wordlist-preset');
     
-    // Gestion des presets de service
-    servicePresets.forEach(preset => {
-        preset.addEventListener('click', function() {
-            servicePresets.forEach(p => p.classList.remove('active'));
-            this.classList.add('active');
-            serviceSelect.value = this.dataset.service;
+    <footer>
+        <p>Toolbox Cyber &copy; 2025 - Outil de formation et de test uniquement</p>
+    </footer>
+    
+    <script>
+        // Script pour la gestion de l'interface moderne
+        document.addEventListener('DOMContentLoaded', function() {
+            const servicePresets = document.querySelectorAll('.service-preset');
+            const serviceSelect = document.getElementById('service');
+            const httpOptions = document.getElementById('http-options');
             
-    // Gestion des presets de service
-    servicePresets.forEach(preset => {
-        preset.addEventListener('click', function() {
-            servicePresets.forEach(p => p.classList.remove('active'));
-            this.classList.add('active');
-            serviceSelect.value = this.dataset.service;
-            
-            // Afficher/masquer les options HTTP
-            if (this.dataset.service === 'http-post-form') {
-                httpOptions.classList.add('active');
-            } else {
-                httpOptions.classList.remove('active');
-            }
-        });
-    });
-    
-    // Gestion des presets de wordlists
-    wordlistPresets.forEach(preset => {
-        preset.addEventListener('click', function() {
-            const type = this.dataset.type;
-            const list = this.dataset.list;
-            
-            // Désactiver les autres presets du même type
-            document.querySelectorAll(`[data-type="${type}"]`).forEach(p => p.classList.remove('active'));
-            this.classList.add('active');
-            
-            // Mettre à jour le select correspondant
-            if (type === 'users') {
-                document.getElementById('userlist').value = `${list}_users`;
-            } else if (type === 'passwords') {
-                document.getElementById('passlist').value = `${list}_passwords`;
-            }
-        });
-    });
-    
-    // Gestion des listes personnalisées
-    const customToggles = [
-        { toggle: 'toggle-custom-userlist', container: 'custom-userlist-container' },
-        { toggle: 'toggle-custom-passlist', container: 'custom-passlist-container' }
-    ];
-    
-    customToggles.forEach(({ toggle, container }) => {
-        const toggleEl = document.getElementById(toggle);
-        const containerEl = document.getElementById(container);
-        
-        if (toggleEl && containerEl) {
-            toggleEl.addEventListener('change', function() {
-                if (this.checked) {
-                    containerEl.classList.add('active');
-                } else {
-                    containerEl.classList.remove('active');
-                }
-            });
-        }
-    });
-    
-    // Gestion des uploads
-    const uploadToggles = [
-        { button: 'upload-userlist-btn', container: 'upload-userlist-container' },
-        { button: 'upload-passlist-btn', container: 'upload-passlist-container' }
-    ];
-    
-    uploadToggles.forEach(({ button, container }) => {
-        const buttonEl = document.getElementById(button);
-        const containerEl = document.getElementById(container);
-        
-        if (buttonEl && containerEl) {
-            buttonEl.addEventListener('click', function() {
-                if (containerEl.classList.contains('active')) {
-                    containerEl.classList.remove('active');
-                } else {
-                    containerEl.classList.add('active');
-                }
-            });
-        }
-    });
-    
-    // Gestion des uploads de fichiers
-    const fileUploads = [
-        { 
-            fileInput: 'userlist-file', 
-            submitButton: 'submit-userlist-upload', 
-            statusDiv: 'userlist-upload-status',
-            textarea: 'custom_userlist'
-        },
-        { 
-            fileInput: 'passlist-file', 
-            submitButton: 'submit-passlist-upload', 
-            statusDiv: 'passlist-upload-status',
-            textarea: 'custom_passlist'
-        }
-    ];
-    
-    fileUploads.forEach(({ fileInput, submitButton, statusDiv, textarea }) => {
-        const fileEl = document.getElementById(fileInput);
-        const submitEl = document.getElementById(submitButton);
-        const statusEl = document.getElementById(statusDiv);
-        const textareaEl = document.getElementById(textarea);
-        
-        if (submitEl && fileEl && statusEl && textareaEl) {
-            submitEl.addEventListener('click', function() {
-                const file = fileEl.files[0];
-                if (!file) {
-                    statusEl.innerHTML = '<div style="color: #e74c3c;">Veuillez sélectionner un fichier</div>';
-                    return;
-                }
-                
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    textareaEl.value = e.target.result;
-                    statusEl.innerHTML = '<div style="color: #27ae60;">✓ Fichier chargé avec succès</div>';
+            // Gestion des presets de service
+            servicePresets.forEach(preset => {
+                preset.addEventListener('click', function() {
+                    servicePresets.forEach(p => p.classList.remove('active'));
+                    this.classList.add('active');
                     
-                    // Activer la liste personnalisée
-                    const toggleId = textarea.includes('user') ? 'toggle-custom-userlist' : 'toggle-custom-passlist';
-                    const containerId = textarea.includes('user') ? 'custom-userlist-container' : 'custom-passlist-container';
+                    // Mettre à jour le select
+                    const service = this.dataset.service;
+                    serviceSelect.value = service;
                     
-                    document.getElementById(toggleId).checked = true;
-                    document.getElementById(containerId).classList.add('active');
-                };
-                
-                reader.onerror = function() {
-                    statusEl.innerHTML = '<div style="color: #e74c3c;">Erreur lors de la lecture du fichier</div>';
-                };
-                
-                reader.readAsText(file);
-            });
-        }
-    });
-    
-    // Gestion du formulaire
-    const form = document.getElementById('hydra-form');
-    const attackSection = document.getElementById('attack-section');
-    const startBtn = document.getElementById('start-hydra-btn');
-    const stopBtn = document.getElementById('stop-attack-btn');
-    const resetBtn = document.getElementById('reset-form-btn');
-    
-    let attackInterval = null;
-    let attackStartTime = null;
-    let isAttacking = false;
-    
-    // Soumission du formulaire
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(form);
-            const target = formData.get('target');
-            const service = formData.get('service');
-            
-            if (!target || !service) {
-                alert('Veuillez remplir tous les champs obligatoires');
-                return;
-            }
-            
-            startAttack(formData);
-        });
-    }
-    
-    function startAttack(formData) {
-        // Désactiver le bouton et afficher la section d'attaque
-        startBtn.disabled = true;
-        startBtn.innerHTML = '<span class="spinner"></span> Initialisation...';
-        attackSection.style.display = 'block';
-        
-        // Réinitialiser les stats
-        resetAttackStats();
-        
-        attackStartTime = Date.now();
-        isAttacking = true;
-        
-        // Envoyer la requête à l'API
-        fetch('/api/hydra/attack', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => {
-            if (response.headers.get('content-type')?.includes('text/html')) {
-                return response.text().then(html => {
-                    document.open();
-                    document.write(html);
-                    document.close();
-                    return null;
+                    // Afficher/masquer les options HTTP
+                    if (service === 'http-post-form') {
+                        httpOptions.classList.add('active');
+                    } else {
+                        httpOptions.classList.remove('active');
+                    }
                 });
-            } else {
-                return response.json();
-            }
-        })
-        .then(data => {
-            if (data === null) {
-                // Redirection HTML effectuée
-                return;
-            }
+            });
             
-            if (data.error) {
-                throw new Error(data.error);
-            }
+            // Gestion des listes personnalisées
+            const customToggles = [
+                { toggle: 'toggle-custom-userlist', container: 'custom-userlist-container' },
+                { toggle: 'toggle-custom-passlist', container: 'custom-passlist-container' }
+            ];
             
-            // Démarrer la simulation d'attaque
-            startAttackSimulation();
-        })
-        .catch(error => {
-            console.error('Erreur:', error);
-            alert('Erreur lors du lancement de l\'attaque: ' + error.message);
-            stopAttack();
-        });
-    }
-    
-    function startAttackSimulation() {
-        document.getElementById('attack-status-text').textContent = 'Attaque en cours...';
-        
-        let attempts = 0;
-        let credentialsFound = 0;
-        const maxAttempts = 1000; // Limite pour la simulation
-        
-        attackInterval = setInterval(() => {
-            if (attempts >= maxAttempts || !isAttacking) {
-                stopAttack();
-                return;
-            }
-            
-            // Simuler des tentatives
-            attempts += Math.floor(Math.random() * 5) + 1;
-            
-            // Simuler occasionnellement des identifiants trouvés
-            if (Math.random() < 0.05 && credentialsFound < 3) {
-                credentialsFound++;
-                const credentials = generateRandomCredentials();
-                addCredentialToList(credentials, true);
-            } else {
-                // Ajouter quelques échecs
-                if (Math.random() < 0.3) {
-                    const failedAttempt = generateRandomCredentials();
-                    addCredentialToList(failedAttempt, false);
+            customToggles.forEach(({ toggle, container }) => {
+                const toggleEl = document.getElementById(toggle);
+                const containerEl = document.getElementById(container);
+                
+                if (toggleEl && containerEl) {
+                    toggleEl.addEventListener('change', function() {
+                        if (this.checked) {
+                            containerEl.classList.add('active');
+                        } else {
+                            containerEl.classList.remove('active');
+                        }
+                    });
                 }
-            }
-            
-            // Mettre à jour les stats
-            updateAttackStats(attempts, credentialsFound);
-            
-        }, Math.random() * 1000 + 500); // 500-1500ms entre les updates
-    }
-    
-    function generateRandomCredentials() {
-        const users = ['admin', 'root', 'user', 'test', 'guest', 'administrator'];
-        const passwords = ['password', '123456', 'admin', 'root', 'qwerty', 'letmein'];
-        
-        return {
-            username: users[Math.floor(Math.random() * users.length)],
-            password: passwords[Math.floor(Math.random() * passwords.length)]
-        };
-    }
-    
-    function addCredentialToList(credentials, success) {
-        const resultsList = document.getElementById('results-list');
-        const resultDiv = document.createElement('div');
-        resultDiv.className = `result-item ${success ? 'success' : 'failed'}`;
-        
-        if (success) {
-            resultDiv.innerHTML = `
-                <div class="credentials">
-                    <i class="bi bi-check-circle"></i> 
-                    ${credentials.username}:${credentials.password}
-                </div>
-                <div style="color: #27ae60; font-weight: bold;">SUCCÈS</div>
-            `;
-        } else {
-            resultDiv.innerHTML = `
-                <div>
-                    <i class="bi bi-x-circle"></i> 
-                    ${credentials.username}:${credentials.password}
-                </div>
-                <div style="color: #e74c3c;">Échec</div>
-            `;
-        }
-        
-        resultsList.insertBefore(resultDiv, resultsList.firstChild);
-        
-        // Limiter le nombre de résultats affichés
-        if (resultsList.children.length > 50) {
-            resultsList.removeChild(resultsList.lastChild);
-        }
-    }
-    
-    function updateAttackStats(attempts, credentialsFound) {
-        document.getElementById('attempts-made').textContent = attempts;
-        document.getElementById('credentials-found').textContent = credentialsFound;
-        
-        const duration = Math.floor((Date.now() - attackStartTime) / 1000);
-        document.getElementById('attack-duration').textContent = duration + 's';
-        
-        const speed = duration > 0 ? Math.floor(attempts / duration) : 0;
-        document.getElementById('attack-speed').textContent = speed + '/s';
-    }
-    
-    function resetAttackStats() {
-        document.getElementById('attempts-made').textContent = '0';
-        document.getElementById('credentials-found').textContent = '0';
-        document.getElementById('attack-speed').textContent = '0/s';
-        document.getElementById('attack-duration').textContent = '0s';
-        document.getElementById('results-list').innerHTML = '';
-    }
-    
-    function stopAttack() {
-        isAttacking = false;
-        if (attackInterval) {
-            clearInterval(attackInterval);
-            attackInterval = null;
-        }
-        
-        document.getElementById('attack-status-text').textContent = 'Attaque terminée';
-        document.querySelector('.attacking').classList.remove('attacking');
-        
-        resetScanState();
-    }
-    
-    function resetScanState() {
-        startBtn.disabled = false;
-        startBtn.innerHTML = '<i class="bi bi-play-fill"></i> Lancer l\'attaque';
-    }
-    
-    // Bouton d'arrêt
-    if (stopBtn) {
-        stopBtn.addEventListener('click', function() {
-            if (confirm('Voulez-vous vraiment arrêter l\'attaque en cours ?')) {
-                stopAttack();
-            }
-        });
-    }
-    
-    // Bouton de réinitialisation
-    if (resetBtn) {
-        resetBtn.addEventListener('click', function() {
-            form.reset();
-            document.getElementById('tasks').value = '16';
-            document.getElementById('timeout').value = '30';
-            attackSection.style.display = 'none';
-            httpOptions.classList.remove('active');
-            
-            // Réactiver les presets par défaut
-            servicePresets.forEach(p => p.classList.remove('active'));
-            servicePresets[0].classList.add('active');
-            serviceSelect.value = 'ssh';
-            
-            wordlistPresets.forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('[data-type="users"][data-list="common"]')[0].classList.add('active');
-            document.querySelectorAll('[data-type="passwords"][data-list="common"]')[0].classList.add('active');
-            
-            // Réinitialiser les sections personnalisées
-            document.querySelectorAll('.custom-input-section, .upload-section').forEach(section => {
-                section.classList.remove('active');
             });
             
-            customToggles.forEach(({ toggle }) => {
-                document.getElementById(toggle).checked = false;
+            // Gestion des uploads
+            const uploadToggles = [
+                { button: 'upload-userlist-btn', container: 'upload-userlist-container' },
+                { button: 'upload-passlist-btn', container: 'upload-passlist-container' }
+            ];
+            
+            uploadToggles.forEach(({ button, container }) => {
+                const buttonEl = document.getElementById(button);
+                const containerEl = document.getElementById(container);
+                
+                if (buttonEl && containerEl) {
+                    buttonEl.addEventListener('click', function() {
+                        if (containerEl.classList.contains('active')) {
+                            containerEl.classList.remove('active');
+                        } else {
+                            containerEl.classList.add('active');
+                        }
+                    });
+                }
             });
             
-            stopAttack();
+            // Gestion des uploads de fichiers
+            const fileUploads = [
+                { 
+                    fileInput: 'userlist-file', 
+                    submitButton: 'submit-userlist-upload', 
+                    statusDiv: 'userlist-upload-status',
+                    textarea: 'custom_userlist'
+                },
+                { 
+                    fileInput: 'passlist-file', 
+                    submitButton: 'submit-passlist-upload', 
+                    statusDiv: 'passlist-upload-status',
+                    textarea: 'custom_passlist'
+                }
+            ];
+            
+            fileUploads.forEach(({ fileInput, submitButton, statusDiv, textarea }) => {
+                const fileEl = document.getElementById(fileInput);
+                const submitEl = document.getElementById(submitButton);
+                const statusEl = document.getElementById(statusDiv);
+                const textareaEl = document.getElementById(textarea);
+                
+                if (submitEl && fileEl && statusEl && textareaEl) {
+                    submitEl.addEventListener('click', function() {
+                        const file = fileEl.files[0];
+                        if (!file) {
+                            statusEl.innerHTML = '<div style="color: #e74c3c;">Veuillez sélectionner un fichier</div>';
+                            return;
+                        }
+                        
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            textareaEl.value = e.target.result;
+                            statusEl.innerHTML = '<div style="color: #27ae60;">✓ Fichier chargé avec succès</div>';
+                            
+                            // Activer la liste personnalisée
+                            const toggleId = textarea.includes('user') ? 'toggle-custom-userlist' : 'toggle-custom-passlist';
+                            const containerId = textarea.includes('user') ? 'custom-userlist-container' : 'custom-passlist-container';
+                            
+                            document.getElementById(toggleId).checked = true;
+                            document.getElementById(containerId).classList.add('active');
+                        };
+                        
+                        reader.onerror = function() {
+                            statusEl.innerHTML = '<div style="color: #e74c3c;">Erreur lors de la lecture du fichier</div>';
+                        };
+                        
+                        reader.readAsText(file);
+                    });
+                }
+            });
         });
-    }
-});
-</script>
-{% endblock %}
+    </script>
+    <script src="/static/js/hydra.js"></script>
+</body>
+</html>
