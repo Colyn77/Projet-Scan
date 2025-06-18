@@ -2,7 +2,7 @@
 
 ## 📌 Présentation
 
-Cette toolbox a pour objectif de centraliser et d’automatiser plusieurs tests d’intrusion sur des cibles réseau et web. Elle est conçue pour les analystes SOC et pentesters, avec une interface FastAPI permettant de piloter les scans via des requêtes HTTP.
+Cette toolbox a pour objectif de centraliser et d’automatiser plusieurs tests d’intrusion sur des cibles réseau et web. Elle est conçue pour les analystes SOC et pentesters, avec une interface Flask permettant de piloter les scans via des requêtes HTTP.
 
 ## 🚀 Fonctionnalités principales
 
